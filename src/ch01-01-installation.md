@@ -1,39 +1,45 @@
-## Installation
+## Pemasangan
 
-The first step is to install Rust. We’ll download Rust through `rustup`, a
-command line tool for managing Rust versions and associated tools. You’ll need
-an internet connection for the download.
+Langkah pertama adalah memasang Rust. Kita akan mengunduh Rust menggunakan
+`rustup`, sebuah aplikasi baris perintah yg digunakan untuk mengelola versi Rust
+dan aplikasi terkait lainnya. Anda membutuhkan koneksi internet untuk
+mengunduhnya.
 
-> Note: If you prefer not to use `rustup` for some reason, please see the
-> [Other Rust Installation Methods page][otherinstall] for more options.
+> Catatan: Jika anda memilih untuk tidak menggunakan `rustup` karena suatu
+> alasan tertentu, silakan baca
+> [halaman Metode Pemasangan Rust Lainnya][otherinstall] untuk pilihan lebih
+> lanjut.
 
-The following steps install the latest stable version of the Rust compiler.
-Rust’s stability guarantees ensure that all the examples in the book that
-compile will continue to compile with newer Rust versions. The output might
-differ slightly between versions because Rust often improves error messages and
-warnings. In other words, any newer, stable version of Rust you install using
-these steps should work as expected with the content of this book.
+Langkah selanjutnya memasang versi stable dari compiler Rust. Jaminan
+stabilitas Rust memastikan bahwa semua contoh di buku ini yg bisa di compile
+akan tetap bisa di compile dengan versi Rust yg lebih baru. Hasil Output
+mungkin berbeda sedikit antarversi karena Rust sering kali memperbaiki pesan
+error dan peringatan. Dengan kata lain, semua versi stable Rust yg lebih baru,
+yg anda install menggunakan metode berikut, seharusnya bekerja sesuai harapan
+dg isi buku ini.
 
-> ### Command Line Notation
+> ### Notasi Baris Perintah
 >
-> In this chapter and throughout the book, we’ll show some commands used in the
-> terminal. Lines that you should enter in a terminal all start with `$`. You
-> don’t need to type the `$` character; it’s the command line prompt shown to
-> indicate the start of each command. Lines that don’t start with `$` typically
-> show the output of the previous command. Additionally, PowerShell-specific
-> examples will use `>` rather than `$`.
+> Pada bab ini dan keseluruhan buku, kita akan tunjukkan beberapa perintah yg
+> digunakan pada terminal. Baris yg seharusnya anda masukkan di terminal semua
+> diawali dg `$`. Anda tidak perlu mengetikkan karakter `$`; Itu adalah penanda
+> baris perintah yg ditampilkan untuk menunjukkan awal dari tiap perintah.
+> Baris yg tidak dimulai dg `$` biasanya menampilkan output dari perintah
+> sebelumnya. Sebagai tambahan, contoh khusus PowerShell akan menggunakan `>`
+> daripada `$`.
 
-### Installing `rustup` on Linux or macOS
+### Pemasangan `rustup` pada Linux atau macOS
 
-If you’re using Linux or macOS, open a terminal and enter the following command:
+Jika anda menggunakan Linux atau macOS, buka sebuah terminal dan masukkan
+perintah berikut:
 
 ```console
 $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ```
 
-The command downloads a script and starts the installation of the `rustup`
-tool, which installs the latest stable version of Rust. You might be prompted
-for your password. If the install is successful, the following line will appear:
+Perintah tersebut akan mengunduh sebuah script dan memulai pemasangan aplikasi
+`rustup`, dan memasang versi stable terakhir Rust. Anda mungkin akan diminta
+untuk memasukkan kata kunci. Jika pemasangan sukses, baris berikut akan muncul:
 
 ```text
 Rust is installed now. Great!
@@ -45,17 +51,17 @@ linker errors, you should install a C compiler, which will typically include a
 linker. A C compiler is also useful because some common Rust packages depend on
 C code and will need a C compiler.
 
-On macOS, you can get a C compiler by running:
+Di macOS, anda memasang compiler C dg menjalankan:
 
 ```console
 $ xcode-select --install
 ```
 
-Linux users should generally install GCC or Clang, according to their
-distribution’s documentation. For example, if you use Ubuntu, you can install
-the `build-essential` package.
+Pengguna Linux biasanya memasang GCC atau Clang, sesuai dg dokumentasi
+masing-masing distribusi. Sebagai contoh, jika anda menggunakan Ubuntu, anda
+bisa memasang paket `build-essential`.
 
-### Installing `rustup` on Windows
+### Memasang `rustup` pada Windows
 
 On Windows, go to [https://www.rust-lang.org/tools/install][install] and follow
 the instructions for installing Rust. At some point in the installation, you’ll
@@ -66,73 +72,73 @@ libraries needed to compile programs. If you need more help with this step, see
 The rest of this book uses commands that work in both _cmd.exe_ and PowerShell.
 If there are specific differences, we’ll explain which to use.
 
-### Troubleshooting
+### Pemecah Masalah
 
-To check whether you have Rust installed correctly, open a shell and enter this
-line:
+Untuk mengecek apakah anda memiliki Rust yg terpasang dg baik, buka terminal
+dan masukkan:
 
 ```console
 $ rustc --version
 ```
 
-You should see the version number, commit hash, and commit date for the latest
-stable version that has been released, in the following format:
+Seharusnya keluar nomor versi, hash commit, dan tanggal commit untuk versi
+stable terakhir yg telah diterbitkan, dalam format:
 
 ```text
 rustc x.y.z (abcabcabc yyyy-mm-dd)
 ```
 
-If you see this information, you have installed Rust successfully! If you don’t
-see this information, check that Rust is in your `%PATH%` system variable as
-follows.
+Jika anda mendapatkan informasi tersebut, berarti anda telah berhasil memasang
+Rust! Jika anda tidak bertemu dg informasi tersebut, silakan cek apakah Rust
+berada di variabel sistem `%PATH%` sebagai berikut:
 
-In Windows CMD, use:
+Di Windows CMD, gunakan:
 
 ```console
 > echo %PATH%
 ```
 
-In PowerShell, use:
+Di PowerShell, gunakan:
 
 ```powershell
 > echo $env:Path
 ```
 
-In Linux and macOS, use:
+Di Linux dan macOS, gunakan:
 
 ```console
 $ echo $PATH
 ```
 
-If that’s all correct and Rust still isn’t working, there are a number of
-places you can get help. Find out how to get in touch with other Rustaceans (a
-silly nickname we call ourselves) on [the community page][community].
+Jika semuanya sudah benar tetapi Rust masih belum bekerja, ada beberapa tempat
+dimana anda bisa mencari bantuan. Cari tahu bagaimana berhubungan dg Rustacean
+(sebutan bagi kita) lainnya di [halaman komunitas][community].
 
-### Updating and Uninstalling
+### Memperbarui dan Menghapus
 
-Once Rust is installed via `rustup`, updating to a newly released version is
-easy. From your shell, run the following update script:
+Begitu Rust terpasang melalui `rustup`, memperbarui ke versi terbaru menjadi
+lebih mudah. Dari terminal anda, jalankan perintah berikut:
 
 ```console
 $ rustup update
 ```
 
-To uninstall Rust and `rustup`, run the following uninstall script from your
-shell:
+Untuk menghapus Rust dan `rustup`, jalankan perintah berikut dari terminal
+anda:
 
 ```console
 $ rustup self uninstall
 ```
 
-### Local Documentation
+### Dokumentasi Lokal
 
-The installation of Rust also includes a local copy of the documentation so
-that you can read it offline. Run `rustup doc` to open the local documentation
-in your browser.
+Pemasangan Rust juga menyertakan salinan dokumentasi lokal jadi anda dapat
+membacanya secara luring. Jalankan `rustup doc` untuk membuka dokumentasi lokal
+di peramban anda.
 
-Any time a type or function is provided by the standard library and you’re not
-sure what it does or how to use it, use the application programming interface
-(API) documentation to find out!
+Setiap kali ada sebuah tipe atau fungsi yg tersedia di library std dan anda
+tidak paham mengenai apa dan bagaimana cara menggunakannya, gunakan dokumentasi
+API (Application Programming Interface) untuk mencari tahu!
 
 ### Text Editors and Integrated Development Environments
 

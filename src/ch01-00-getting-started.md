@@ -1,7 +1,8 @@
-# Getting Started
+# Persiapan
 
-Let’s start your Rust journey! There’s a lot to learn, but every journey starts
-somewhere. In this chapter, we’ll discuss:
+Mari kita mulai perjalanan Rust anda! Ada banyak yg harus dipelajari, tetapi
+setiap perjalanan dimulai dari suatu permulaan. Pada bab ini, kita akan
+berbicara mengenai:
 
 - Installing Rust on Linux, macOS, and Windows
 - Writing a program that prints `Hello, world!`
