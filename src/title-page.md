@@ -1,21 +1,20 @@
 # Bahasa Pemrograman Rust
 
-_by Steve Klabnik, Carol Nichols, and Chris Krycho, with contributions from the
-Rust Community_
+_oleh Steve Klabnik, Carol Nichols, dan Chris Krycho, beserta kontribusi dari Komunitas Rust_
 
-This version of the text assumes you’re using Rust 1.85.0 (released 2025-02-17)
-or later with `edition = "2024"` in the Cargo.toml file of all projects to
-configure them to use Rust 2024 edition idioms. See the [“Installation” section
-of Chapter 1][install]<!-- ignore --> to install or update Rust.
+pada versi ini, kita asumsikan bahwa kamu menggunakan Rust 1.85.0 (terbit 17-02-2025)
+atau setelahnya dengan `edisi = "2025"` pada file Cargo.toml dari semua proyek untuk 
+mengatur dan menggunakan idiom Rust edisi 2024 pada mereka. Lihat pada  [bagian “Instalasi”
+pada Halaman 1][install]<!-- ignore --> untuk menginstalasi atau memperbaharui Rust.
 
-Format HTML secara daring ada di
+Format HTML untuk versi buku ini dapat dilihat secara _online_ pada url berikut
 [https://doc.rust-lang.org/stable/book/](https://doc.rust-lang.org/stable/book/)
-and offline with installations of Rust made with `rustup`; run `rustup doc
---book` to open.
+dan offline (dengan menggunakan instalasi Rust dengan `rustup`; dan membukanya 
+dengan `rustup doc --book` to open.)
 
-Beberapa [terjemahan] dari komunitas juga tersedia.
+Beberapa [terjemahan] yang dibuat oleh komunitas juga tersedia.
 
-Buku ini (versi Inggris) juga tersedia di [Format Buku oleh No Starch
+Buku ini (versi Indonesia) juga tersedia di [Format Buku oleh No Starch
 Press][nsprust].
 
 [install]: ch01-01-installation.html
