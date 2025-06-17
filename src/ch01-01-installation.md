@@ -1,14 +1,13 @@
-## Pemasangan
+## Instalasi
 
-Langkah pertama adalah memasang Rust. Kita akan mengunduh Rust menggunakan
-`rustup`, sebuah aplikasi baris perintah yg digunakan untuk mengelola versi Rust
-dan aplikasi terkait lainnya. Anda membutuhkan koneksi internet untuk
-mengunduhnya.
+Langkah pertama yang kita lakukan adalah instalasi bahasa Rust. Kita akan men-
+download Rust melalui `rustup`, tool _command line_ ini digunakan untuk mengatur 
+versi dari Rust dan beberapa _tool - tool_ yang ada didalamnya. untuk instalasi ini 
+kita membutuhkan koneksi internet untuk mendownloadnya.
 
-> Catatan: Jika anda memilih untuk tidak menggunakan `rustup` karena suatu
-> alasan tertentu, silakan baca
-> [halaman Metode Pemasangan Rust Lainnya][otherinstall] untuk pilihan lebih
-> lanjut.
+> Catatan: Jika kamu lebih memilih untuk tidak menggunakan `rustup` untuk beberapa
+> alasan, kamu bisa merujuk pada [Halaman Instalasi Rust Lainnya][otherinstall]
+> untuk opsi lainnya
 
 Langkah selanjutnya memasang versi stable dari compiler Rust. Jaminan
 stabilitas Rust memastikan bahwa semua contoh di buku ini yg bisa di compile
