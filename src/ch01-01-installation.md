@@ -5,8 +5,9 @@ download Rust melalui `rustup`, tool _command line_ ini digunakan untuk mengatur
 versi dari Rust dan beberapa _tool - tool_ yang ada didalamnya. untuk instalasi ini 
 kita membutuhkan koneksi internet untuk mendownloadnya.
 
-> Note: If you prefer not to use `rustup` for some reason, please see the
-> [Other Rust Installation Methods page][otherinstall] for more options.
+> Catatan: Jika kamu lebih memilih untuk tidak menggunakan `rustup` untuk beberapa
+> alasan, kamu bisa merujuk pada [Halaman Instalasi Rust Lainnya][otherinstall]
+> untuk opsi lainnya
 
 The following steps install the latest stable version of the Rust compiler.
 Rust’s stability guarantees ensure that all the examples in the book that
