@@ -63,7 +63,7 @@ dari aplikasi peramban Firefox.
 
 Rust diperuntukkan bagi mereka yg ingin secara manual membuat bahasa
 pemrograman Rust, komunitas, aplikasi pengembang, dan modul-modul. Kita
-menunggu kontribusi anda pada bahasa Rust.
+menunggu kontribusi kita pada bahasa Rust.
 
 ### Mereka yg fokus pada Kecepatan dan Stabilitas
 
@@ -93,7 +93,7 @@ reading a book that specifically provides an introduction to programming.
 
 ## Bagaimana cara menggunakan Buku ini
 
-Secara umum, buku ini mengasumsikan anda membacanya secara berurutan dari depan
+Secara umum, buku ini mengasumsikan kita membacanya secara berurutan dari depan
 ke belakang. Bab selanjutnya mendasarkan konsepnya pada Bab sebelumnya, dan Bab
 awal tidak akan menjelaskan secara detil mengenai topik tertentu tetapi akan
 menjelaskan lebih lanjut topik tersebut pada Bab selanjutnya.
@@ -106,31 +106,31 @@ far. Chapters 2, 12, and 21 are project chapters; the rest are concept chapters.
 Bab 1 menjelaskan bagaimana memasang Rust, bagaimana membuat program
 "Halo, dunia!", dan bagaimana cara menggunakan aplikasi Cargo, yg berfungsi
 sebagai pengelola paket dan aplikasi compiler. Bab 2 mengenai menulis program
-secara komprehensif di Rust, anda akan membuat permainan tebak-menebak.
+secara komprehensif di Rust, kita akan membuat permainan tebak-menebak.
 Dititik ini kita membahas konsep pada tingkat yg relatif tinggi dan pada bab
 selanjutnya detil tambahan akan dielaborasi.
 
-Jika anda ingin segera masuk keproses koding, Bab 2 adalah tempat yg paling
+Jika kita ingin segera masuk keproses koding, Bab 2 adalah tempat yg paling
 cocok untuk itu. Bab 3 membahas fitur Rust yg mirip dg bahasa pemrograman
-lainnya, dan di Bab 4 anda akan mempelajari Sistem Kepemilikan Rust. Jika anda
+lainnya, dan di Bab 4 kita akan mempelajari Sistem Kepemilikan Rust. Jika kita
 pelajar yg perfeksionis yg lebih memilih mempelajari setiap detilnya sebelum
-berpindah ke selanjutnya, mungkin lebih baik anda lewati Bab 2 dan langsung ke
-Bab 3, baru kembali ke Bab 2 jika anda ingin mengerjakan suatu proyek, untuk
-menerapkan ilmu yg sudah anda pelajari sebelumnya.
+berpindah ke selanjutnya, mungkin lebih baik kita lewati Bab 2 dan langsung ke
+Bab 3, baru kembali ke Bab 2 jika kita ingin mengerjakan suatu proyek, untuk
+menerapkan ilmu yg sudah kita pelajari sebelumnya.
 
 Bab 5 berbicara mengenai struct dan method, dan Bab 6 membahas enum, ungkapan
-`match`, dan pembuatan aliran kontrol `if let`. Anda akan menggunakan struct
+`match`, dan pembuatan aliran kontrol `if let`. Kita akan menggunakan struct
 dan enum untuk membuat suatu tipe tertentu di Rust.
 
-Di Bab 7, anda akan mempelajari Sistem Modul Rust dan aturan privasi untuk
-mengelola kode anda dan API publik nya yg terkait. Bab 8 berbicara mengenai
+Di Bab 7, kita akan mempelajari Sistem Modul Rust dan aturan privasi untuk
+mengelola kode kita dan API publik nya yg terkait. Bab 8 berbicara mengenai
 struktur data jamak yg tersedia pada library std, seperti vektor, string, dan
 hash map. Bab 9 menjelajahi teknik dan filosofi Rust terhadap penanganan Error.
 
 Bab 10 menggali lebih dalam mengenai generic, trait, dan lifetime, yg akan
-memberikan anda kemudahan dalam membuat kode yg akan diterapkan pada beberapa
+memberikan kita kemudahan dalam membuat kode yg akan diterapkan pada beberapa
 tipe. Bab 11 mengenai Pengujian, dimana bahkan dg jaminan keamanan dari Rust,
-tetap dibutuhkan untuk menjaga logika program anda bekerja dg benar. Di Bab 12,
+tetap dibutuhkan untuk menjaga logika program kita bekerja dg benar. Di Bab 12,
 kita akan mencoba membuat implementasi dari subset fungsionalitas aplikasi
 baris perintah `grep` yg melakukan pencarian didalam berkas. Untuk keperluan
 ini, kita akan menggunakan banyak konsep yg telah dibahas pada Bab-bab
@@ -164,24 +164,24 @@ Terakhir, beberapa lampiran yg berisi informasi bermanfaat mengenai bahasa ini
 dalam format seperti referensi. Lampiran A meliputi kata kunci Rust, Lampiran B
 meliputi operator dan simbol Rust, Lampiran C meliputi trait turunan yg
 tersedia pada library std, Lampiran D meliputi beberapa aplikasi pengembang yg
-bermanfaat, dan Lampiran E menjelaskan edisi Rust. Pada Lampiran F, anda akan
+bermanfaat, dan Lampiran E menjelaskan edisi Rust. Pada Lampiran F, kita akan
 menemukan terjemahan dari buku ini, dan di Lampiran G kita akan membahas
 bagaimana Rust dbuat dan apa itu nightly Rust.
 
-Tidak ada cara salah dalam membaca buku ini: jika anda ingin melewati beberapa
-halaman, maka lakukanlah! Anda mungkin akan lompat kebelakang pada Bab-bab awal
-jika mengalami kebingungan. Lakukan apa yg menurut anda nyaman.
+Tidak ada cara salah dalam membaca buku ini: jika kita ingin melewati beberapa
+halaman, maka lakukanlah! Kita mungkin akan lompat kebelakang pada Bab-bab awal
+jika mengalami kebingungan. Lakukan apa yg menurut kita nyaman.
 
 <span id="ferris"></span>
 
 Sebuah bagian penting dari proses pembelajaran Rust adalah mempelajari
 bagaimana membaca pesan error yg ditampilkan oleh compiler: hal ini akan
-menuntun anda menuju kode yg berfungsi. Karenanya, kita akan menyediakan
+menuntun kita menuju kode yg berfungsi. Karenanya, kita akan menyediakan
 banyak contoh yg tidak bisa di compile beserta pesan error dari compiler pada
-tiap situasi tersebut. Pahami bahwa jika anda menjalankan contoh secara acak,
-ada kemungkinan tidak bisa di compile! Pastikan anda membaca kalimat
-disekitarnya apakah contoh tersebut, yg hendak anda jalankan, memang bertujuan
-untuk error. Ferris juga akan membantu anda membedakan kode yg memang bertujuan
+tiap situasi tersebut. Pahami bahwa jika kita menjalankan contoh secara acak,
+ada kemungkinan tidak bisa di compile! Pastikan kita membaca kalimat
+disekitarnya apakah contoh tersebut, yg hendak kita jalankan, memang bertujuan
+untuk error. Ferris juga akan membantu kita membedakan kode yg memang bertujuan
 agar tidak berfungsi:
 
 | Ferris                                                                                                           | Meaning                                          |
@@ -190,7 +190,7 @@ agar tidak berfungsi:
 | <img src="img/ferris/panics.svg" class="ferris-explain" alt="Ferris throwing up their hands"/>                   | This code panics!                                |
 | <img src="img/ferris/not_desired_behavior.svg" class="ferris-explain" alt="Ferris with one claw up, shrugging"/> | This code does not produce the desired behavior. |
 
-Dalam kebanyakan situasi, kita akan arahkan anda ke versi yg benar dari kode
+Dalam kebanyakan situasi, kita akan arahkan kita ke versi yg benar dari kode
 tersebut yg tidak bisa di compile.
 
 ## Sumber Terbuka

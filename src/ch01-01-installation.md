@@ -14,14 +14,14 @@ stabilitas Rust memastikan bahwa semua contoh di buku ini yg bisa di compile
 akan tetap bisa di compile dengan versi Rust yg lebih baru. Hasil Output
 mungkin berbeda sedikit antarversi karena Rust sering kali memperbaiki pesan
 error dan peringatan. Dengan kata lain, semua versi stable Rust yg lebih baru,
-yg anda install menggunakan metode berikut, seharusnya bekerja sesuai harapan
+yg kita install menggunakan metode berikut, seharusnya bekerja sesuai harapan
 dg isi buku ini.
 
 > ### Notasi Baris Perintah
 >
 > Pada bab ini dan keseluruhan buku, kita akan tunjukkan beberapa perintah yg
-> digunakan pada terminal. Baris yg seharusnya anda masukkan di terminal semua
-> diawali dg `$`. Anda tidak perlu mengetikkan karakter `$`; Itu adalah penanda
+> digunakan pada terminal. Baris yg seharusnya kita masukkan di terminal semua
+> diawali dg `$`. kita tidak perlu mengetikkan karakter `$`; Itu adalah penanda
 > baris perintah yg ditampilkan untuk menunjukkan awal dari tiap perintah.
 > Baris yg tidak dimulai dg `$` biasanya menampilkan output dari perintah
 > sebelumnya. Sebagai tambahan, contoh khusus PowerShell akan menggunakan `>`
@@ -29,7 +29,7 @@ dg isi buku ini.
 
 ### Pemasangan `rustup` pada Linux atau macOS
 
-Jika anda menggunakan Linux atau macOS, buka sebuah terminal dan masukkan
+Jika kita menggunakan Linux atau macOS, buka sebuah terminal dan masukkan
 perintah berikut:
 
 ```console
@@ -37,7 +37,7 @@ $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ```
 
 Perintah tersebut akan mengunduh sebuah script dan memulai pemasangan aplikasi
-`rustup`, dan memasang versi stable terakhir Rust. Anda mungkin akan diminta
+`rustup`, dan memasang versi stable terakhir Rust. Kita mungkin akan diminta
 untuk memasukkan kata kunci. Jika pemasangan sukses, baris berikut akan muncul:
 
 ```text
@@ -50,14 +50,14 @@ linker errors, you should install a C compiler, which will typically include a
 linker. A C compiler is also useful because some common Rust packages depend on
 C code and will need a C compiler.
 
-Di macOS, anda memasang compiler C dg menjalankan:
+Di macOS, kita memasang compiler C dg menjalankan:
 
 ```console
 $ xcode-select --install
 ```
 
 Pengguna Linux biasanya memasang GCC atau Clang, sesuai dg dokumentasi
-masing-masing distribusi. Sebagai contoh, jika anda menggunakan Ubuntu, anda
+masing-masing distribusi. Sebagai contoh, jika kita menggunakan Ubuntu, kita
 bisa memasang paket `build-essential`.
 
 ### Memasang `rustup` pada Windows
@@ -73,7 +73,7 @@ If there are specific differences, we’ll explain which to use.
 
 ### Pemecah Masalah
 
-Untuk mengecek apakah anda memiliki Rust yg terpasang dg baik, buka terminal
+Untuk mengecek apakah kita memiliki Rust yg terpasang dg baik, buka terminal
 dan masukkan:
 
 ```console
@@ -87,8 +87,8 @@ stable terakhir yg telah diterbitkan, dalam format:
 rustc x.y.z (abcabcabc yyyy-mm-dd)
 ```
 
-Jika anda mendapatkan informasi tersebut, berarti anda telah berhasil memasang
-Rust! Jika anda tidak bertemu dg informasi tersebut, silakan cek apakah Rust
+Jika kita mendapatkan informasi tersebut, berarti kita telah berhasil memasang
+Rust! Jika kita tidak bertemu dg informasi tersebut, silakan cek apakah Rust
 berada di variabel sistem `%PATH%` sebagai berikut:
 
 Di Windows CMD, gunakan:
@@ -110,20 +110,20 @@ $ echo $PATH
 ```
 
 Jika semuanya sudah benar tetapi Rust masih belum bekerja, ada beberapa tempat
-dimana anda bisa mencari bantuan. Cari tahu bagaimana berhubungan dg Rustacean
+dimana kita bisa mencari bantuan. Cari tahu bagaimana berhubungan dg Rustacean
 (sebutan bagi kita) lainnya di [halaman komunitas][community].
 
 ### Memperbarui dan Menghapus
 
 Begitu Rust terpasang melalui `rustup`, memperbarui ke versi terbaru menjadi
-lebih mudah. Dari terminal anda, jalankan perintah berikut:
+lebih mudah. Dari terminal kita, jalankan perintah berikut:
 
 ```console
 $ rustup update
 ```
 
 Untuk menghapus Rust dan `rustup`, jalankan perintah berikut dari terminal
-anda:
+kita:
 
 ```console
 $ rustup self uninstall
@@ -131,11 +131,11 @@ $ rustup self uninstall
 
 ### Dokumentasi Lokal
 
-Pemasangan Rust juga menyertakan salinan dokumentasi lokal jadi anda dapat
+Pemasangan Rust juga menyertakan salinan dokumentasi lokal jadi kita dapat
 membacanya secara luring. Jalankan `rustup doc` untuk membuka dokumentasi lokal
-di peramban anda.
+di peramban kita.
 
-Setiap kali ada sebuah tipe atau fungsi yg tersedia di library std dan anda
+Setiap kali ada sebuah tipe atau fungsi yg tersedia di library std dan kita
 tidak paham mengenai apa dan bagaimana cara menggunakannya, gunakan dokumentasi
 API (Application Programming Interface) untuk mencari tahu!
 

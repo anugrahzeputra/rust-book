@@ -1,6 +1,6 @@
 # Persiapan
 
-Mari kita mulai perjalanan Rust anda! Ada banyak yg harus dipelajari, tetapi
+Mari kita mulai perjalanan Rust kita! Ada banyak yg harus dipelajari, tetapi
 setiap perjalanan dimulai dari suatu permulaan. Pada bab ini, kita akan
 berbicara mengenai:
 
