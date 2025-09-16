@@ -5,8 +5,8 @@ download Rust melalui `rustup`, tool _command line_ ini digunakan untuk mengatur
 versi dari Rust dan beberapa _tool - tool_ yang ada didalamnya. untuk instalasi ini 
 kita membutuhkan koneksi internet untuk mendownloadnya.
 
-> Catatan: Jika kamu lebih memilih untuk tidak menggunakan `rustup` untuk beberapa
-> alasan, kamu bisa merujuk pada [Halaman Instalasi Rust Lainnya][otherinstall]
+> Catatan: Jika Kita lebih memilih untuk tidak menggunakan `rustup` untuk beberapa
+> alasan, Kita bisa merujuk pada [Halaman Instalasi Rust Lainnya][otherinstall]
 > untuk opsi lainnya
 
 Langkah selanjutnya memasang versi stable dari compiler Rust. Jaminan
@@ -15,15 +15,15 @@ akan tetap bisa di compile dengan versi Rust yg lebih baru. Hasil Output
 mungkin berbeda sedikit antarversi karena Rust sering kali memperbaiki pesan
 error dan peringatan. Dengan kata lain, semua versi stable Rust yg lebih baru,
 yg kita install menggunakan metode berikut, seharusnya bekerja sesuai harapan
-dg isi buku ini.
+dengan isi buku ini.
 
 > ### Notasi Baris Perintah
 >
-> Pada bab ini dan keseluruhan buku, kita akan tunjukkan beberapa perintah yg
+> Pada bab ini dan keseluruhan buku, kita akan ditunjukkan beberapa perintah yg
 > digunakan pada terminal. Baris yg seharusnya kita masukkan di terminal semua
-> diawali dg `$`. kita tidak perlu mengetikkan karakter `$`; Itu adalah penanda
+> diawali dengan `$`. kita tidak perlu mengetikkan karakter `$`; Itu adalah penanda
 > baris perintah yg ditampilkan untuk menunjukkan awal dari tiap perintah.
-> Baris yg tidak dimulai dg `$` biasanya menampilkan output dari perintah
+> Baris yg tidak dimulai dengan `$` biasanya menampilkan output dari perintah
 > sebelumnya. Sebagai tambahan, contoh khusus PowerShell akan menggunakan `>`
 > daripada `$`.
 
@@ -44,36 +44,37 @@ untuk memasukkan kata kunci. Jika pemasangan sukses, baris berikut akan muncul:
 Rust is installed now. Great!
 ```
 
-You will also need a _linker_, which is a program that Rust uses to join its
-compiled outputs into one file. It is likely you already have one. If you get
-linker errors, you should install a C compiler, which will typically include a
-linker. A C compiler is also useful because some common Rust packages depend on
-C code and will need a C compiler.
+Kita juga akan memerlukan sebuah _linker_, yaitu sebuah program yang digunakan 
+Rust untuk menggabungkan hasil kompilasi menjadi satu berkas. Kemungkinan besar 
+kita sudah memilikinya. Jika kita mengalami error terkait linker, kita sebaiknya 
+menginstal compiler C, yang biasanya sudah menyertakan linker. Compiler C juga 
+berguna karena beberapa paket Rust yang umum bergantung pada kode C dan akan 
+membutuhkan compiler C.
 
-Di macOS, kita memasang compiler C dg menjalankan:
+Di macOS, kita memasang compiler C dengan menjalankan:
 
 ```console
 $ xcode-select --install
 ```
 
-Pengguna Linux biasanya memasang GCC atau Clang, sesuai dg dokumentasi
+Pengguna Linux biasanya memasang GCC atau Clang, sesuai dengan dokumentasi
 masing-masing distribusi. Sebagai contoh, jika kita menggunakan Ubuntu, kita
 bisa memasang paket `build-essential`.
 
 ### Memasang `rustup` pada Windows
 
-On Windows, go to [https://www.rust-lang.org/tools/install][install] and follow
-the instructions for installing Rust. At some point in the installation, you’ll
-be prompted to install Visual Studio. This provides a linker and the native
-libraries needed to compile programs. If you need more help with this step, see
-[https://rust-lang.github.io/rustup/installation/windows-msvc.html][msvc]
+Di Windows, buka [https://www.rust-lang.org/tools/install][install] dan ikuti 
+instruksi untuk memasang Rust. Pada suatu tahap dalam proses instalasi, kita akan 
+diminta untuk menginstal Visual Studio. Ini akan menyediakan sebuah linker dan 
+pustaka native yang dibutuhkan untuk mengompilasi program. Jika kita membutuhkan 
+bantuan lebih lanjut pada langkah ini, lihat [https://rust-lang.github.io/rustup/installation/windows-msvc.html][msvc]
 
-The rest of this book uses commands that work in both _cmd.exe_ and PowerShell.
-If there are specific differences, we’ll explain which to use.
+Sisa buku ini menggunakan perintah yang bisa dijalankan baik di _cmd.exe_ maupun  
+PowerShell. Jika ada perbedaan khusus, kita akan menjelaskan mana yang harus digunakan.
 
-### Pemecah Masalah
+### Pemecahan Masalah
 
-Untuk mengecek apakah kita memiliki Rust yg terpasang dg baik, buka terminal
+Untuk mengecek apakah kita memiliki Rust yg terpasang dengan baik, buka terminal
 dan masukkan:
 
 ```console
@@ -88,7 +89,7 @@ rustc x.y.z (abcabcabc yyyy-mm-dd)
 ```
 
 Jika kita mendapatkan informasi tersebut, berarti kita telah berhasil memasang
-Rust! Jika kita tidak bertemu dg informasi tersebut, silakan cek apakah Rust
+Rust! Jika kita tidak bertemu dengan informasi tersebut, silakan cek apakah Rust
 berada di variabel sistem `%PATH%` sebagai berikut:
 
 Di Windows CMD, gunakan:
@@ -110,7 +111,7 @@ $ echo $PATH
 ```
 
 Jika semuanya sudah benar tetapi Rust masih belum bekerja, ada beberapa tempat
-dimana kita bisa mencari bantuan. Cari tahu bagaimana berhubungan dg Rustacean
+dimana kita bisa mencari bantuan. Cari tahu bagaimana berhubungan dengan Rustacean
 (sebutan bagi kita) lainnya di [halaman komunitas][community].
 
 ### Memperbarui dan Menghapus
@@ -135,25 +136,26 @@ Pemasangan Rust juga menyertakan salinan dokumentasi lokal jadi kita dapat
 membacanya secara luring. Jalankan `rustup doc` untuk membuka dokumentasi lokal
 di peramban kita.
 
-Setiap kali ada sebuah tipe atau fungsi yg tersedia di library std dan kita
-tidak paham mengenai apa dan bagaimana cara menggunakannya, gunakan dokumentasi
-API (Application Programming Interface) untuk mencari tahu!
+Setiap kali ada sebuah tipe atau fungsi yg tersedia di library std dan kita mungkin
+tidak paham mengenai apa dan bagaimana cara menggunakannya, gunakan dokumentasi 
+API (Application Programming Interface) berikut untuk mencari tahu!
 
-### Text Editors and Integrated Development Environments
+### Editor Teks dan Lingkungan Pengembangan Terpadu
 
-This book makes no assumptions about what tools you use to author Rust code.
-Just about any text editor will get the job done! However, many text editors and
-integrated development environments (IDEs) have built-in support for Rust. You
-can always find a fairly current list of many editors and IDEs on [the tools
-page][tools] on the Rust website.
+Buku ini tidak mengasumsikan alat apa yang kita gunakan untuk menulis kode Rust. 
+Hampir semua editor teks bisa menyelesaikan pekerjaan! Namun, banyak editor teks 
+dan Lingkungan Pengembangan Terpadu atau sering disebut Integrated Development 
+Environments(IDE) yang memiliki dukungan bawaan untuk Rust. Kita selalu bisa 
+menemukan daftar terkini dari berbagai editor dan IDE di [halaman tools][tools] pada 
+situs web Rust.
 
-### Working Offline with This Book
+### Bekerja Secara Offline dengan Buku Ini
 
-In several examples, we will use Rust packages beyond the standard library. To
-work through those examples, you will either need to have an internet connection
-or to have downloaded those dependencies ahead of time. To download the
-dependencies ahead of time, you can run the following commands. (We’ll explain
-what `cargo` is and what each of these commands does in detail later.)
+Dalam beberapa contoh, kita akan menggunakan paket Rust di luar _library_ standar. 
+Untuk mengikuti contoh-contoh tersebut, kita perlu memiliki koneksi internet 
+atau sudah mengunduh dependensi tersebut sebelumnya. Untuk mengunduh dependensi 
+lebih dulu, kita bisa menjalankan perintah berikut. (Nantinya kita akan menjelaskan 
+apa itu `cargo` dan apa fungsi dari setiap perintah ini secara lebih rinci.)
 
 ```console
 $ cargo new get-dependencies
@@ -161,11 +163,12 @@ $ cd get-dependencies
 $ cargo add rand@0.8.5 trpl@0.2.0
 ```
 
-This will cache the downloads for these packages so you will not need to
-download them later. Once you have run this command, you do not need to keep the
-`get-dependencies` folder. If you have run this command, you can use the
-`--offline` flag with all `cargo` commands in the rest of the book to use these
-cached versions instead of attempting to use the network. 
+Perintah ini akan menyimpan hasil unduhan paket-paket tersebut di cache sehingga 
+kita tidak perlu mengunduhnya lagi nanti. Setelah menjalankan perintah ini, kita 
+tidak perlu menyimpan folder `get-dependencies`. Jika kita sudah menjalankan 
+perintah ini, kita bisa menggunakan flag `--offline` pada semua perintah `cargo` 
+di sisa buku ini untuk memakai versi yang sudah tersimpan di cache alih-alih 
+mencoba menggunakan jaringan.
 
 [otherinstall]: https://forge.rust-lang.org/infra/other-installation-methods.html
 [install]: https://www.rust-lang.org/tools/install
