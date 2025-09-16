@@ -2,7 +2,7 @@
 
 _oleh Steve Klabnik, Carol Nichols, dan Chris Krycho, beserta kontribusi dari Komunitas Rust_
 
-pada versi ini, kita asumsikan bahwa kamu menggunakan Rust 1.85.0 (terbit 17-02-2025)
+pada versi ini, kita asumsikan bahwa Kita menggunakan Rust 1.85.0 (terbit 17-02-2025)
 atau setelahnya dengan `edisi = "2025"` pada file Cargo.toml dari semua proyek untuk 
 mengatur dan menggunakan idiom Rust edisi 2024 pada mereka. Lihat pada  [bagian “Instalasi”
 pada Halaman 1][install]<!-- ignore --> untuk menginstalasi atau memperbaharui Rust.
