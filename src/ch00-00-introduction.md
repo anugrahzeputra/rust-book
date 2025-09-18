@@ -7,13 +7,13 @@
 [nsprust]: https://nostarch.com/rust-programming-language-2nd-edition
 [nsp]: https://nostarch.com/
 
-Welcome to _The Rust Programming Language_, an introductory book about Rust.
-The Rust programming language helps you write faster, more reliable software.
-High-level ergonomics and low-level control are often at odds in programming
-language design; Rust challenges that conflict. Through balancing powerful
-technical capacity and a great developer experience, Rust gives you the option
-to control low-level details (such as memory usage) without all the hassle
-traditionally associated with such control.
+Selamat datang di _The Rust Programming Language_, sebuah buku pengantar tentang Rust.
+Bahasa pemrograman Rust membantu kita menulis perangkat lunak yang lebih cepat dan andal.
+Ergonomi tingkat tinggi dan kontrol tingkat rendah sering kali dianggap berlawanan
+dalam desain bahasa pemrograman; Rust menantang konflik tersebut. Dengan menyeimbangkan
+kapasitas teknis yang kuat dan pengalaman pengembang yang menyenangkan, Rust memberi kita
+opsi untuk mengendalikan detail tingkat rendah (seperti penggunaan memori) tanpa semua
+kerumitan yang biasanya terkait dengan kontrol semacam itu.
 
 ## Rust untuk siapa
 
