@@ -1,11 +1,12 @@
-# Enums and Pattern Matching
+# Enum dan Pattern Matching
 
-In this chapter, we’ll look at _enumerations_, also referred to as _enums_.
-Enums allow you to define a type by enumerating its possible _variants_. First
-we’ll define and use an enum to show how an enum can encode meaning along with
-data. Next, we’ll explore a particularly useful enum, called `Option`, which
-expresses that a value can be either something or nothing. Then we’ll look at
-how pattern matching in the `match` expression makes it easy to run different
-code for different values of an enum. Finally, we’ll cover how the `if let`
-construct is another convenient and concise idiom available to handle enums in
-your code.
+Di bab ini, kita bakal liat _enumerations_, yang juga sering disebut sebagai 
+_enums_. Enum ngebolehin kita buat mendefinisikan sebuah tipe dengan menjabarkan 
+kemungkinan _variants_-nya (varian). Pertama kita bakal mendefinisikan dan pake 
+sebuah enum buat nunjukin gimana enum bisa nyimpen makna barengan sama data. 
+Selanjutnya, kita bakal eksplor enum yang kepake banget, namanya `Option`, yang 
+mengekspresikan kalau sebuah nilai itu bisa ada isinya (something) atau nggak ada 
+isinya sama sekali (nothing). Terus kita bakal liat gimana _pattern matching_ 
+(pencocokan pola) di ekspresi `match` bikin gampang buat ngejalanin kode yang 
+beda-beda buat nilai enum yang beda. Terakhir, kita bakal bahas gimana konstruk 
+`if let` jadi idiom lain yang nyaman dan ringkas buat handle enum di kode kita.

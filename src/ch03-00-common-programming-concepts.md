@@ -1,23 +1,22 @@
-# Common Programming Concepts
+# Konsep Pemrograman Umum
 
-This chapter covers concepts that appear in almost every programming language
-and how they work in Rust. Many programming languages have much in common at
-their core. None of the concepts presented in this chapter are unique to Rust,
-but we’ll discuss them in the context of Rust and explain the conventions
-around using these concepts.
+Bab ini ngebahas konsep-konsep yang ada di hampir semua bahasa pemrograman dan 
+gimana cara kerjanya di Rust. Banyak bahasa pemrograman yang sebenernya punya 
+kemiripan di intinya. Nggak ada konsep di bab ini yang unik cuma buat Rust 
+doang, tapi kita bakal bahas dalam konteks Rust dan jelasin konvensi cara pakenya.
 
-Specifically, you’ll learn about variables, basic types, functions, comments,
-and control flow. These foundations will be in every Rust program, and learning
-them early will give you a strong core to start from.
+Spesifiknya, kita bakal belajar soal variabel, tipe dasar, fungsi, komentar, 
+sama control flow. Dasar-dasar ini bakal ada di tiap program Rust, dan 
+mempelajarinya dari awal bakal ngasih kita pondasi yang kuat buat mulai.
 
 > #### Keywords
 >
-> The Rust language has a set of _keywords_ that are reserved for use by the
-> language only, much as in other languages. Keep in mind that you cannot use
-> these words as names of variables or functions. Most of the keywords have
-> special meanings, and you’ll be using them to do various tasks in your Rust
-> programs; a few have no current functionality associated with them but have
-> been reserved for functionality that might be added to Rust in the future. You
-> can find a list of the keywords in [Appendix A][appendix_a]<!-- ignore -->.
+> Bahasa Rust punya sekumpulan _keywords_ yang dipesen (reserved) cuma buat 
+> dipake sama bahasanya aja, sama kayak di bahasa lain. Inget ya kalau kita 
+> nggak bisa pake kata-kata ini sebagai nama variabel atau fungsi. Kebanyakan 
+> keyword punya makna khusus, dan kita bakal pakenya buat macem-macem tugas di 
+> program Rust kita; ada beberapa yang sekarang belum ada fungsinya tapi udah 
+> di-reserve buat fitur yang mungkin ditambahin ke Rust nanti. Kita bisa liat 
+> daftar keyword-nya di [Lampiran A][appendix_a].
 
 [appendix_a]: appendix-01-keywords.md
