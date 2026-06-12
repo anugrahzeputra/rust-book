@@ -1,32 +1,38 @@
-## Graceful Shutdown and Cleanup
+## Graceful Shutdown (Mati Secara Anggun) dan Cleanup (Bersih-bersih)
 
-The code in Listing 21-20 is responding to requests asynchronously through the
-use of a thread pool, as we intended. We get some warnings about the `workers`,
-`id`, and `thread` fields that we’re not using in a direct way that reminds us
-we’re not cleaning up anything. When we use the less elegant
-<kbd>ctrl</kbd>-<kbd>C</kbd> method to halt the main thread, all other threads
-are stopped immediately as well, even if they’re in the middle of serving a
-request.
+Kode di Listing 21-20 itu beneran udah merespons ke _requests_ secara asinkron (asynchronously) melalui 
+penggunaan _thread pool_, sesuai sama apa yang kita rencanakan (intended). Tapi kita ngedapetin 
+beberapa pesan peringatan (warnings) soal *fields* `workers`, `id`, dan `thread` 
+yang nampaknya tidak kita pakai secara langsung, yang mana ngingetin (reminds) kita 
+kalau kita ini belum ngelakuin acara bersih-bersih (cleaning up) apa pun. Pas kita 
+memakai metode pencet tombol <kbd>ctrl</kbd>-<kbd>C</kbd> yang agak bar-bar (less elegant) 
+buat ngehentiin (halt) eksekusi si _main thread_, semua _threads_ lain di dalamnya juga bakal 
+dihentiin seketika itu juga (immediately), biarpun mereka posisinya saat itu lagi di tengah-tengah 
+nugas (in the middle of) ngelayanin sebuah _request_.
 
-Next, then, we’ll implement the `Drop` trait to call `join` on each of the
-threads in the pool so they can finish the requests they’re working on before
-closing. Then we’ll implement a way to tell the threads they should stop
-accepting new requests and shut down. To see this code in action, we’ll modify
-our server to accept only two requests before gracefully shutting down its
-thread pool.
+Maka dari itu selanjutnya, kita bakal mengimplementasikan trait `Drop` buat manggil `join` 
+pada masing-masing _threads_ di dalam _pool_ tersebut supaya mereka bisa nyelesaiin 
+dulu (finish) _requests_ yang lagi mereka kerjain sebelum akhirnya bener-bener ditutup (closing). 
+Baru deh setelah itu kita bakal mengimplementasikan sebuah cara buat ngasih tahu para _threads_ 
+kalau mereka seharusnya berhenti nerima _requests_ baru lalu mematikan diri (shut down). 
+Buat ngelihat aksi langsung dari kode ini, kita bakal memodifikasi server kita supaya dia 
+cuma nerima maksimal dua buah _requests_ aja sebelum akhirnya secara anggun (gracefully) 
+mematikan semua proses di _thread pool_-nya.
 
-One thing to notice as we go: none of this affects the parts of the code that
-handle executing the closures, so everything here would be just the same if we
-were using a thread pool for an async runtime.
+Satu hal yang perlu diperhatiin (to notice) seiringan kita jalan: tidak ada satu pun dari 
+proses ini yang bakal berdampak (affects) sama bagian-bagian kode yang tugasnya 
+mengeksekusi (executing) _closures_, jadi segala hal yang ada di sini bakal tetep 
+sama persis andaikata kita ini lagi memakai sebuah _thread pool_ buat sebuah _runtime_ _async_.
 
-### Implementing the `Drop` Trait on `ThreadPool`
+### Mengimplementasikan Trait `Drop` pada `ThreadPool`
 
-Let’s start with implementing `Drop` on our thread pool. When the pool is
-dropped, our threads should all join to make sure they finish their work.
-Listing 21-22 shows a first attempt at a `Drop` implementation; this code won’t
-quite work yet.
+Mari kita mulai dengan mengimplementasikan `Drop` pada _thread pool_ kita. 
+Pas si _pool_ tersebut di-_drop_, seharusnya semua _threads_ kita ini di-`join` (digabungin) 
+buat ngebuktiin dan mastiin (make sure) kalau mereka semua udah beres (finish) ngerjain 
+kerjaan mereka. Listing 21-22 nunjukin percobaan perdana (first attempt) buat bikin 
+implementasi `Drop` ini; tapi kode ini masih belum bakal jalan lho ya.
 
-<Listing number="21-22" file-name="src/lib.rs" caption="Joining each thread when the thread pool goes out of scope">
+<Listing number="21-22" file-name="src/lib.rs" caption="Manggil join ke masing-masing thread pas si thread pool itu keluar dari scope">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch21-web-server/listing-21-22/src/lib.rs:here}}
@@ -34,43 +40,55 @@ quite work yet.
 
 </Listing>
 
-First we loop through each of the thread pool `workers`. We use `&mut` for this
-because `self` is a mutable reference, and we also need to be able to mutate
-`worker`. For each `worker`, we print a message saying that this particular
-`Worker` instance is shutting down, and then we call `join` on that `Worker`
-instance’s thread. If the call to `join` fails, we use `unwrap` to make Rust
-panic and go into an ungraceful shutdown.
+Pertama-tama kita melakukan perulangan (loop) ngelewatin masing-masing elemen di `workers` 
+kepunyaan si _thread pool_. Kita memakai referensi `&mut` di sini karena `self` itu sendiri 
+kan emang sebuah referensi *mutable* (bisa diubah), dan kita juga perlu bisa ngubah (mutate) 
+si variabel `worker`. Buat masing-masing `worker`, kita mencetak sebuah pesan yang ngasih tahu 
+kalau *instance* spesifik `Worker` ini tuh lagi bersiap dimatikan (shutting down), dan baru 
+setelahnya kita manggil `join` pada nilai _thread_ yang dimiliki *instance* `Worker` 
+tersebut. Kalau pemanggilan ke `join` ini ternyata gagal (fails), kita memakai `unwrap` 
+buat maksa Rust jadi _panic_ dan masuk ke fase mati secara tidak anggun (ungraceful shutdown).
 
-Here is the error we get when we compile this code:
+Ini dia error yang bakal kita dapat pas kita mencoba buat men-compile kode ini:
 
 ```console
 {{#include ../listings/ch21-web-server/listing-21-22/output.txt}}
 ```
 
-The error tells us we can’t call `join` because we only have a mutable borrow of
-each `worker` and `join` takes ownership of its argument. To solve this issue,
-we need to move the thread out of the `Worker` instance that owns `thread` so
-`join` can consume the thread. One way to do this is by taking the same approach
-we did in Listing 18-15. If `Worker` held an `Option<thread::JoinHandle<()>>`,
-we could call the `take` method on the `Option` to move the value out of the
-`Some` variant and leave a `None` variant in its place. In other words, a
-`Worker` that is running would have a `Some` variant in `thread`, and when we
-wanted to clean up a `Worker`, we’d replace `Some` with `None` so the `Worker`
-wouldn’t have a thread to run.
+Pesan error ini ngasih tahu kita kalau kita itu tidak bisa manggil `join` gara-gara kita cuma 
+punya sebuah pinjaman _mutable_ (mutable borrow) dari masing-masing `worker` sedangkan si 
+`join` ini mengambil hak kepemilikan (ownership) dari argumennya. Buat memecahkan 
+(solve) isu ini, kita perlu buat mindahin (_move_) si nilai _thread_ tersebut keluar dari 
+*instance* `Worker` yang tadinya nge-hak miliki (_owns_) si `thread` itu supaya si 
+`join` bisa narik memakan (consume) _thread_ tersebut. Salah satu cara buat melakukan ini 
+adalah dengan ngambil pendekatan (_approach_) yang sama kayak yang pernah kita lakuin di 
+Listing 18-15. Kalau si `Worker` ini tadinya nampung `Option<thread::JoinHandle<()>>`, 
+kita bisa aja manggil method `take` pada nilai `Option` tersebut buat mindahin (move) nilai 
+aslinya dari varian `Some` lalu ninggalin sebuah varian `None` buat menempati posisinya 
+(in its place). Dengan kata lain, sebuah `Worker` yang posisinya lagi jalan (running) bakal 
+punya sebuah varian `Some` di dalam `thread`, dan pas kita pengen ngebersihin (clean up) 
+sebuah `Worker`, kita bakal ngeganti si `Some` jadi `None` sehingga si `Worker` ini 
+tidak bakal punya _thread_ buat dijalanin.
 
-However, the _only_ time this would come up would be when dropping the `Worker`.
-In exchange, we’d have to deal with an `Option<thread::JoinHandle<()>>` anywhere
-we accessed `worker.thread`. Idiomatic Rust uses `Option` quite a bit, but when
-you find yourself wrapping something you know will always be present in an
-`Option` as a workaround like this, it’s a good idea to look for alternative
-approaches to make your code cleaner and less error-prone.
+Namun masalahnya, momen di mana proses ini itu dibutuhkan (come up) _satu-satunya_ cuma 
+terjadi saat kita lagi nge-_drop_ si `Worker` aja kan. Konsekuensinya sebagai ganti rugi 
+(in exchange), kita jadinya mesti terus-terusan berurusan (deal with) sama tipe 
+`Option<thread::JoinHandle<()>>` di mana pun kita lagi nyoba ngakses `worker.thread`. 
+Penulisan bahasa Rust yang idiomatik itu emang cukup sering banget (quite a bit) memakai 
+`Option`, tapi pas Anda mulai nemuin diri Anda lagi asik ngebungkusin (wrapping) sesuatu yang mana 
+padahal Anda udah tahu (_know_) nilai itu tuh _selalu_ ada dan eksis (present) ke dalam 
+sebuah `Option` cuma murni dijadiin sekadar jalan pintas buat ngakalin (workaround) hal macem 
+gini, maka ini merupakan tanda ide yang bagus buat mulai nyari pendekatan alternatif 
+(alternative approaches) supaya bisa ngebikin kode Anda lebih rapi (cleaner) dan tidak 
+gampang rawan error (less error-prone).
 
-In this case, a better alternative exists: the `Vec::drain` method. It accepts
-a range parameter to specify which items to remove from the vector and returns
-an iterator of those items. Passing the `..` range syntax will remove *every*
-value from the vector.
+Di kasus yang ini, sebenernya ada jalan alternatif yang lebih oke (better alternative): 
+yaitu method `Vec::drain`. Method ini menerima sebuah parameter jarak (range parameter) buat 
+menentukan _items_ mana aja yang mau dihilangkan dari dalam _vector_ tersebut lalu dia bakal 
+mengembalikan (returns) sebuah iterator dari item-item yang ditarik itu. Dengan memberikan 
+sintaks *range* `..` kita bakal mengosongkan dan menghilangkan *semua* (*every*) nilai dari _vector_ tersebut.
 
-So we need to update the `ThreadPool` `drop` implementation like this:
+Jadi kita perlu meng-_update_ implementasi `drop` untuk `ThreadPool` supaya jadi kayak gini:
 
 <Listing file-name="src/lib.rs">
 
@@ -80,32 +98,38 @@ So we need to update the `ThreadPool` `drop` implementation like this:
 
 </Listing>
 
-This resolves the compiler error and does not require any other changes to our
-code. Note that, because drop can be called when panicking, the unwrap
-could also panic and cause a double panic, which immediately crashes the
-program and ends any cleanup in progress. This is fine for an example program,
-but isn’t recommended for production code.
+Kode ini ngeberesin dan nyelesein pesan error _compiler_ tadi tanpa perlu adanya (require) 
+perubahan lain lagi ke dalem kode kita. Perhatikan kalau, karena `drop` bisa aja dipanggil pas 
+lagi masa-masa terjadi kepanikan (panicking), si `unwrap` ini juga bisa aja tiba-tiba ikutan _panic_ 
+yang mana akhirnya nyebabin kepanikan tumpuk ganda (double panic), yang mana bakal langsung 
+membikin programnya _crash_ (rusak) dan secara terpaksa ngakhirin semua proses pembersihan 
+(cleanup) yang lagi berjalan. Buat ukuran program contoh kayak gini, tindakan _panic_ ini sah-sah aja (fine), 
+tapi hal kayak gini ya tidak disarankan (isn't recommended) lho buat kode di level produksi.
 
-### Signaling to the Threads to Stop Listening for Jobs
+### Mengirim Sinyal ke Threads Supaya Berhenti Mendengarkan Jobs (Tugas) Baru
 
-With all the changes we’ve made, our code compiles without any warnings.
-However, the bad news is that this code doesn’t function the way we want it to
-yet. The key is the logic in the closures run by the threads of the `Worker`
-instances: at the moment, we call `join`, but that won’t shut down the threads,
-because they `loop` forever looking for jobs. If we try to drop our
-`ThreadPool` with our current implementation of `drop`, the main thread will
-block forever, waiting for the first thread to finish.
+Dengan serangkaian perubahan yang udah kita bikin barusan, kode kita sekarang udah bisa 
+sukses di-compile tanpa ngeluarin peringatan apa-apa. Namun, kabar buruknya adalah 
+kalau kode ini itu masih belum (doesn't function) berjalan pakai cara yang kita harepin. Kunci permasalahannya ada di 
+logika yang ada di dalem _closures_ yang lagi dijalanin (run by) sama _threads_ kepunyaan 
+*instances* si `Worker`: saat ini, kita emang udah manggil `join`, tapi hal itu tidak 
+bakal bisa nutup mematikan (shut down) si _threads_ ini lho, soalnya mereka itu pada asyik 
+berputar (_loop_) nyari kerjaan (_looking for jobs_) buat selama-lamanya (forever). Kalau 
+kita coba buat nge-_drop_ si `ThreadPool` kita ini pakai implementasi `drop` kita yang 
+sekarang, _main thread_-nya bakal malah ikutan mandek keblokir (block forever), diam selamanya nungguin _thread_ 
+yang pertama itu kelar (finish) yang mana tidak bakal bisa kelar.
 
-To fix this problem, we’ll need a change in the `ThreadPool` `drop`
-implementation and then a change in the `Worker` loop.
+Buat mbetulin (fix) masalah ini, kita perlu ngebikin satu ubahan (change) di dalam implementasi `drop` buat `ThreadPool` 
+dan abis itu juga butuh satu ubahan di dalem perulangan (loop) si `Worker`.
 
-First we’ll change the `ThreadPool` `drop` implementation to explicitly drop
-the `sender` before waiting for the threads to finish. Listing 21-23 shows the
-changes to `ThreadPool` to explicitly drop `sender`. Unlike with the thread,
-here we _do_ need to use an `Option` to be able to move `sender` out of
-`ThreadPool` with `Option::take`.
+Pertama-tama kita bakal ngubah implementasi `drop` pada `ThreadPool` supaya dia secara eksplisit nge-_drop_ 
+si `sender` (pengirim) ini _sebelum_ dia nungguin para _threads_-nya pada kelar jalan. Listing 21-23 
+nunjukin rupa ubahan-ubahan ke `ThreadPool` tersebut buat secara eksplisit nge-_drop_ `sender`. Tidak kayak 
+yang terjadi di `thread`, di sini kita emang *beneran butuh* (_do_ need) memakai 
+`Option` biar kita bisa memindahkan (_move_) variabel `sender` keluar dari 
+`ThreadPool` dengan memanggil `Option::take`.
 
-<Listing number="21-23" file-name="src/lib.rs" caption="Explicitly dropping `sender` before joining the `Worker` threads">
+<Listing number="21-23" file-name="src/lib.rs" caption="Secara eksplisit nge-drop `sender` sebelum nge-join para threads `Worker`">
 
 ```rust,noplayground,not_desired_behavior
 {{#rustdoc_include ../listings/ch21-web-server/listing-21-23/src/lib.rs:here}}
@@ -113,13 +137,16 @@ here we _do_ need to use an `Option` to be able to move `sender` out of
 
 </Listing>
 
-Dropping `sender` closes the channel, which indicates no more messages will be
-sent. When that happens, all the calls to `recv` that the `Worker` instances do
-in the infinite loop will return an error. In Listing 21-24, we change the
-`Worker` loop to gracefully exit the loop in that case, which means the threads
-will finish when the `ThreadPool` `drop` implementation calls `join` on them.
+Tindakan men-_drop_ (dropping) `sender` ini otomatis bakal nutup (closes) *channel*-nya, yang mana mengindikasikan kalau 
+tidak bakal ada lagi pesan (messages) baru yang bakal dikirimin. Saat momen itu beneran terjadi, 
+semua pemanggilan (_calls_) ke `recv` yang lagi dikerjain sama *instances* si `Worker` di dalam _infinite 
+loop_ (perulangan tiada henti)-nya bakal otomatis nge-return sebuah pesan error. Di Listing 21-24, 
+kita ngubah bagian perulangan `Worker` supaya dia mau keluar (exit the loop) dengan anggun (gracefully) 
+di dalam skenario kayak gitu (in that case), yang berarti _threads_-nya ini akhirnya beneran 
+bisa kelar (finish) pas implementasi `drop` milik `ThreadPool` manggil `join` 
+ke mereka-mereka semua.
 
-<Listing number="21-24" file-name="src/lib.rs" caption="Explicitly breaking out of the loop when `recv` returns an error">
+<Listing number="21-24" file-name="src/lib.rs" caption="Secara eksplisit mecah kabur (breaking out) dari loop pas fungsi `recv` nge-return sebuah error">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch21-web-server/listing-21-24/src/lib.rs:here}}
@@ -127,10 +154,11 @@ will finish when the `ThreadPool` `drop` implementation calls `join` on them.
 
 </Listing>
 
-To see this code in action, let’s modify `main` to accept only two requests
-before gracefully shutting down the server, as shown in Listing 21-25.
+Buat bisa ngelihat sendiri aksi kode (code in action) ini beneran berjalan, mari kita modifikasi (modify) `main` 
+supaya dia ini cuma nerima batas (accept only) dua *requests* aja sebelum akhirnya dia nutup 
+(shutting down) si server-nya dengan anggun (_gracefully_), kayak yang ditunjukin di Listing 21-25.
 
-<Listing number="21-25" file-name="src/main.rs" caption="Shutting down the server after serving two requests by exiting the loop">
+<Listing number="21-25" file-name="src/main.rs" caption="Menutup server setelah ngelayanin dua requests aja dengan cara ngelewatin/keluar dari loop-nya">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch21-web-server/listing-21-25/src/main.rs:here}}
@@ -138,16 +166,22 @@ before gracefully shutting down the server, as shown in Listing 21-25.
 
 </Listing>
 
-You wouldn’t want a real-world web server to shut down after serving only two
-requests. This code just demonstrates that the graceful shutdown and cleanup is
-in working order.
+Anda pastinya sangat tidak mau ngarep (_wouldn't want_) kalau sebuah web server betulan di dunia 
+nyata tiba-tiba mati nutup sendiri (shut down) sesudah cuma ngelayanin dua buah _requests_ doang. 
+Tapi kan kode ini itu cuma murni (just demonstrates) dibikin buat pamer ngedemoin kalau kemampuan matikan proses 
+secara anggun (graceful shutdown) dan fitur bersih-bersihnya (cleanup) emang beneran udah bisa kerja 
+lancar beroperasi (in working order).
 
-The `take` method is defined in the `Iterator` trait and limits the iteration
-to the first two items at most. The `ThreadPool` will go out of scope at the
-end of `main`, and the `drop` implementation will run.
+Method `take` ini aslinya udah didefinisikan secara bawaan di dalem trait `Iterator` 
+yang mana dia berfungsi ngebatesin (limits) _iteration_ tersebut supaya paling banter (_at most_) dia 
+itu cuma muter buat ngerjain dua item pertama (first two items) doang. Terus, si `ThreadPool` ini jadinya 
+bakal terpaksa dihempaskan keluar dari _scope_ (go out of scope) pada momen titik paling 
+ujung batas akhir dari fungsi `main`, dan otomatis implementasi fungsi `drop` miliknya bakal segera dioperasikan (will run).
 
-Start the server with `cargo run`, and make three requests. The third request
-should error, and in your terminal you should see output similar to this:
+Silakan nyalakan kembali (start) si server ini pakai instruksi `cargo run`, terus cobain bikin tiga (three) buah _requests_ 
+masuk ke sana. Pemanggilan _request_ yang ketiga ini harusnya langsung ngebentur pesan error (should error), 
+dan terus di dalem layar terminal Anda itu Anda kudu ngelihat tulisan keluaran (output) 
+yang lumayan kelihatan persis mirip-mirip (similar) kayak ini:
 
 <!-- manual-regeneration
 cd listings/ch21-web-server/listing-21-25
@@ -178,28 +212,44 @@ Shutting down worker 2
 Shutting down worker 3
 ```
 
-You might see a different ordering of `Worker` IDs and messages printed. We can
-see how this code works from the messages: `Worker` instances 0 and 3 got the
-first two requests. The server stopped accepting connections after the second
-connection, and the `Drop` implementation on `ThreadPool` starts executing
-before `Worker` 3 even starts its job. Dropping the `sender` disconnects all the
-`Worker` instances and tells them to shut down. The `Worker` instances each
-print a message when they disconnect, and then the thread pool calls `join` to
-wait for each `Worker` thread to finish.
+Anda emang sangat mungkin ngelihat kalau rupa dari urutan-urutan (ordering) barisan teks _Worker_ ID 
+dan tulisan pesannya yang nampil ke layar ini agak beda-beda tatanannya. Kita 
+bisa perhatiin dengan jelas (can see) gimana dalemnya proses cara kerja kode ini dari bacaan pesannya 
+(messages) tersebut: *Instances* si `Worker` urutan 0 dan 3 ternyata beruntung dapet 
+nyaplok ngerjain (_got_) kedua belah *requests* rentetan awal. Terus si server ini mulai ngadat berhenti dan ogah ngerima 
+(stopped accepting) adanya sambungan koneksi (_connections_) yang baru pas tepat habis selesai 
+ngurus koneksi yang ke-dua tadi, dan si implementasi metode `Drop` yang nempel pada si `ThreadPool` pun 
+langsung gas tancap jalan (_starts executing_) duluan padahal faktanya si `Worker` 3 aja malahan belom kelar nyalain (even starts) 
+pekerjaannya. Kejadian di-`drop`-nya (dropping) `sender` ini langsung tanpa tedeng aling-aling melepaskan putus (_disconnects_) 
+sambungan jembatan tali komunikasi ke semua penjuru *instances* si `Worker` 
+lalu lantang nyuruh ngomando ngasih tahu (tells) mereka biar pada mingser bubar barisan nutup layanan (shut down). 
+Tiap *instances* `Worker` masing-masing terus nyaut nge-print sebuah *message* saat tali 
+mereka terputus dilepas (disconnect), dan abis beres itu semua, si _thread pool_ tadi gantian secara mandiri bergegas manggil 
+method `join` lurus dengan satu-satunya niat mau diem duduk setia menunggu (wait) supaya 
+setiap barisan satu per satu dari `Worker` _thread_ kelar (_finish_) ngerampungin pekerjaannya.
 
-Notice one interesting aspect of this particular execution: the `ThreadPool`
-dropped the `sender`, and before any `Worker` received an error, we tried to
-join `Worker` 0. `Worker` 0 had not yet gotten an error from `recv`, so the main
-thread blocked, waiting for `Worker` 0 to finish. In the meantime, `Worker` 3
-received a job and then all threads received an error. When `Worker` 0 finished,
-the main thread waited for the rest of the `Worker` instances to finish. At that
-point, they had all exited their loops and stopped.
+Coba teliti merhatikan (notice) adanya satu aspek detail perlakuan (_aspect_) yang lumayan kerasa asik unik 
+(interesting) di balik serangkaian rentetan rupa spesifik proses eksekusi (execution) satu ini: di mana 
+si `ThreadPool` udah keburu kelar nge-_drop_ si `sender`, dan bahkan sebelum sempet ada *instances* 
+`Worker` mana aja yang nangkep ngerima kode error (received an error), kita malahan udah ngebikin status program kita ini buat maksa nyoba nggabung 
+(join) ke `Worker` urutan 0. Waktu momen itu ya, si `Worker` 0 beneran belum ada dapetin sinyal kabar tangkepan error 
+apa-apa (not yet gotten an error) yang mana berasal dari tarikan *recv*, jadinya ya beneran wajar aja sih kalau si otak pusat jalan *main thread*-nya ini terpaksa mandeg macet diem nge-blok di jalan 
+(blocked), ngaso setia sembari nungguin si `Worker` 0 supaya ngerampungin pekerjaannya sampai tuntas (_finish_). 
+Eh pas lagi asik nunggu itu (In the meantime), si `Worker` 3 yang udah ketiban ngerima jatah mandat narik dapet 
+(received) satu butir kerjaan (_a job_) yang selanjutnya diikuti oleh riwayat sisa-sisa para _threads_ sekaliannya yang ikutan kebagian serentak seragam dapet nerima cipratan pesan eror (error). 
+Terus nah pas begitu si `Worker` 0 kelar tuntas ngerjain jatah lapaknya (finished), si otak tengahnya (_main thread_) ini lantas lanjut ngecoba 
+nungguin antrean jejeran gerbong serombongan sisa komplotan (the rest) punggawa *instances* `Worker` ini biar pada cepetan (_to finish_) juga ikutan kelar nutup lapaknya. Pada pas 
+tibanya waktu masa (at that point) tersebut, eh ternyata semuanya tanpa basa-basi emang udah beneran pada 
+tuntas cabut ngeluarin diri (exited) berhamburan dari daleman siklus lingkar putaran (loops) rute hidup mereka itu lalu udah berhenti total dari segala aktivitas hidup (_stopped_).
 
-Congrats! We’ve now completed our project; we have a basic web server that uses
-a thread pool to respond asynchronously. We’re able to perform a graceful
-shutdown of the server, which cleans up all the threads in the pool.
+Selamat ya (Congrats)! Kita bener-bener udah sanggup nyampe di titik purna ngerampungin _project_ ini secara utuh (completed); 
+kita sekarang ini udah sah punyain (_have_) sepenggal program _web server_ murni kelas cetek mendasar (_basic_) yang aslinya juga 
+udah bisa jalan gagah memanfaatkan pengerahan tenaga tatanan sekelompok balok (_thread pool_) demi sanggup ngeresponi secara sigap lalu melayani sambutan balik secara asinkron tak serentak (_asynchronously_). Kita udah sangat terbukti mampu beneran 
+melancarkan (_perform_) atraksi sebuah tarian purna pemutusan nafas nyawa _graceful shutdown_ terhadap si komponen server tersebut, 
+yang mana beneran menuntaskan lalu ngebersihin angkat tuntas ngurus sisaan barang bongkaran kotoran riwayat sampah kelakuan (cleans up) riwayat para seantero rentetan _threads_ 
+di ruang bilik _pool_ ini.
 
-Here’s the full code for reference:
+Nih ditaruh rupa segenap rincian barisan kode final seutuhnya (full code) secara utuh komplit di sini sebagai referensi pedoman (_reference_) ya:
 
 <Listing file-name="src/main.rs">
 
@@ -217,21 +267,22 @@ Here’s the full code for reference:
 
 </Listing>
 
-We could do more here! If you want to continue enhancing this project, here are
-some ideas:
+Kita emang nyatanya masih sangat bisa sih buat ngerjain (_could do more_) lebih jauh dan memodifikasi lebih heboh hal-hal lainnya lagi di tempat ini lho! 
+Kalau seumpamanya emang hasrat di hati emang Anda kepengen (want to) buat sudi terus merutinkan niat maju ngelanjut (continue) nambahin memoles (_enhancing_) gubahan kerangka arsitektur project ini jadi makin keren lagi mantep ke depannya, ini di bawah disediain list segelintir barisan rupa corak deretan bayangan pencerahan curhatan ide (some ideas) racikan kreasi mantap:
 
-- Add more documentation to `ThreadPool` and its public methods.
-- Add tests of the library’s functionality.
-- Change calls to `unwrap` to more robust error handling.
-- Use `ThreadPool` to perform some task other than serving web requests.
-- Find a thread pool crate on [crates.io](https://crates.io/) and implement a
-  similar web server using the crate instead. Then compare its API and
-  robustness to the thread pool we implemented.
+- Lengkapin dan imbuhin rentetan sekelumit tambalan isi dari dokumentasi tambahan _(more documentation)_ buat struct `ThreadPool` beserta metode-metode rentetan _method_ `public` miliknya juga ya.
+- Coba isengin rakit bikinin sisipin sederet rentetan program tes asinkron (tests) buat nguji kemantapan jalan kelakuan isi _fungsionalitas_ (functionality) jeroan library-nya ini.
+- Ganti rombak dan obrak-abrik rentetan pemanggilan wujud rupa `unwrap` yang kelewat asal nabrak paksa njerit ini supaya berubah format menjadi bentukan rentetan taktik kelakuan pengurusan error (_error handling_) yang karakternya terasa sifat jauh lumayan lebih kokoh perkasa pantang rontok (_robust_).
+- Manfaatin fitur keberadaan balok struktur `ThreadPool` ini untuk sengaja nyobain ngelaksanain rentetan panggilan _tasks_ rutinitas yang bentukannya ini murni lain di luar formatnya sekadar menugas melayani (serving) serapan _requests_ dari kancah rupa lalu-lalang aliran arus penjelajahan halaman dunia maya (web requests).
+- Sisihkan cari lirik bongkar-bongkar iseng nyari (_Find_) bentukan tipe produk paket rak buku kreasi buatan anak lain dari komunitas (thread pool crate) bertebaran liar pating mencelat lepas terpajang bebas melenggang kangkung rilis tebar nongol tersedia gratis pampang mejeng tayang di galeri pustaka etalase repositori perpustakaan lapak kerdus bebas gratis wadah pasar kumpulan [crates.io](https://crates.io/) sono terus pasang dan terapkan ngrakit lalu *implement* rupa susunan formasi wujud web server yang gaya alur kelakuan pola lagaknya miripin sebelas-dua-belas percis plek kayak (_similar_) gubahan hasil rancangan ini dengan murni nekat sekadar sepenuhnya murni berpatokan menunggang makek library produk kreasi bikinan orang laen _the crate instead_ tersebut doang. Barulah (Then) setelah tuntasnya praktek pembuktian tsb. kelar disituasi tersebut silahkan monggo silakan (compare) coba banding-banding rupa rentetan kerangka rute API miliknya library itu sama wujud tingkat derajat kekuatan ketahanan banting kokoh (_robustness_) ketangguhan tahan uji banting tangguhnya punya dia dengan diukur diselidik secara adil membedakan dan aduin lurus dibandingin langsung dipajang sejajar teliti diseret ke hadapan dan disejajarkan ngebentur ke _thread pool_ rakikan tangan pribadi asli mandiri punya yang baru kemaren udah sempet kita *implement* bikin bangun praktekin dari kemaren itu.
 
-## Summary
+## Ringkasan (Summary)
 
-Well done! You’ve made it to the end of the book! We want to thank you for
-joining us on this tour of Rust. You’re now ready to implement your own Rust
-projects and help with other people’s projects. Keep in mind that there is a
-welcoming community of other Rustaceans who would love to help you with any
-challenges you encounter on your Rust journey.
+Mantap (Well done)! Anda udah berhasil nyampe tuntas tembus tamat nyentuh ujung akhir pucuk paling buntut sampul ujung (end) dari seri halaman buku ini! Kita semua dari 
+diri kami di sini ini secara pribadi kepengen bener banget pingin ngelempar sepatah kata berterima kasih sedalam-dalamnya buat ngaturin wujud hormat salam 
+terima kasih tulus buat panjenengan-panjenengan semua yang udah ikhlas (thank you for) ngabisin waktu ngikut jalan jejer iring bersamai (joining) kita-kita nyusurin merambat rute panjang pelesiran perjalanan (tour) petualangan liburan berburu pesona Rust ini sedari titik garis pinggir batas mula dulu. Kini emang pastinya seutuhnya (now) Anda ini udah sepenuhnya dirasa matang dan bener-bener dirasa dipastikan udah sangat siap sanggup sedia (_ready to_) langsung nge-gass terjang 
+nerapin ngimplementasiin sendiri kreasi murni orisinil pribadi gagasan wujud gubahan deretan gagasan tatanan project rintisan (_projects_) program rill asli bikinan sendiri punya Anda yang berbasis ngusung 
+bendera teknologi sistem Rust lalu sekalian sudi dan rela rela buat ngeringanin naruh bantu campur turut menaruh campur tenaga ulur ngasih derma tangan ngebantu nambahin andil campur gotong berderma (_help with_) berkontribusi di gubahan wujud program garapan rintisan _projects_ sumbangsih kreasi racikan buatan anak punggawa temen sejawat *people's projects* (orang-orang) pahlawan tetangga sanak rupa saudara kita di sekitar sana. Harus dimasukin paksa (_Keep in mind_) diranap di simpen lekat ingatan tanam patri ke dalem nalar benak kepala ingat-ingat simpan resapin ya 
+di ingatan (mind) dalem bawah sadar otak memori paten benak kepalamu ini andaikata (that) ini tuh sesungguhnya nyata terang 
+bersinar nyata terang benderang niscaya terbentang terbentang mekar membentang subur emang masih menyisa (there is a) terhuni rupa sepetak jajaran luas 
+gerombolan wadah kerumunan kelompok perhimpunan _welcoming community_ (komunitas yang sangat terbuka nyambut ramah dan sedia hangat menjamu rupa tangan senyum terbuka gembira lebar dada tulus nyambut seneng asri hangat peluk) persaudaraan ikatan erat rupa serumpun bangsa perkumpulan perserikatan komplotan jejaring _other Rustaceans_ (kalangan para pengabdi programmer pemuja aliran seiman setia pejuang pendekar kode penyuka aliran kepercayaan kasta Rust ksatria lain-lainnya sesama punggawa yang sealiran) lainnya di pelosok buana pelosok sana luar sekitar pojokan pelosok dunia sana ini yang tak ada bosannya tak kan bakal pernah nyerah sudi ikhlas niscaya aslinya emang _would love to_ (pada seneng rela hati bakal cinta mati gemar nyenengin cinta ngebet pengen gemar dan hobi pake cinta bahagia hepi beneran girang tulus girang rela asyik seru sumringah demen kepingin riang berhati tulus bakal doyan bakal suka bakal sayang dan sangat girang sekali teramat rindu sangat ingin mau rela) ikhlas turun nolong bantu menyambut nyuapin nyuapin kasih (_help you with_) membina mandu memayungi mendampingin mandorin nyodor tangan mbopong mbimbing nolong Anda-anda pada ikhlas terjun dan andil nimbrung bantuin mberesin dan nyikat beresin mengurus sedia ngadepin dan ngeberesin (_any challenges_) seberapa parah gawatnya semua aneka segudang rupa kendala aral ragam himpitan halang aneka lika rupa jurang duri kesulitan ujian badai cobaan halangan ragam perkara problema jerat tikungan batu cadas tantangan rintang terjalan problem himpitan perkara ganjalan segenap segala seberat sedempet serepot rupa kendala seisi sebentang onak seisi segala segenap (any) ragam masalah kendala benturan apa jua sekalipun belaka apa pun bentuknya rupa aja yang di jalan nanti kebetulan emang rupa nyata riil fakta nyatanya _you encounter_ (Anda tabrak kepentok dapati tabrak papasi bersua sandung hantam ketatap kebentur derita alami jumpa dapet tebas terjang lalui pergokin tempuh alami libas gilas temui tabrak lewati hantam rasakan langgar cicipin terjang tatap derita lintasi rasai cicip rasain hadapi cicip deritain hadapi hadapi) ke-tubruk kepentok bersua melintang terlintas nyandung hadap temui hadapi sandung Anda di belantara sepanjang masa-masa pelayaran peruntungan jalan pendakian jalur petualang perjalanan lintas jalur rute jelajah ngeluyur (journey) pengembaraan karir kiprah rekam pelesiran perjalanan _Rust_ (kancah rute perjalanan karir Rust) asuhan panjenengan Anda seiring maju langkah laju menapaki jejak berjejak Anda maju panjang menjejak merentas jauh berjalan ini di waktu ke detik harinya nanti menjejak (your Rust journey).

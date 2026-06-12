@@ -1,29 +1,35 @@
-# Patterns and Matching
+# Pola (Patterns) dan Pencocokan (Matching)
 
-_Patterns_ are a special syntax in Rust for matching against the structure of
-types, both complex and simple. Using patterns in conjunction with `match`
-expressions and other constructs gives you more control over a program’s
-control flow. A pattern consists of some combination of the following:
+_Patterns_ (pola) adalah sebuah sintaks spesial di Rust buat mencocokkan (matching) 
+struktur dari berbagai tipe, baik yang kompleks maupun yang sederhana. Memakai 
+_patterns_ bersamaan dengan ekspresi `match` dan konstruk-konstruk lainnya 
+ngasih Anda kontrol yang lebih banyak terhadap _control flow_ (alur kontrol) 
+dari sebuah program. Sebuah _pattern_ terdiri dari beberapa kombinasi dari 
+hal-hal berikut ini:
 
-- Literals
-- Destructured arrays, enums, structs, or tuples
-- Variables
-- Wildcards
-- Placeholders
+- *Literals* (nilai harfiah)
+- Array, enum, struct, atau tuple yang di-_destructure_ (dipecah-pecah)
+- Variabel
+- _Wildcards_ (kartu liar)
+- _Placeholders_ (tempat pengganti)
 
-Some example patterns include `x`, `(a, 3)`, and `Some(Color::Red)`. In the
-contexts in which patterns are valid, these components describe the shape of
-data. Our program then matches values against the patterns to determine whether
-it has the correct shape of data to continue running a particular piece of code.
+Beberapa contoh _patterns_ meliputi `x`, `(a, 3)`, dan `Some(Color::Red)`. Di 
+dalam konteks di mana _patterns_ itu valid, komponen-komponen ini mendeskripsikan 
+bentuk (shape) dari suatu data. Program kita kemudian mencocokkan nilai 
+dengan _patterns_ tersebut buat menentukan apakah nilai tersebut punya bentuk 
+data yang tepat buat melanjutkan eksekusi potongan kode tertentu.
 
-To use a pattern, we compare it to some value. If the pattern matches the
-value, we use the value parts in our code. Recall the `match` expressions in
-Chapter 6 that used patterns, such as the coin-sorting machine example. If the
-value fits the shape of the pattern, we can use the named pieces. If it
-doesn’t, the code associated with the pattern won’t run.
+Buat memakai sebuah _pattern_, kita membandingkannya dengan suatu nilai. 
+Kalau _pattern_ tersebut cocok dengan nilainya, kita memakai bagian-bagian dari 
+nilai itu di dalam kode kita. Ingat kembali ekspresi `match` di Bab 6 yang 
+memakai _patterns_, kayak di contoh mesin penyortir koin. Kalau nilainya cocok 
+sama bentuk dari _pattern_-nya, kita bisa memakai potongan-potongan yang udah 
+dikasih nama. Kalau tidak cocok, kode yang terkait sama _pattern_ tersebut tidak 
+bakal dijalankan.
 
-This chapter is a reference on all things related to patterns. We’ll cover the
-valid places to use patterns, the difference between refutable and irrefutable
-patterns, and the different kinds of pattern syntax that you might see. By the
-end of the chapter, you’ll know how to use patterns to express many concepts in
-a clear way.
+Bab ini adalah sebuah referensi tentang semua hal yang berkaitan dengan _patterns_. 
+Kita bakal membahas tempat-tempat valid di mana Anda bisa memakai _patterns_, 
+perbedaan antara _refutable_ (bisa dibantah/bisa gagal) dan _irrefutable_ (tidak 
+bisa dibantah/pasti sukses) _patterns_, serta berbagai macam sintaks _pattern_ 
+yang mungkin bakal Anda temui. Di akhir bab ini, Anda bakal tahu gimana cara 
+memakai _patterns_ buat mengekspresikan banyak konsep dengan cara yang jelas.

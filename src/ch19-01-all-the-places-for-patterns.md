@@ -1,29 +1,31 @@
-## All the Places Patterns Can Be Used
+## Semua Tempat di Mana Patterns Bisa Dipakai
 
-Patterns pop up in a number of places in Rust, and you’ve been using them a lot
-without realizing it! This section discusses all the places where patterns are
-valid.
+_Patterns_ muncul di berbagai tempat di Rust, dan Anda sebenarnya udah 
+sering banget memakai mereka tanpa menyadarinya! Bagian ini membahas semua 
+tempat di mana _patterns_ itu valid untuk dipakai.
 
-### `match` Arms
+### Lengan (Arms) dari `match`
 
-As discussed in Chapter 6, we use patterns in the arms of `match` expressions.
-Formally, `match` expressions are defined as the keyword `match`, a value to
-match on, and one or more match arms that consist of a pattern and an
-expression to run if the value matches that arm’s pattern, like this:
+Seperti yang sudah dibahas di Bab 6, kita memakai _patterns_ di _arms_ 
+(lengan) dari ekspresi `match`. Secara formal, ekspresi `match` didefinisikan 
+sebagai keyword `match`, sebuah nilai yang mau dicocokkan, dan satu atau 
+lebih _match arms_ yang terdiri dari sebuah _pattern_ dan sebuah ekspresi 
+buat dijalankan kalau nilainya cocok dengan _pattern_ di arm tersebut, 
+kayak gini:
 
 <!--
   Manually formatted rather than using Markdown intentionally: Markdown does not
   support italicizing code in the body of a block like this!
 -->
 
-<pre><code>match <em>VALUE</em> {
-    <em>PATTERN</em> => <em>EXPRESSION</em>,
-    <em>PATTERN</em> => <em>EXPRESSION</em>,
-    <em>PATTERN</em> => <em>EXPRESSION</em>,
+<pre><code>match <em>NILAI</em> {
+    <em>PATTERN</em> => <em>EKSPRESI</em>,
+    <em>PATTERN</em> => <em>EKSPRESI</em>,
+    <em>PATTERN</em> => <em>EKSPRESI</em>,
 }</code></pre>
 
-For example, here’s the `match` expression from Listing 6-5 that matches on an
-`Option<i32>` value in the variable `x`:
+Misalnya, ini adalah ekspresi `match` dari Listing 6-5 yang mencocokkan sebuah 
+nilai `Option<i32>` di dalam variabel `x`:
 
 ```rust,ignore
 match x {
@@ -32,35 +34,38 @@ match x {
 }
 ```
 
-The patterns in this `match` expression are the `None` and `Some(i)` on the
-left of each arrow.
+_Patterns_ di ekspresi `match` ini adalah `None` dan `Some(i)` yang ada di 
+sebelah kiri dari setiap tanda panah.
 
-One requirement for `match` expressions is that they need to be _exhaustive_ in
-the sense that all possibilities for the value in the `match` expression must
-be accounted for. One way to ensure you’ve covered every possibility is to have
-a catch-all pattern for the last arm: for example, a variable name matching any
-value can never fail and thus covers every remaining case.
+Satu persyaratan untuk ekspresi `match` adalah mereka harus bersifat 
+_exhaustive_ (menyeluruh/tuntas) yang berarti semua kemungkinan nilai buat 
+ekspresi `match` tersebut harus ditangani (accounted for). Salah satu cara 
+buat memastikan Anda udah mencakup semua kemungkinannya adalah dengan memakai 
+_catch-all pattern_ (pola penangkap-semua) buat arm terakhirnya: misalnya, 
+memakai nama variabel yang bakal cocok dengan nilai apa pun itu tidak bakal 
+pernah gagal dan karena itu mencakup semua kasus yang tersisa.
 
-The particular pattern `_` will match anything, but it never binds to a
-variable, so it’s often used in the last match arm. The `_` pattern can be
-useful when you want to ignore any value not specified, for example. We’ll cover
-the `_` pattern in more detail in [“Ignoring Values in a
-Pattern”][ignoring-values-in-a-pattern]<!-- ignore --> later in this chapter.
+_Pattern_ spesifik `_` bakal cocok dengan apa pun, tapi ia tidak pernah 
+mengikat (bind) nilainya ke dalam sebuah variabel, jadi ia sering kali 
+dipakai di match arm yang paling akhir. _Pattern_ `_` ini bisa berguna pas 
+Anda mau mengabaikan nilai apa pun yang tidak ditentukan (unspecified), 
+sebagai contoh. Kita bakal membahas _pattern_ `_` lebih detail di [“Mengabaikan 
+Nilai di dalam sebuah Pattern”][ignoring-values-in-a-pattern] nanti di bab ini.
 
-### let Statements
+### Statement `let`
 
-Prior to this chapter, we had only explicitly discussed using patterns with
-`match` and `if let`, but in fact, we’ve used patterns in other places as well,
-including in `let` statements. For example, consider this straightforward
-variable assignment with `let`:
+Sebelum bab ini, kita cuma secara eksplisit ngebahas pemakaian _patterns_ bersama 
+`match` dan `if let`, tapi pada kenyataannya, kita udah memakai _patterns_ di 
+tempat lain juga, termasuk di dalam statement `let`. Misalnya, coba lihat 
+pemberian nilai (variable assignment) langsung pakai `let` ini:
 
 ```rust
 let x = 5;
 ```
 
-Every time you’ve used a `let` statement like this you’ve been using patterns,
-although you might not have realized it! More formally, a `let` statement looks
-like this:
+Setiap kali Anda memakai statement `let` kayak gini, Anda sebenernya udah 
+memakai _patterns_, biarpun Anda mungkin tidak menyadarinya! Lebih 
+formalnya, sebuah statement `let` itu kelihatannya kayak gini:
 
 <!--
   Manually formatted rather than using Markdown intentionally: Markdown does not
@@ -68,21 +73,22 @@ like this:
 -->
 
 <pre>
-<code>let <em>PATTERN</em> = <em>EXPRESSION</em>;</code>
+<code>let <em>PATTERN</em> = <em>EKSPRESI</em>;</code>
 </pre>
 
-In statements like `let x = 5;` with a variable name in the PATTERN slot, the
-variable name is just a particularly simple form of a pattern. Rust compares
-the expression against the pattern and assigns any names it finds. So, in the
-`let x = 5;` example, `x` is a pattern that means “bind what matches here to
-the variable `x`.” Because the name `x` is the whole pattern, this pattern
-effectively means “bind everything to the variable `x`, whatever the value is.”
+Di statement seperti `let x = 5;` di mana nama variabel ada di posisi PATTERN, 
+nama variabel itu hanyalah bentuk yang paling sederhana dari sebuah _pattern_. 
+Rust membandingkan ekspresi tersebut dengan _pattern_-nya lalu memberikan 
+nilai (assigns) ke nama-nama yang ia temukan. Jadi, di contoh `let x = 5;`, `x` 
+adalah sebuah _pattern_ yang artinya “ikat (bind) apa pun yang cocok di 
+sini ke variabel `x`.” Karena nama `x` adalah _keseluruhan pattern_-nya, _pattern_ 
+ini pada praktiknya berarti “ikat semuanya ke variabel `x`, apa pun nilainya.”
 
-To see the pattern-matching aspect of `let` more clearly, consider Listing
-19-1, which uses a pattern with `let` to destructure a tuple.
+Buat ngelihat aspek _pattern-matching_ (pencocokan pola) dari `let` dengan 
+lebih jelas, coba lihat Listing 19-1, yang memakai sebuah _pattern_ bareng 
+`let` buat men-_destructure_ (memecah) sebuah _tuple_.
 
-
-<Listing number="19-1" caption="Using a pattern to destructure a tuple and create three variables at once">
+<Listing number="19-1" caption="Memakai pattern buat men-destructure sebuah tuple dan membikin tiga variabel sekaligus">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-01/src/main.rs:here}}
@@ -90,18 +96,20 @@ To see the pattern-matching aspect of `let` more clearly, consider Listing
 
 </Listing>
 
-Here, we match a tuple against a pattern. Rust compares the value `(1, 2, 3)`
-to the pattern `(x, y, z)` and sees that the value matches the pattern, in that
-it sees that the number of elements is the same in both, so Rust binds `1` to
-`x`, `2` to `y`, and `3` to `z`. You can think of this tuple pattern as nesting
-three individual variable patterns inside it.
+Di sini, kita mencocokkan sebuah _tuple_ terhadap sebuah _pattern_. Rust 
+membandingkan nilai `(1, 2, 3)` dengan _pattern_ `(x, y, z)` dan melihat kalau 
+nilainya cocok dengan _pattern_ tersebut, dalam arti dia melihat kalau jumlah 
+elemennya sama di kedua sisinya, jadi Rust mengikat `1` ke `x`, `2` ke `y`, 
+dan `3` ke `z`. Anda bisa membayangkan _tuple pattern_ ini seolah-olah menyarangkan 
+(nesting) tiga _variable patterns_ individu di dalamnya.
 
-If the number of elements in the pattern doesn’t match the number of elements
-in the tuple, the overall type won’t match and we’ll get a compiler error. For
-example, Listing 19-2 shows an attempt to destructure a tuple with three
-elements into two variables, which won’t work.
+Kalau jumlah elemen di dalam _pattern_-nya tidak cocok dengan jumlah elemen 
+di dalam _tuple_-nya, tipe keseluruhannya tidak bakal cocok dan kita bakal 
+dapat error _compiler_. Misalnya, Listing 19-2 menunjukkan sebuah percobaan buat 
+men-_destructure_ sebuah _tuple_ yang berisi tiga elemen ke dalam dua variabel, 
+yang mana tidak bakal jalan.
 
-<Listing number="19-2" caption="Incorrectly constructing a pattern whose variables don’t match the number of elements in the tuple">
+<Listing number="19-2" caption="Membikin sebuah pattern yang salah di mana jumlah variabelnya tidak cocok dengan jumlah elemen di dalam tuple">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-02/src/main.rs:here}}
@@ -109,38 +117,42 @@ elements into two variables, which won’t work.
 
 </Listing>
 
-Attempting to compile this code results in this type error:
+Mencoba men-compile kode ini bakal menghasilkan _type error_ (error tipe) ini:
 
 ```console
 {{#include ../listings/ch19-patterns-and-matching/listing-19-02/output.txt}}
 ```
 
-To fix the error, we could ignore one or more of the values in the tuple using
-`_` or `..`, as you’ll see in the [“Ignoring Values in a
-Pattern”][ignoring-values-in-a-pattern]<!-- ignore --> section. If the problem
-is that we have too many variables in the pattern, the solution is to make the
-types match by removing variables so the number of variables equals the number
-of elements in the tuple.
+Buat memperbaiki error-nya, kita bisa mengabaikan satu atau lebih nilai di 
+dalam _tuple_ tersebut memakai `_` atau `..`, kayak yang bakal Anda lihat 
+di bagian [“Mengabaikan Nilai di dalam sebuah Pattern”][ignoring-values-in-a-pattern]. 
+Kalau masalahnya adalah kita punya terlalu banyak variabel di dalam _pattern_-nya, 
+solusinya adalah mencocokkan (match) tipe-tipenya dengan membuang variabel-variabel 
+tersebut sehingga jumlah variabelnya sama dengan jumlah elemen di _tuple_-nya.
 
-### Conditional if let Expressions
+### Ekspresi Bersyarat (Conditional) `if let`
 
-In Chapter 6, we discussed how to use `if let` expressions mainly as a shorter
-way to write the equivalent of a `match` that only matches one case.
-Optionally, `if let` can have a corresponding `else` containing code to run if
-the pattern in the `if let` doesn’t match.
+Di Bab 6, kita ngebahas gimana cara memakai ekspresi `if let` yang mana 
+utamanya dipakai sebagai cara yang lebih singkat buat menulis bentuk ekuivalen 
+(setara) dari sebuah `match` yang cuma mencocokkan satu kasus aja. Secara 
+opsional, `if let` bisa dipasangkan dengan `else` yang berisi kode buat 
+dijalankan kalau _pattern_ di dalam `if let` tersebut tidak cocok.
 
-Listing 19-3 shows that it’s also possible to mix and match `if let`, `else
-if`, and `else if let` expressions. Doing so gives us more flexibility than a
-`match` expression in which we can express only one value to compare with the
-patterns. Also, Rust doesn’t require that the conditions in a series of `if
-let`, `else if`, and `else if let` arms relate to each other.
+Listing 19-3 menunjukkan kalau kita juga bisa mencampur dan mencocokkan 
+(mix and match) ekspresi `if let`, `else if`, dan `else if let`. Ngelakuin hal 
+ini ngasih kita fleksibilitas yang lebih besar ketimbang ekspresi `match` 
+di mana kita cuma bisa mengekspresikan satu nilai aja buat dibandingkan dengan 
+semua _patterns_-nya. Selain itu, Rust tidak mewajibkan agar kondisi-kondisi 
+di dalam rangkaian lengan (arms) `if let`, `else if`, dan `else if let` itu 
+saling berhubungan satu sama lain.
 
-The code in Listing 19-3 determines what color to make your background based on
-a series of checks for several conditions. For this example, we’ve created
-variables with hardcoded values that a real program might receive from user
-input.
+Kode di Listing 19-3 menentukan warna apa yang bakal dijadikan warna _background_ 
+(latar belakang) berdasarkan serangkaian pengecekan pada beberapa kondisi. 
+Untuk contoh ini, kita sudah membikin variabel-variabel dengan nilai yang di-_hardcode_ 
+(ditulis langsung) yang mana di program sungguhan mungkin aja nilai-nilai ini 
+didapat dari input _user_.
 
-<Listing number="19-3" file-name="src/main.rs" caption="Mixing `if let`, `else if`, `else if let`, and `else`">
+<Listing number="19-3" file-name="src/main.rs" caption="Mencampur `if let`, `else if`, `else if let`, dan `else`">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-03/src/main.rs}}
@@ -148,38 +160,44 @@ input.
 
 </Listing>
 
-If the user specifies a favorite color, that color is used as the background.
-If no favorite color is specified and today is Tuesday, the background color is
-green. Otherwise, if the user specifies their age as a string and we can parse
-it as a number successfully, the color is either purple or orange depending on
-the value of the number. If none of these conditions apply, the background
-color is blue.
+Kalau _user_ menentukan sebuah warna favorit, warna itu bakal dipakai sebagai 
+_background_. Kalau tidak ada warna favorit yang ditentukan dan hari ini adalah 
+hari Selasa (Tuesday), warna _background_-nya adalah hijau (green). Selain itu, 
+kalau _user_ menentukan umurnya sebagai sebuah string dan kita bisa 
+mem-_parse_-nya jadi sebuah angka dengan sukses, warnanya bakal jadi ungu (purple) 
+atau oranye (orange) tergantung dari nilai angkanya. Kalau tidak ada satu pun 
+dari kondisi ini yang berlaku, warna _background_-nya adalah biru (blue).
 
-This conditional structure lets us support complex requirements. With the
-hardcoded values we have here, this example will print `Using purple as the
-background color`.
+Struktur kondisional (bersyarat) ini membiarkan kita mendukung persyaratan yang 
+kompleks. Dengan nilai-nilai _hardcoded_ yang kita punya di sini, contoh ini bakal 
+mencetak `Using purple as the background color`.
 
-You can see that `if let` can also introduce new variables that shadow existing
-variables in the same way that `match` arms can: the line `if let Ok(age) = age`
-introduces a new `age` variable that contains the value inside the `Ok` variant,
-shadowing the existing `age` variable. This means we need to place the `if age >
-30` condition within that block: we can’t combine these two conditions into `if
-let Ok(age) = age && age > 30`. The new `age` we want to compare to 30 isn’t
-valid until the new scope starts with the curly bracket.
+Anda bisa melihat kalau `if let` juga bisa memperkenalkan variabel baru yang 
+menimpa (shadow) variabel yang sudah ada dengan cara yang sama kayak yang 
+dilakukan sama `match` arms: baris `if let Ok(age) = age` memperkenalkan 
+sebuah variabel `age` baru yang berisi nilai di dalam varian `Ok`-nya, menimpa 
+variabel `age` yang sudah ada sebelumnya. Ini artinya kita harus menaruh kondisi 
+`if age > 30` di dalam blok tersebut: kita tidak bisa menggabungkan kedua 
+kondisi ini jadi `if let Ok(age) = age && age > 30`. Nilai `age` baru yang mau 
+kita bandingkan dengan 30 belum valid sampai _scope_ (ruang lingkup) barunya 
+dimulai bersamaan dengan tanda kurung kurawal pembuka.
 
-The downside of using `if let` expressions is that the compiler doesn’t check
-for exhaustiveness, whereas with `match` expressions it does. If we omitted the
-last `else` block and therefore missed handling some cases, the compiler would
-not alert us to the possible logic bug.
+Kelemahan dari memakai ekspresi `if let` adalah kalau _compiler_ tidak bakal 
+mengecek kelengkapannya (exhaustiveness), sedangkan dengan ekspresi `match` 
+_compiler_ bakal mengeceknya. Kalau kita kelupaan menaruh blok `else` terakhir dan 
+oleh karenanya kelewatan (missed) buat menangani beberapa kasus, _compiler_ 
+tidak bakal memperingatkan kita soal kemungkinan adanya _logic bug_ (kutu logika) 
+tersebut.
 
-### `while let` Conditional Loops
+### Perulangan Bersyarat `while let`
 
-Similar in construction to `if let`, the `while let` conditional loop allows a
-`while` loop to run for as long as a pattern continues to match. In Listing
-19-4 we show a `while let` loop that waits on messages sent between threads,
-but in this case checking a `Result` instead of an `Option`.
+Mirip dengan konstruksi `if let`, perulangan (loop) bersyarat `while let` 
+memungkinkan sebuah _loop_ `while` buat terus berjalan selama sebuah _pattern_ 
+masih terus cocok. Di Listing 19-4 kita menunjukkan sebuah _loop_ `while let` 
+yang menunggu pesan-pesan yang dikirim antar _threads_, tapi di kasus ini 
+dia mengecek sebuah `Result` ketimbang sebuah `Option`.
 
-<Listing number="19-4" caption="Using a `while let` loop to print values for as long as `rx.recv()` returns `Ok`">
+<Listing number="19-4" caption="Memakai _loop_ `while let` buat mencetak nilai-nilai selama `rx.recv()` mengembalikan `Ok`">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-04/src/main.rs:here}}
@@ -187,23 +205,25 @@ but in this case checking a `Result` instead of an `Option`.
 
 </Listing>
 
-This example prints `1`, `2`, and then `3`. The `recv` method takes the first
-message out of the receiver side of the channel and returns an `Ok(value)`. When
-we first saw `recv` back in Chapter 16, we unwrapped the error directly, or
-interacted with it as an iterator using a `for` loop. As Listing 19-4 shows,
-though, we can also use while let, because the `recv` method returns an `Ok`
-each time a message arrives, as long as the sender exists, and then produces an
-`Err `once the sender side disconnects.
+Contoh ini mencetak `1`, `2`, dan kemudian `3`. Method `recv` mengambil 
+pesan pertama dari sisi penerima (receiver side) saluran (channel) tersebut dan 
+mengembalikan sebuah `Ok(value)`. Saat pertama kali kita melihat `recv` 
+di Bab 16, kita langsung meng-_unwrap_ error-nya, atau berinteraksi dengannya 
+layaknya sebuah iterator memakai sebuah _loop_ `for`. Namun, seperti yang 
+ditunjukkan Listing 19-4, kita juga bisa memakai `while let`, karena method 
+`recv` mengembalikan sebuah `Ok` setiap kali ada pesan yang datang, selama si 
+pengirimnya (sender) masih eksis, lalu mengembalikan sebuah `Err` begitu 
+sisi pengirimnya memutuskan koneksi (disconnects).
 
-### `for` Loops
+### Perulangan `for`
 
-In a `for` loop, the value that directly follows the keyword `for` is a
-pattern. For example, in `for x in y`, the `x` is the pattern. Listing 19-5
-demonstrates how to use a pattern in a `for` loop to *destructure*, or break
-apart, a tuple as part of the `for` loop.
+Di dalam _loop_ `for`, nilai yang langsung mengikuti keyword `for` itu adalah 
+sebuah _pattern_. Misalnya, di dalam `for x in y`, `x` itu adalah _pattern_-nya. 
+Listing 19-5 mendemonstrasikan gimana cara memakai sebuah _pattern_ di dalam _loop_ 
+`for` buat men-_destructure_ (memecah belah) sebuah _tuple_ sebagai bagian dari 
+_loop_ `for` tersebut.
 
-
-<Listing number="19-5" caption="Using a pattern in a `for` loop to destructure a tuple">
+<Listing number="19-5" caption="Memakai sebuah _pattern_ di dalam _loop_ `for` buat men-_destructure_ sebuah _tuple_">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-05/src/main.rs:here}}
@@ -211,26 +231,26 @@ apart, a tuple as part of the `for` loop.
 
 </Listing>
 
-The code in Listing 19-5 will print the following:
-
+Kode di Listing 19-5 bakal mencetak yang berikut ini:
 
 ```console
 {{#include ../listings/ch19-patterns-and-matching/listing-19-05/output.txt}}
 ```
 
-We adapt an iterator using the `enumerate` method so it produces a value and
-the index for that value, placed into a tuple. The first value produced is the
-tuple `(0, 'a')`. When this value is matched to the pattern `(index, value)`,
-`index` will be `0` and `value` will be `'a'`, printing the first line of the
-output.
+Kita mengadaptasi sebuah iterator memakai method `enumerate` sehingga ia 
+menghasilkan sebuah nilai beserta indeks buat nilai tersebut, yang ditaruh 
+di dalam sebuah _tuple_. Nilai pertama yang dihasilkan adalah _tuple_ 
+`(0, 'a')`. Saat nilai ini dicocokkan dengan _pattern_ `(index, value)`, 
+`index` bakal jadi `0` dan `value` bakal jadi `'a'`, lalu mencetak 
+baris pertama dari outputnya.
 
-### Function Parameters
+### Parameter Fungsi
 
-Function parameters can also be patterns. The code in Listing 19-6, which
-declares a function named `foo` that takes one parameter named `x` of type
-`i32`, should by now look familiar.
+Parameter dari sebuah fungsi juga bisa berupa _patterns_. Kode di Listing 19-6, 
+yang mendeklarasikan fungsi bernama `foo` yang menerima satu parameter bernama 
+`x` bertipe `i32`, harusnya sekarang udah terasa familier.
 
-<Listing number="19-6" caption="A function signature uses patterns in the parameters">
+<Listing number="19-6" caption="Sebuah _signature_ fungsi yang memakai _patterns_ di dalam parameternya">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-06/src/main.rs:here}}
@@ -238,11 +258,12 @@ declares a function named `foo` that takes one parameter named `x` of type
 
 </Listing>
 
-The `x` part is a pattern! As we did with `let`, we could match a tuple in a
-function’s arguments to the pattern. Listing 19-7 splits the values in a tuple
-as we pass it to a function.
+Bagian `x` itu adalah sebuah _pattern_ lho! Sama kayak yang kita lakuin dengan 
+`let`, kita bisa mencocokkan sebuah _tuple_ di dalam argumen sebuah fungsi 
+terhadap suatu _pattern_. Listing 19-7 memecah nilai-nilai di dalam sebuah 
+_tuple_ saat kita meneruskannya ke sebuah fungsi.
 
-<Listing number="19-7" file-name="src/main.rs" caption="A function with parameters that destructure a tuple">
+<Listing number="19-7" file-name="src/main.rs" caption="Sebuah fungsi dengan parameter yang men-_destructure_ sebuah _tuple_">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-07/src/main.rs}}
@@ -250,16 +271,18 @@ as we pass it to a function.
 
 </Listing>
 
-This code prints `Current location: (3, 5)`. The values `&(3, 5)` match the
-pattern `&(x, y)`, so `x` is the value `3` and `y` is the value `5`.
+Kode ini mencetak `Current location: (3, 5)`. Nilai-nilai `&(3, 5)` itu cocok 
+dengan _pattern_ `&(x, y)`, jadi `x` adalah nilai `3` dan `y` adalah nilai `5`.
 
-We can also use patterns in closure parameter lists in the same way as in
-function parameter lists because closures are similar to functions, as
-discussed in Chapter 13.
+Kita juga bisa memakai _patterns_ di dalam daftar parameter _closure_ dengan cara 
+yang sama seperti di dalam daftar parameter fungsi, karena _closures_ itu mirip 
+dengan fungsi, kayak yang udah dibahas di Bab 13.
 
-At this point, you’ve seen several ways to use patterns, but patterns don’t
-work the same in every place we can use them. In some places, the patterns must
-be irrefutable; in other circumstances, they can be refutable. We’ll discuss
-these two concepts next.
+Pada titik ini, Anda udah melihat beberapa cara buat memakai _patterns_, tapi 
+_patterns_ tidak bekerja dengan cara yang sama persis di setiap tempat di mana 
+kita bisa memakai mereka. Di beberapa tempat, _patterns_ itu wajib bersifat 
+_irrefutable_ (tidak bisa dibantah/pasti sukses); di situasi lain, mereka 
+bisa bersifat _refutable_ (bisa dibantah/bisa gagal). Kita bakal ngebahas 
+kedua konsep ini selanjutnya.
 
 [ignoring-values-in-a-pattern]: ch19-03-pattern-syntax.html#ignoring-values-in-a-pattern

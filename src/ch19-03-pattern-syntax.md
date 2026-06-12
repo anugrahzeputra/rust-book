@@ -1,35 +1,38 @@
-## Pattern Syntax
+## Sintaks Pattern
 
-In this section, we gather all the syntax that is valid in patterns and discuss
-why and when you might want to use each one.
+Di bagian ini, kita mengumpulkan semua sintaks yang valid buat dipakai di 
+dalam _patterns_ dan ngebahas kenapa dan kapan Anda mungkin mau memakai 
+masing-masing dari sintaks tersebut.
 
-### Matching Literals
+### Mencocokkan Literals (Nilai Harfiah)
 
-As you saw in Chapter 6, you can match patterns against literals directly. The
-following code gives some examples:
+Seperti yang udah Anda lihat di Bab 6, Anda bisa mencocokkan _patterns_ secara 
+langsung dengan _literals_. Kode berikut ini ngasih beberapa contoh:
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-01-literals/src/main.rs:here}}
 ```
 
-This code prints `one` because the value in `x` is `1`. This syntax is useful
-when you want your code to take an action if it gets a particular concrete
-value.
+Kode ini mencetak `one` karena nilai di dalam `x` adalah `1`. Sintaks ini berguna 
+pas Anda pengen kode Anda mengambil suatu tindakan tertentu kalau dia dapat sebuah 
+nilai konkret yang spesifik.
 
-### Matching Named Variables
+### Mencocokkan Variabel Bernama (Named Variables)
 
-Named variables are irrefutable patterns that match any value, and we’ve used
-them many times in this book. However, there is a complication when you use
-named variables in `match`, `if let`, or `while let` expressions. Because each
-of these kinds of expressions starts a new scope, variables declared as part of
-a pattern inside these expressions will shadow those with the same name outside
-the constructs, as is the case with all variables. In Listing 19-11, we declare
-a variable named `x` with the value `Some(5)` and a variable `y` with the value
-`10`. We then create a `match` expression on the value `x`. Look at the
-patterns in the match arms and `println!` at the end, and try to figure out
-what the code will print before running this code or reading further.
+Variabel bernama adalah _patterns_ _irrefutable_ yang bakal cocok dengan nilai apa 
+pun, dan kita udah memakainya berkali-kali di buku ini. Namun, ada sedikit kerumitan 
+pas Anda memakai variabel bernama di dalam ekspresi `match`, `if let`, atau 
+`while let`. Karena setiap jenis ekspresi ini memulai sebuah _scope_ (ruang lingkup) 
+baru, variabel yang dideklarasikan sebagai bagian dari sebuah _pattern_ di dalam 
+ekspresi ini bakal menimpa (shadow) variabel dengan nama yang sama yang ada di 
+luar konstruk tersebut, sama halnya kayak yang terjadi pada semua variabel di Rust. 
+Di Listing 19-11, kita mendeklarasikan sebuah variabel bernama `x` dengan nilai 
+`Some(5)` dan sebuah variabel `y` dengan nilai `10`. Terus kita membikin ekspresi 
+`match` pada nilai `x`. Coba perhatikan _patterns_ di dalam _match arms_-nya dan 
+`println!` di akhir, dan cobalah buat menebak apa yang bakal dicetak oleh kode ini 
+sebelum menjalankannya atau membaca lebih lanjut.
 
-<Listing number="19-11" file-name="src/main.rs" caption="A `match` expression with an arm that introduces a new variable which shadows an existing variable `y`">
+<Listing number="19-11" file-name="src/main.rs" caption="Sebuah ekspresi `match` dengan sebuah _arm_ yang memperkenalkan variabel baru yang menimpa variabel `y` yang sudah ada">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-11/src/main.rs:here}}
@@ -37,89 +40,95 @@ what the code will print before running this code or reading further.
 
 </Listing>
 
-Let’s walk through what happens when the `match` expression runs. The pattern
-in the first match arm doesn’t match the defined value of `x`, so the code
-continues.
+Mari kita telusuri apa yang terjadi pas ekspresi `match` ini dijalankan. _Pattern_ 
+di arm pertama tidak cocok dengan nilai yang udah didefinisikan buat `x`, jadi kodenya 
+lanjut.
 
-The pattern in the second match arm introduces a new variable named `y` that
-will match any value inside a `Some` value. Because we’re in a new scope inside
-the `match` expression, this is a new `y` variable, not the `y` we declared at
-the beginning with the value `10`. This new `y` binding will match any value
-inside a `Some`, which is what we have in `x`. Therefore, this new `y` binds to
-the inner value of the `Some` in `x`. That value is `5`, so the expression for
-that arm executes and prints `Matched, y = 5`.
+_Pattern_ di arm kedua memperkenalkan sebuah variabel baru bernama `y` yang bakal cocok 
+dengan nilai apa pun yang ada di dalam sebuah nilai `Some`. Karena kita sekarang ada di 
+dalam _scope_ baru di dalam ekspresi `match` ini, ini adalah variabel `y` yang baru, 
+bukannya `y` yang kita deklarasikan di awal tadi yang nilainya `10`. _Binding_ `y` 
+yang baru ini bakal cocok dengan nilai apa pun di dalam sebuah `Some`, yang mana 
+itulah yang kita punya di dalam `x`. Oleh karena itu, si `y` baru ini mengikat 
+(binds) dirinya ke nilai internal yang ada di dalam `Some` yang dimiliki `x`. Nilai 
+itu adalah `5`, jadi ekspresi buat arm tersebut dieksekusi dan mencetak 
+`Matched, y = 5`.
 
-If `x` had been a `None` value instead of `Some(5)`, the patterns in the first
-two arms wouldn’t have matched, so the value would have matched to the
-underscore. We didn’t introduce the `x` variable in the pattern of the
-underscore arm, so the `x` in the expression is still the outer `x` that hasn’t
-been shadowed. In this hypothetical case, the `match` would print `Default case,
-x = None`.
+Seandainya `x` tadi adalah sebuah nilai `None` bukannya `Some(5)`, _patterns_ di dua 
+arm pertama tidak bakal ada yang cocok, jadi nilainya bakal cocok sama si garis 
+bawah (underscore). Kita tidak memperkenalkan variabel `x` di dalam _pattern_ buat 
+arm garis bawah ini, jadi si `x` di ekspresi tersebut tetap merujuk pada `x` yang 
+ada di luar yang belum tertimpa (unshadowed). Di kasus hipotetis (seandainya) ini, 
+si `match` bakal mencetak `Default case, x = None`.
 
-When the `match` expression is done, its scope ends, and so does the scope of
-the inner `y`. The last `println!` produces `at the end: x = Some(5), y = 10`.
+Begitu ekspresi `match` ini selesai, _scope_-nya berakhir, dan _scope_ buat si 
+`y` internal tadi juga berakhir. `println!` terakhir menghasilkan 
+`at the end: x = Some(5), y = 10`.
 
-To create a `match` expression that compares the values of the outer `x` and
-`y`, rather than introducing a new variable that shadows the existing `y`
-variable, we would need to use a match guard conditional instead. We’ll talk
-about match guards later in [“Extra Conditionals with Match
-Guards”](#extra-conditionals-with-match-guards)<!-- ignore -->.
+Buat membikin ekspresi `match` yang bisa membandingkan nilai-nilai dari `x` dan `y` 
+yang ada di luar, ketimbang memperkenalkan variabel baru yang malah menimpa variabel 
+`y` yang sudah ada, kita wajib memakai kondisional _match guard_ sebagai gantinya. 
+Kita bakal ngebahas soal _match guards_ nanti di [“Kondisional Tambahan Memakai 
+Match Guards”](#kondisional-tambahan-memakai-match-guards).
 
-### Multiple Patterns
+### Multiple Patterns (Banyak Pola Sekaligus)
 
-In `match` expressions, you can match multiple patterns using the `|` syntax,
-which is the pattern _or_ operator. For example, in the following code we match
-the value of `x` against the match arms, the first of which has an _or_ option,
-meaning if the value of `x` matches either of the values in that arm, that
-arm’s code will run:
-
+Di dalam ekspresi `match`, Anda bisa mencocokkan banyak _patterns_ sekaligus dengan 
+memakai sintaks `|`, yang mana merupakan operator _or_ (atau) buat _pattern_. 
+Misalnya, di kode berikut ini kita mencocokkan nilai `x` terhadap _match arms_-nya, 
+yang mana arm pertamanya punya sebuah opsi _or_, yang berarti kalau nilai dari `x` 
+itu cocok sama salah satu dari nilai yang ada di arm itu, kode milik arm itu bakal 
+dijalankan:
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-02-multiple-patterns/src/main.rs:here}}
 ```
 
-This code prints `one or two`.
+Kode ini mencetak `one or two`.
 
-### Matching Ranges of Values with `..=`
+### Mencocokkan Rentang (Ranges) Nilai Memakai `..=`
 
-The `..=` syntax allows us to match to an inclusive range of values. In the
-following code, when a pattern matches any of the values within the given
-range, that arm will execute:
+Sintaks `..=` memungkinkan kita buat mencocokkan dengan sebuah rentang nilai yang 
+inklusif (inclusive range). Di kode berikut, saat sebuah _pattern_ cocok sama 
+nilai apa pun yang ada di dalam rentang yang ditentukan, arm tersebut bakal dieksekusi:
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-03-ranges/src/main.rs:here}}
 ```
 
-If `x` is `1`, `2`, `3`, `4`, or `5`, the first arm will match. This syntax is
-more convenient for multiple match values than using the `|` operator to
-express the same idea; if we were to use `|`, we would have to specify `1 | 2 |
-3 | 4 | 5`. Specifying a range is much shorter, especially if we want to match,
-say, any number between 1 and 1,000!
+Kalau `x` itu adalah `1`, `2`, `3`, `4`, atau `5`, arm pertama bakal cocok. Sintaks 
+ini jauh lebih nyaman dipakai pas kita punya banyak nilai buat dicocokkan ketimbang 
+memakai operator `|` buat mengekspresikan ide yang sama; kalau kita memakai `|`, 
+kita harus menentukan `1 | 2 | 3 | 4 | 5`. Menentukan sebuah rentang (range) itu jauh 
+lebih singkat, apalagi kalau kita mau mencocokkan, katakanlah, angka apa aja antara 1 
+dan 1.000!
 
-The compiler checks that the range isn’t empty at compile time, and because the
-only types for which Rust can tell if a range is empty or not are `char` and
-numeric values, ranges are only allowed with numeric or `char` values.
+_Compiler_ mengecek kalau rentang tersebut tidak kosong pas _compile time_, dan 
+karena tipe-tipe yang mana Rust bisa tahu apakah sebuah rentang itu kosong atau 
+tidak itu cuma `char` dan nilai-nilai numerik aja, maka dari itu rentang (ranges) 
+cuma diizinkan buat nilai numerik atau `char`.
 
-Here is an example using ranges of `char` values:
+Berikut ini adalah contoh yang memakai rentang buat nilai `char`:
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-04-ranges-of-char/src/main.rs:here}}
 ```
 
-Rust can tell that `'c'` is within the first pattern’s range and prints `early
-ASCII letter`.
+Rust bisa tahu kalau `'c'` berada di dalam rentang _pattern_ pertama dan lalu mencetak 
+`early ASCII letter`.
 
-### Destructuring to Break Apart Values
+### Destructuring (Membongkar) buat Memecah Nilai
 
-We can also use patterns to destructure structs, enums, and tuples to use
-different parts of these values. Let’s walk through each value.
+Kita juga bisa memakai _patterns_ buat men-_destructure_ (membongkar/memecah belah) 
+structs, enums, dan tuples supaya kita bisa memakai berbagai bagian-bagian yang berbeda 
+dari nilai-nilai tersebut. Mari kita telusuri masing-masing dari mereka.
 
 #### Destructuring Structs
 
-Listing 19-12 shows a `Point` struct with two fields, `x` and `y`, that we can
-break apart using a pattern with a `let` statement.
+Listing 19-12 menunjukkan sebuah struct `Point` yang punya dua _fields_ (bidang), 
+`x` dan `y`, yang bisa kita pecah memakai sebuah _pattern_ dengan statement `let`.
 
-<Listing number="19-12" file-name="src/main.rs" caption="Destructuring a struct’s fields into separate variables">
+<Listing number="19-12" file-name="src/main.rs" caption="Membongkar field-field sebuah struct ke dalam variabel-variabel yang terpisah">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-12/src/main.rs}}
@@ -127,19 +136,19 @@ break apart using a pattern with a `let` statement.
 
 </Listing>
 
-This code creates the variables `a` and `b` that match the values of the `x`
-and `y` fields of the `p` struct. This example shows that the names of the
-variables in the pattern don’t have to match the field names of the struct.
-However, it’s common to match the variable names to the field names to make it
-easier to remember which variables came from which fields. Because of this
-common usage, and because writing `let Point { x: x, y: y } = p;` contains a
-lot of duplication, Rust has a shorthand for patterns that match struct fields:
-you only need to list the name of the struct field, and the variables created
-from the pattern will have the same names. Listing 19-13 behaves in the same
-way as the code in Listing 19-12, but the variables created in the `let`
-pattern are `x` and `y` instead of `a` and `b`.
+Kode ini membikin variabel `a` dan `b` yang masing-masing cocok dengan nilai dari 
+field `x` dan `y` pada struct `p`. Contoh ini nunjukin kalau nama variabel-variabel 
+di dalam _pattern_-nya tidak harus sama dengan nama-nama field di dalam struct-nya. 
+Namun, sudah menjadi hal yang umum buat menyamakan nama variabelnya dengan nama 
+field-nya supaya lebih gampang buat diingat variabel mana yang berasal dari field mana. 
+Karena penggunaan umum ini, dan karena nulis `let Point { x: x, y: y } = p;` itu berisi 
+banyak banget duplikasi, Rust punya bentuk singkat (shorthand) buat _patterns_ yang 
+mencocokkan field struct: Anda cuma perlu menyebutkan nama field struct-nya aja, dan 
+variabel yang dibikin dari _pattern_ tersebut bakal punya nama yang sama. Listing 
+19-13 berperilaku persis sama kayak kode di Listing 19-12, tapi variabel yang dibikin 
+di _pattern_ `let`-nya itu bernama `x` dan `y` bukannya `a` dan `b`.
 
-<Listing number="19-13" file-name="src/main.rs" caption="Destructuring struct fields using struct field shorthand">
+<Listing number="19-13" file-name="src/main.rs" caption="Membongkar field struct memakai _struct field shorthand_ (sintaks pendek field struct)">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-13/src/main.rs}}
@@ -147,20 +156,21 @@ pattern are `x` and `y` instead of `a` and `b`.
 
 </Listing>
 
-This code creates the variables `x` and `y` that match the `x` and `y` fields
-of the `p` variable. The outcome is that the variables `x` and `y` contain the
-values from the `p` struct.
+Kode ini membikin variabel `x` dan `y` yang cocok dengan field `x` dan `y` dari 
+variabel `p`. Hasilnya adalah variabel `x` dan `y` itu sekarang berisi nilai-nilai yang 
+ada dari struct `p` tersebut.
 
-We can also destructure with literal values as part of the struct pattern
-rather than creating variables for all the fields. Doing so allows us to test
-some of the fields for particular values while creating variables to
-destructure the other fields.
+Kita juga bisa melakukan _destructure_ memakai nilai literal (literal values) sebagai 
+bagian dari _pattern_ struct tersebut ketimbang membikin variabel buat semua 
+field-nya. Melakukan hal ini memungkinkan kita buat ngetes (test) beberapa dari field 
+tersebut terhadap suatu nilai tertentu sekaligus membikin variabel buat 
+men-_destructure_ field-field yang lain.
 
-In Listing 19-14, we have a `match` expression that separates `Point` values
-into three cases: points that lie directly on the `x` axis (which is true when
-`y = 0`), on the `y` axis (`x = 0`), or on neither axis.
+Di Listing 19-14, kita punya sebuah ekspresi `match` yang memisahkan nilai-nilai 
+`Point` ke dalam tiga kasus: titik yang terletak persis di sumbu `x` (yang mana 
+itu benar kalau `y = 0`), di sumbu `y` (`x = 0`), atau tidak di sumbu mana pun.
 
-<Listing number="19-14" file-name="src/main.rs" caption="Destructuring and matching literal values in one pattern">
+<Listing number="19-14" file-name="src/main.rs" caption="Membongkar dan mencocokkan nilai literal di dalam satu pattern">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-14/src/main.rs:here}}
@@ -168,31 +178,35 @@ into three cases: points that lie directly on the `x` axis (which is true when
 
 </Listing>
 
-The first arm will match any point that lies on the `x` axis by specifying that
-the `y` field matches if its value matches the literal `0`. The pattern still
-creates an `x` variable that we can use in the code for this arm.
+Arm pertama bakal cocok sama titik apa pun yang terletak di sumbu `x` dengan menentukan 
+bahwa field `y` itu bakal dianggap cocok kalau nilainya cocok dengan literal `0`. 
+_Pattern_-nya tetap membikin variabel `x` yang mana bisa kita pakai di kode buat 
+arm ini.
 
-Similarly, the second arm matches any point on the `y` axis by specifying that
-the `x` field matches if its value is `0` and creates a variable `y` for the
-value of the `y` field. The third arm doesn’t specify any literals, so it
-matches any other `Point` and creates variables for both the `x` and `y` fields.
+Serupa dengan itu, arm kedua mencocokkan titik apa pun yang ada di sumbu `y` dengan 
+menentukan bahwa field `x` itu bakal dianggap cocok kalau nilainya `0` dan 
+membikin sebuah variabel `y` buat nilai dari field `y` tersebut. Arm ketiga 
+sama sekali tidak menentukan literal apa pun, jadi ia cocok buat `Point` yang mana aja 
+dan membikin variabel buat kedua field `x` dan `y`.
 
-In this example, the value `p` matches the second arm by virtue of `x`
-containing a `0`, so this code will print `On the y axis at 7`.
+Di contoh ini, nilai `p` itu cocok dengan arm kedua berkat fakta kalau `x` berisi 
+nilai `0`, jadi kode ini bakal mencetak `On the y axis at 7`.
 
-Remember that a `match` expression stops checking arms once it has found the
-first matching pattern, so even though `Point { x: 0, y: 0}` is on the `x` axis
-and the `y` axis, this code would only print `On the x axis at 0`.
+Ingat bahwa sebuah ekspresi `match` bakal berhenti ngecek lengan-lengan (arms) lain 
+begitu dia nemuin _pattern_ pertama yang cocok, jadi biarpun `Point { x: 0, y: 0}` 
+itu ada di sumbu `x` sekaligus ada di sumbu `y`, kode ini cuma bakal mencetak 
+`On the x axis at 0`.
 
 #### Destructuring Enums
 
-We’ve destructured enums in this book (for example, Listing 6-5 in Chapter 6),
-but haven’t yet explicitly discussed that the pattern to destructure an enum
-corresponds to the way the data stored within the enum is defined. As an
-example, in Listing 19-15 we use the `Message` enum from Listing 6-2 and write
-a `match` with patterns that will destructure each inner value.
+Kita udah sering membongkar (destructured) enums di buku ini (misalnya, di Listing 
+6-5 di Bab 6), tapi kita belum pernah secara eksplisit ngebahas kalau _pattern_ yang 
+dipakai buat membongkar sebuah enum itu berhubungan erat dengan gimana cara data 
+yang tersimpan di dalam enum tersebut didefinisikan. Sebagai contoh, di Listing 
+19-15 kita memakai enum `Message` dari Listing 6-2 lalu kita menulis sebuah `match` 
+yang punya _patterns_ buat membongkar setiap nilai internalnya.
 
-<Listing number="19-15" file-name="src/main.rs" caption="Destructuring enum variants that hold different kinds of values">
+<Listing number="19-15" file-name="src/main.rs" caption="Membongkar varian enum yang memegang berbagai macam nilai yang berbeda">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-15/src/main.rs}}
@@ -200,33 +214,38 @@ a `match` with patterns that will destructure each inner value.
 
 </Listing>
 
-This code will print `Change color to red 0, green 160, and blue 255`. Try
-changing the value of `msg` to see the code from the other arms run.
+Kode ini bakal mencetak `Change color to red 0, green 160, and blue 255`. Cobalah 
+buat mengubah nilai dari `msg` buat melihat kode dari lengan-lengan yang lain itu 
+jalan.
 
-For enum variants without any data, like `Message::Quit`, we can’t destructure
-the value any further. We can only match on the literal `Message::Quit` value,
-and no variables are in that pattern.
+Buat varian enum yang tidak punya data apa pun, kayak `Message::Quit`, kita tidak bisa 
+membongkar nilainya lebih jauh lagi. Kita cuma bisa mencocokkan terhadap literal nilai 
+`Message::Quit` secara langsung, dan tidak ada variabel sama sekali di dalam 
+_pattern_ tersebut.
 
-For struct-like enum variants, such as `Message::Move`, we can use a pattern
-similar to the pattern we specify to match structs. After the variant name, we
-place curly brackets and then list the fields with variables so we break apart
-the pieces to use in the code for this arm. Here we use the shorthand form as
-we did in Listing 19-13.
+Buat varian enum yang bentuknya kayak struct (struct-like enum variants), seperti 
+`Message::Move`, kita bisa memakai sebuah _pattern_ yang mirip sama _pattern_ yang kita 
+tentukan buat mencocokkan structs. Setelah nama variannya, kita taruh kurung kurawal 
+lalu kita sebutkan field-fieldnya beserta variabelnya supaya kita bisa memecah-mecah 
+bagian-bagian itu buat dipakai di dalam kode untuk arm ini. Di sini kita memakai 
+bentuk singkat (_shorthand_) sama seperti yang kita lakuin di Listing 19-13.
 
-For tuple-like enum variants, like `Message::Write` that holds a tuple with one
-element and `Message::ChangeColor` that holds a tuple with three elements, the
-pattern is similar to the pattern we specify to match tuples. The number of
-variables in the pattern must match the number of elements in the variant we’re
-matching.
+Buat varian enum yang bentuknya kayak tuple (tuple-like enum variants), kayak 
+`Message::Write` yang menampung sebuah tuple dengan satu elemen dan 
+`Message::ChangeColor` yang menampung sebuah tuple dengan tiga elemen, _pattern_-nya 
+itu mirip sama _pattern_ yang kita tentukan buat mencocokkan tuples. Jumlah variabel 
+di dalam _pattern_-nya itu harus cocok dengan jumlah elemen di dalam varian yang 
+lagi kita cocokkan tersebut.
 
-#### Destructuring Nested Structs and Enums
+#### Destructuring Structs dan Enums yang Bersarang (Nested)
 
-So far, our examples have all been matching structs or enums one level deep,
-but matching can work on nested items too! For example, we can refactor the
-code in Listing 19-15 to support RGB and HSV colors in the `ChangeColor`
-message, as shown in Listing 19-16.
+Sejauh ini, contoh-contoh kita semuanya cuma mencocokkan structs atau enums dengan 
+kedalaman satu level aja (one level deep), tapi pencocokan itu bisa juga lho dipakai 
+buat item-item yang bersarang (nested items)! Misalnya, kita bisa merombak (refactor) 
+kode yang ada di Listing 19-15 buat ngedukung warna RGB maupun HSV di dalam pesan 
+`ChangeColor`, kayak yang ditunjukin di Listing 19-16.
 
-<Listing number="19-16" caption="Matching on nested enums">
+<Listing number="19-16" caption="Pencocokan pada enums yang bersarang (nested enums)">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-16/src/main.rs}}
@@ -234,51 +253,60 @@ message, as shown in Listing 19-16.
 
 </Listing>
 
-The pattern of the first arm in the `match` expression matches a
-`Message::ChangeColor` enum variant that contains a `Color::Rgb` variant; then
-the pattern binds to the three inner `i32` values. The pattern of the second
-arm also matches a `Message::ChangeColor` enum variant, but the inner enum
-matches `Color::Hsv` instead. We can specify these complex conditions in one
-`match` expression, even though two enums are involved.
+_Pattern_ dari arm pertama di ekspresi `match` itu cocok dengan varian enum 
+`Message::ChangeColor` yang mengandung varian `Color::Rgb`; dan kemudian _pattern_ 
+itu bakal mengikat dirinya (binds) ke ketiga nilai `i32` internal tersebut. 
+_Pattern_ di arm kedua juga cocok dengan varian enum `Message::ChangeColor`, tapi 
+enum internalnya itu cocok dengan `Color::Hsv` sebagai gantinya. Kita bisa menentukan 
+kondisi-kondisi kompleks (complex conditions) ini semuanya di dalam satu ekspresi 
+`match` tunggal, meskipun ada dua enum yang dilibatkan.
 
-#### Destructuring Structs and Tuples
+#### Destructuring Structs dan Tuples Bersamaan
 
-We can mix, match, and nest destructuring patterns in even more complex ways.
-The following example shows a complicated destructure where we nest structs and
-tuples inside a tuple and destructure all the primitive values out:
+Kita bisa nyampur (mix), mencocokkan (match), dan menyarangkan (nest) _destructuring 
+patterns_ dengan cara yang bahkan lebih kompleks lagi. Contoh berikut nunjukin proses 
+_destructure_ yang lumayan rumit di mana kita menyarangkan structs dan tuples di dalam 
+sebuah tuple lalu kita mengekstrak (_destructure_) semua nilai primitifnya sampai 
+keluar (out):
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/no-listing-05-destructuring-structs-and-tuples/src/main.rs:here}}
 ```
 
-This code lets us break complex types into their component parts so we can use
-the values we’re interested in separately.
+Kode ini membiarkan kita memecah tipe-tipe yang kompleks menjadi bagian-bagian 
+komponen dasarnya (component parts) supaya kita bisa memakai nilai-nilai yang kita 
+butuhkan secara terpisah.
 
-Destructuring with patterns is a convenient way to use pieces of values, such
-as the value from each field in a struct, separately from each other.
+_Destructuring_ memakai _patterns_ ini adalah cara yang nyaman banget buat memakai 
+potongan-potongan dari sebuah nilai, kayak misalnya nilai yang ada dari masing-
+masing field di dalam sebuah struct, secara terpisah dari satu sama lain.
 
-### Ignoring Values in a Pattern
+### Mengabaikan Nilai di dalam sebuah Pattern
 
-You’ve seen that it’s sometimes useful to ignore values in a pattern, such as
-in the last arm of a `match`, to get a catch-all that doesn’t actually do
-anything but does account for all remaining possible values. There are a few
-ways to ignore entire values or parts of values in a pattern: using the `_`
-pattern (which you’ve seen), using the `_` pattern within another pattern,
-using a name that starts with an underscore, or using `..` to ignore remaining
-parts of a value. Let’s explore how and why to use each of these patterns.
+Anda udah melihat kalau kadang-kadang itu sangat berguna buat mengabaikan nilai-
+nilai di dalam sebuah _pattern_, kayak misalnya di arm terakhir dari sebuah `match`, 
+buat ngedapetin _catch-all_ yang tidak benar-benar ngelakuin apa-apa tapi tetep 
+mempertimbangkan (account for) semua kemungkinan nilai yang tersisa. Ada beberapa 
+cara buat mengabaikan seluruh nilai atau sebagian aja dari suatu nilai di dalam 
+sebuah _pattern_: dengan memakai _pattern_ `_` (yang udah Anda lihat), dengan memakai 
+_pattern_ `_` di dalam _pattern_ lainnya, dengan memakai nama yang diawali dengan 
+garis bawah (underscore), atau dengan memakai `..` buat mengabaikan semua sisa bagian 
+dari sebuah nilai. Mari kita eksplorasi gimana dan kapan alasan yang tepat buat 
+memakai masing-masing _patterns_ ini.
 
 <!-- Old link, do not remove -->
 
 <a id="ignoring-an-entire-value-with-_"></a>
 
-#### An Entire Value with `_`
+#### Mengabaikan Seluruh Nilai Memakai `_`
 
-We’ve used the underscore as a wildcard pattern that will match any value but
-not bind to the value. This is especially useful as the last arm in a `match`
-expression, but we can also use it in any pattern, including function
-parameters, as shown in Listing 19-17.
+Kita udah memakai garis bawah (underscore) sebagai _wildcard pattern_ (pola yang bisa 
+jadi apa saja) yang bakal cocok dengan nilai apa pun tapi tidak bakal mengikat 
+dirinya (bind) ke nilai tersebut. Ini berguna banget dipakai sebagai arm terakhir di 
+dalam ekspresi `match`, tapi kita juga bisa memakainya di _pattern_ mana aja lho, 
+termasuk di parameter fungsi, kayak yang ditunjukin di Listing 19-17.
 
-<Listing number="19-17" file-name="src/main.rs" caption="Using `_` in a function signature">
+<Listing number="19-17" file-name="src/main.rs" caption="Memakai `_` di dalam _signature_ sebuah fungsi">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-17/src/main.rs}}
@@ -286,29 +314,34 @@ parameters, as shown in Listing 19-17.
 
 </Listing>
 
-This code will completely ignore the value `3` passed as the first argument,
-and will print `This code only uses the y parameter: 4`.
+Kode ini bakal bener-bener mengabaikan nilai `3` yang dioper sebagai argumen 
+pertama, dan dia bakal mencetak `This code only uses the y parameter: 4`.
 
-In most cases when you no longer need a particular function parameter, you
-would change the signature so it doesn’t include the unused parameter. Ignoring
-a function parameter can be especially useful in cases when, for example,
-you’re implementing a trait when you need a certain type signature but the
-function body in your implementation doesn’t need one of the parameters. You
-then avoid getting a compiler warning about unused function parameters, as you
-would if you used a name instead.
+Di mayoritas kasus saat Anda udah tidak butuh suatu parameter fungsi tertentu lagi, 
+seharusnya Anda sekalian aja ngubah _signature_-nya supaya dia tidak nyertain 
+parameter yang tidak terpakai itu. Mengabaikan sebuah parameter fungsi bisa sangat 
+berguna banget di kasus-kasus di mana, misalnya, Anda lagi mengimplementasikan 
+sebuah trait saat Anda diwajibkan buat punya _type signature_ yang spesifik tapi 
+isi fungsinya (function body) di implementasi Anda sama sekali tidak butuh salah satu 
+parameternya. Dengan melakukan itu Anda bisa terhindar dari dapat peringatan (warning) 
+_compiler_ tentang parameter fungsi yang tidak terpakai (unused function parameters), 
+yang mana peringatan itu bakal muncul kalau seandainya Anda malah memakai sebuah nama.
 
 <a id="ignoring-parts-of-a-value-with-a-nested-_"></a>
 
-#### Parts of a Value with a Nested `_`
+#### Mengabaikan Bagian-bagian dari Sebuah Nilai Memakai `_` yang Bersarang (Nested)
 
-We can also use `_` inside another pattern to ignore just part of a value, for
-example, when we want to test for only part of a value but have no use for the
-other parts in the corresponding code we want to run. Listing 19-18 shows code
-responsible for managing a setting’s value. The business requirements are that
-the user should not be allowed to overwrite an existing customization of a
-setting but can unset the setting and give it a value if it is currently unset.
+Kita juga bisa memakai `_` di dalam _pattern_ lain buat cuma ngabaiin sebagian 
+dari sebuah nilai, misalnya, pas kita cuma pengen ngetes sebagian dari sebuah 
+nilai tapi tidak punya alasan apa pun buat memakai bagian-bagian lainnya di dalam 
+kode korespondensinya yang mau kita jalanin. Listing 19-18 nunjukin kode yang 
+bertanggung jawab buat mengelola nilai dari suatu pengaturan (setting). Persyaratan 
+bisnisnya adalah _user_ tidak boleh ngubah (overwrite) penyesuaian (customization) 
+yang udah ada pada suatu _setting_, tapi _user_ boleh aja menghapus (_unset_) 
+_setting_ tersebut lalu ngasih dia nilai baru kalau _setting_ tersebut saat itu 
+lagi kosong (unset).
 
-<Listing number="19-18" caption="Using an underscore within patterns that match `Some` variants when we don’t need to use the value inside the `Some`">
+<Listing number="19-18" caption="Memakai garis bawah di dalam _patterns_ yang nyocokin varian `Some` pas kita tidak perlu buat memakai nilai di dalam `Some` tersebut">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-18/src/main.rs:here}}
@@ -316,22 +349,22 @@ setting but can unset the setting and give it a value if it is currently unset.
 
 </Listing>
 
-This code will print `Can't overwrite an existing customized value` and then
-`setting is Some(5)`. In the first match arm, we don’t need to match on or use
-the values inside either `Some` variant, but we do need to test for the case
-when `setting_value` and `new_setting_value` are the `Some` variant. In that
-case, we print the reason for not changing `setting_value`, and it doesn’t get
-changed.
+Kode ini bakal mencetak `Can't overwrite an existing customized value` dan terus 
+`setting is Some(5)`. Di match arm yang pertama, kita tidak perlu mencocokkan atau 
+memakai nilai-nilai yang ada di dalam masing-masing varian `Some`, tapi kita beneran 
+perlu buat ngetes kasus di mana `setting_value` dan `new_setting_value` dua-duanya 
+adalah varian `Some`. Di kasus itu, kita mencetak alasan kenapa kita tidak 
+mengubah `setting_value`, dan nilainya emang tidak jadi diubah.
 
-In all other cases (if either `setting_value` or `new_setting_value` is `None`)
-expressed by the `_` pattern in the second arm, we want to allow
-`new_setting_value` to become `setting_value`.
+Di semua kasus lainnya (kalau entah `setting_value` atau `new_setting_value` itu `None`) 
+yang diekspresikan sama _pattern_ `_` di arm yang kedua, kita pengen ngebolehin 
+`new_setting_value` buat ngegantiin (become) `setting_value`.
 
-We can also use underscores in multiple places within one pattern to ignore
-particular values. Listing 19-19 shows an example of ignoring the second and
-fourth values in a tuple of five items.
+Kita juga bisa memakai garis bawah di banyak tempat di dalam satu _pattern_ tunggal 
+buat ngabaiin beberapa nilai tertentu. Listing 19-19 nunjukin sebuah contoh gimana 
+caranya ngabaiin nilai kedua dan keempat di dalam sebuah tuple yang isinya ada lima item.
 
-<Listing number="19-19" caption="Ignoring multiple parts of a tuple">
+<Listing number="19-19" caption="Mengabaikan beberapa bagian dari sebuah tuple">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-19/src/main.rs:here}}
@@ -339,24 +372,27 @@ fourth values in a tuple of five items.
 
 </Listing>
 
-This code will print `Some numbers: 2, 8, 32`, and the values `4` and `16` will
-be ignored.
+Kode ini bakal mencetak `Some numbers: 2, 8, 32`, dan nilai `4` dan `16` bakal 
+diabaikan.
 
 <!-- Old link, do not remove -->
 
 <a id="ignoring-an-unused-variable-by-starting-its-name-with-_"></a>
 
-#### An Unused Variable by Starting Its Name with `_`
+#### Mengabaikan Variabel yang Tidak Terpakai dengan Mengawali Namanya Memakai `_`
 
-If you create a variable but don’t use it anywhere, Rust will usually issue a
-warning because an unused variable could be a bug. However, sometimes it’s
-useful to be able to create a variable you won’t use yet, such as when you’re
-prototyping or just starting a project. In this situation, you can tell Rust
-not to warn you about the unused variable by starting the name of the variable
-with an underscore. In Listing 19-20, we create two unused variables, but when
-we compile this code, we should only get a warning about one of them.
+Kalau Anda membikin sebuah variabel tapi tidak pernah memakannya di mana pun, Rust 
+biasanya bakal mengeluarkan peringatan (warning) karena variabel yang tidak 
+terpakai itu bisa aja merupakan sebuah _bug_. Namun, kadang-kadang itu kepake 
+banget buat bisa bikin sebuah variabel yang belum mau Anda pakai sekarang, kayak 
+pas Anda lagi nge-prototipe (_prototyping_) atau pas lagi memulai sebuah project. 
+Di situasi ini, Anda bisa ngasih tahu Rust supaya tidak ngasih peringatan ke 
+Anda soal variabel yang tidak terpakai dengan ngawalin nama variabelnya pakai 
+sebuah garis bawah (underscore). Di Listing 19-20, kita bikin dua variabel 
+yang tidak dipakai, tapi pas kita mengompilasi kode ini, kita harusnya cuma bakal 
+dapat satu peringatan aja tentang salah satunya.
 
-<Listing number="19-20" file-name="src/main.rs" caption="Starting a variable name with an underscore to avoid getting unused variable warnings">
+<Listing number="19-20" file-name="src/main.rs" caption="Mengawali nama variabel dengan garis bawah buat ngehindarin peringatan variabel yang tidak terpakai">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-20/src/main.rs}}
@@ -364,15 +400,16 @@ we compile this code, we should only get a warning about one of them.
 
 </Listing>
 
-Here, we get a warning about not using the variable `y`, but we don’t get a
-warning about not using `_x`.
+Di sini, kita dapat satu peringatan karena tidak memakai variabel `y`, tapi kita 
+tidak dapat peringatan apa pun soal tidak memakai `_x`.
 
-Note that there is a subtle difference between using only `_` and using a name
-that starts with an underscore. The syntax `_x` still binds the value to the
-variable, whereas `_` doesn’t bind at all. To show a case where this
-distinction matters, Listing 19-21 will provide us with an error.
+Perhatikan bahwa ada sedikit perbedaan yang halus (subtle difference) antara memakai 
+`_` sendirian dan memakai nama yang diawali dengan sebuah garis bawah. Sintaks 
+`_x` itu tetap mengikat (binds) nilainya ke variabel tersebut, sementara `_` 
+tidak mengikat nilai itu sama sekali. Buat nunjukin di mana letak kasus yang mana 
+perbedaan ini jadi penting, Listing 19-21 bakal ngasih kita sebuah error.
 
-<Listing number="19-21" caption="An unused variable starting with an underscore still binds the value, which might take ownership of the value.">
+<Listing number="19-21" caption="Sebuah variabel yang tidak terpakai dan diawali dengan sebuah garis bawah itu tetap mengikat nilainya, yang mana bisa aja ngambil kepemilikan (ownership) dari nilai tersebut.">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-21/src/main.rs:here}}
@@ -380,12 +417,13 @@ distinction matters, Listing 19-21 will provide us with an error.
 
 </Listing>
 
-We’ll receive an error because the `s` value will still be moved into `_s`,
-which prevents us from using `s` again. However, using the underscore by itself
-doesn’t ever bind to the value. Listing 19-22 will compile without any errors
-because `s` doesn’t get moved into `_`.
+Kita bakal nerima sebuah error karena nilai `s` tersebut bakal tetep aja di-_move_ 
+(dipindahkan) ke dalam `_s`, yang mana mencegah kita dari memakai `s` lagi 
+setelah itu. Namun, memakai garis bawah itu sendiri aja tidak pernah mengikat (bind) 
+ke nilainya. Listing 19-22 bakal berhasil di-compile tanpa error apa pun karena `s` 
+tidak dipindahkan (moved) ke dalam `_`.
 
-<Listing number="19-22" caption="Using an underscore does not bind the value.">
+<Listing number="19-22" caption="Memakai sebuah garis bawah aja tidak bakal mengikat nilainya.">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-22/src/main.rs:here}}
@@ -393,21 +431,23 @@ because `s` doesn’t get moved into `_`.
 
 </Listing>
 
-This code works just fine because we never bind `s` to anything; it isn’t moved.
+Kode ini bisa jalan dengan lancar karena kita bener-bener tidak pernah mengikat 
+`s` ke mana pun; dia tidak dipindahkan.
 
 <a id="ignoring-remaining-parts-of-a-value-with-"></a>
 
-#### Remaining Parts of a Value with `..`
+#### Mengabaikan Sisa Bagian dari Sebuah Nilai Memakai `..`
 
-With values that have many parts, we can use the `..` syntax to use specific
-parts and ignore the rest, avoiding the need to list underscores for each
-ignored value. The `..` pattern ignores any parts of a value that we haven’t
-explicitly matched in the rest of the pattern. In Listing 19-23, we have a
-`Point` struct that holds a coordinate in three-dimensional space. In the
-`match` expression, we want to operate only on the `x` coordinate and ignore
-the values in the `y` and `z` fields.
+Buat nilai-nilai yang punya banyak bagian, kita bisa memakai sintaks `..` buat 
+cuma memakai bagian-bagian yang spesifik aja lalu ngabaiin sisanya, sehingga 
+kita bisa menghindari nulisin garis bawah buat setiap nilai yang mau kita 
+abaikan. _Pattern_ `..` mengabaikan bagian mana pun dari sebuah nilai yang belum 
+kita cocokkan (matched) secara eksplisit di sisa _pattern_ tersebut. Di Listing 19-23, 
+kita punya struct `Point` yang memegang titik koordinat di ruang tiga dimensi 
+(three-dimensional space). Di dalam ekspresi `match`, kita cuma mau beroperasi pada 
+koordinat `x` doang dan ngabaiin nilai-nilai yang ada di field `y` dan `z`.
 
-<Listing number="19-23" caption="Ignoring all fields of a `Point` except for `x` by using `..`">
+<Listing number="19-23" caption="Mengabaikan semua field dari `Point` kecuali buat `x` dengan memakai `..`">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-23/src/main.rs:here}}
@@ -415,15 +455,15 @@ the values in the `y` and `z` fields.
 
 </Listing>
 
-We list the `x` value and then just include the `..` pattern. This is quicker
-than having to list `y: _` and `z: _`, particularly when we’re working with
-structs that have lots of fields in situations where only one or two fields are
-relevant.
+Kita nyebutin nilai `x` lalu setelah itu kita cuma masukin _pattern_ `..` aja. 
+Ini jauh lebih cepet daripada kita harus nulisin `y: _` dan `z: _`, terutama 
+pas kita lagi ngerjain structs yang punya banyak banget field di mana cuma ada satu 
+atau dua field doang yang relevan buat kita.
 
-The syntax `..` will expand to as many values as it needs to be. Listing 19-24
-shows how to use `..` with a tuple.
+Sintaks `..` ini bakal melebar (expand) ke seberapa banyak pun nilai yang dibutuhin. 
+Listing 19-24 nunjukin gimana cara memakai `..` bareng sebuah tuple.
 
-<Listing number="19-24" file-name="src/main.rs" caption="Matching only the first and last values in a tuple and ignoring all other values">
+<Listing number="19-24" file-name="src/main.rs" caption="Cuma mencocokkan nilai yang pertama dan yang terakhir dari sebuah tuple dan mengabaikan semua nilai-nilai lainnya">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-24/src/main.rs}}
@@ -431,15 +471,17 @@ shows how to use `..` with a tuple.
 
 </Listing>
 
-In this code, the first and last values are matched with `first` and `last`.
-The `..` will match and ignore everything in the middle.
+Di kode ini, nilai yang pertama dan yang terakhir bakal dicocokkan dengan `first` 
+dan `last`. `..` itu bakal nyocokin dan lalu ngabaiin semua hal yang ada di 
+tengah-tengah mereka berdua.
 
-However, using `..` must be unambiguous. If it is unclear which values are
-intended for matching and which should be ignored, Rust will give us an error.
-Listing 19-25 shows an example of using `..` ambiguously, so it will not
-compile.
+Namun, pemakaian `..` itu harus tidak ambigu (unambiguous). Kalau sampai tidak 
+jelas nilai-nilai yang mana aja yang ditujukan buat dicocokin dan nilai yang 
+mana yang seharusnya diabaikan, Rust bakal ngasih kita sebuah error. Listing 
+19-25 nunjukin sebuah contoh dari pemakaian `..` secara ambigu, jadi dia tidak 
+bakal bisa di-compile.
 
-<Listing number="19-25" file-name="src/main.rs" caption="An attempt to use `..` in an ambiguous way">
+<Listing number="19-25" file-name="src/main.rs" caption="Sebuah percobaan buat memakai `..` dengan cara yang ambigu">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-25/src/main.rs}}
@@ -447,33 +489,37 @@ compile.
 
 </Listing>
 
-When we compile this example, we get this error:
+Pas kita men-compile contoh ini, kita dapet error ini:
 
 ```console
 {{#include ../listings/ch19-patterns-and-matching/listing-19-25/output.txt}}
 ```
 
-It’s impossible for Rust to determine how many values in the tuple to ignore
-before matching a value with `second` and then how many further values to
-ignore thereafter. This code could mean that we want to ignore `2`, bind
-`second` to `4`, and then ignore `8`, `16`, and `32`; or that we want to ignore
-`2` and `4`, bind `second` to `8`, and then ignore `16` and `32`; and so forth.
-The variable name `second` doesn’t mean anything special to Rust, so we get a
-compiler error because using `..` in two places like this is ambiguous.
+Mustahil bagi Rust buat nentuin seberapa banyak nilai di dalam tuple tersebut 
+yang harus diabaikan sebelum dia mencocokkan sebuah nilai dengan `second` lalu 
+berapa banyak lagi nilai selanjutnya yang harus diabaikan setelahnya. Kode ini bisa 
+aja berarti kalau kita mau ngabaiin `2`, mengikat `second` ke `4`, dan terus 
+ngabaiin `8`, `16`, dan `32`; atau bisa juga berarti kalau kita mau ngabaiin `2` dan 
+`4`, mengikat `second` ke `8`, dan lalu ngabaiin `16` dan `32`; dan seterusnya 
+(and so forth). Nama variabel `second` itu tidak punya arti khusus apa-apa buat Rust, 
+jadi kita dapet error _compiler_ karena memakai `..` di dua tempat kayak gini itu 
+ambigu.
 
-### Extra Conditionals with Match Guards
+### Kondisional Tambahan Memakai Match Guards
 
-A _match guard_ is an additional `if` condition, specified after the pattern in
-a `match` arm, that must also match for that arm to be chosen. Match guards are
-useful for expressing more complex ideas than a pattern alone allows. Note,
-however, that they are only available in `match` expressions, not `if let` or
-`while let` expressions.
+Sebuah _match guard_ adalah tambahan kondisi `if`, yang ditentukan setelah _pattern_ 
+di dalam sebuah lengan (arm) `match`, yang wajib dicocokkan juga supaya arm tersebut 
+bisa dipilih. Match guards ini berguna buat mengekspresikan ide-ide yang lebih 
+kompleks daripada apa yang bisa diizinkan sama sebuah _pattern_ sendirian. Namun, 
+perhatikan bahwa mereka itu cuma tersedia di dalam ekspresi `match`, bukan di 
+ekspresi `if let` atau `while let`.
 
-The condition can use variables created in the pattern. Listing 19-26 shows a
-`match` where the first arm has the pattern `Some(x)` and also has a match
-guard of `if x % 2 == 0` (which will be `true` if the number is even).
+Kondisi tersebut bisa memakai variabel yang dibikin di dalam _pattern_-nya. Listing 
+19-26 nunjukin sebuah `match` di mana arm pertamanya punya _pattern_ `Some(x)` 
+dan juga punya sebuah match guard `if x % 2 == 0` (yang bakal jadi `true` kalau 
+angkanya itu bilangan genap).
 
-<Listing number="19-26" caption="Adding a match guard to a pattern">
+<Listing number="19-26" caption="Nambahin sebuah match guard ke dalam sebuah pattern">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-26/src/main.rs:here}}
@@ -481,29 +527,34 @@ guard of `if x % 2 == 0` (which will be `true` if the number is even).
 
 </Listing>
 
-This example will print `The number 4 is even`. When `num` is compared to the
-pattern in the first arm, it matches because `Some(4)` matches `Some(x)`. Then
-the match guard checks whether the remainder of dividing `x` by 2 is equal to
-0, and because it is, the first arm is selected.
+Contoh ini bakal mencetak `The number 4 is even`. Pas `num` dibandingkan dengan 
+_pattern_ di arm yang pertama, dia cocok karena `Some(4)` cocok dengan `Some(x)`. 
+Terus si match guard mengecek apakah sisa dari ngebagi `x` dengan 2 itu sama 
+dengan 0, dan karena emang bener, arm yang pertama itu pun dipilih.
 
-If `num` had been `Some(5)` instead, the match guard in the first arm would
-have been `false` because the remainder of 5 divided by 2 is 1, which is not
-equal to 0. Rust would then go to the second arm, which would match because the
-second arm doesn’t have a match guard and therefore matches any `Some` variant.
+Kalau seandainya `num` tadi adalah `Some(5)`, si match guard di arm pertama 
+bakal jadi `false` karena sisa pembagian 5 dengan 2 itu adalah 1, yang mana tidak 
+sama dengan 0. Rust terus bakal lanjut ke arm yang kedua, yang mana bakal cocok 
+karena arm yang kedua itu tidak punya match guard dan makanya dia cocok buat varian 
+`Some` yang mana aja.
 
-There is no way to express the `if x % 2 == 0` condition within a pattern, so
-the match guard gives us the ability to express this logic. The downside of
-this additional expressiveness is that the compiler doesn’t try to check for
-exhaustiveness when match guard expressions are involved.
+Tidak ada cara buat mengekspresikan kondisi `if x % 2 == 0` di dalam sebuah 
+_pattern_ secara langsung, jadi match guard ngasih kita kemampuan buat bisa 
+mengekspresikan logika ini. Kekurangan dari penambahan fungsionalitas ekspresi 
+(expressiveness) ekstra ini adalah kalau _compiler_ tidak bakal mencoba buat 
+mengecek kelengkapannya (exhaustiveness) saat ada ekspresi-ekspresi match guard yang 
+dilibatkan.
 
-In Listing 19-11, we mentioned that we could use match guards to solve our
-pattern-shadowing problem. Recall that we created a new variable inside the
-pattern in the `match` expression instead of using the variable outside the
-`match`. That new variable meant we couldn’t test against the value of the
-outer variable. Listing 19-27 shows how we can use a match guard to fix this
-problem.
+Di Listing 19-11, kita sempat menyebutkan kalau kita bisa memakai match guards 
+buat nyelesein masalah tertimpanya variabel (pattern-shadowing problem) yang 
+kita alami. Ingat kembali kalau waktu itu kita membikin sebuah variabel baru di 
+dalam _pattern_ di ekspresi `match`-nya ketimbang memakai variabel yang udah ada di 
+luar `match`. Variabel yang baru itu berarti kalau kita tidak bisa lagi melakukan 
+pengetesan terhadap (test against) nilai dari variabel yang ada di luar itu. 
+Listing 19-27 nunjukin gimana caranya kita bisa memakai sebuah match guard buat 
+memperbaiki masalah ini.
 
-<Listing number="19-27" file-name="src/main.rs" caption="Using a match guard to test for equality with an outer variable">
+<Listing number="19-27" file-name="src/main.rs" caption="Memakai match guard buat ngetes kesamaan (equality) dengan sebuah variabel di luar">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-27/src/main.rs}}
@@ -511,26 +562,28 @@ problem.
 
 </Listing>
 
-This code will now print `Default case, x = Some(5)`. The pattern in the second
-match arm doesn’t introduce a new variable `y` that would shadow the outer `y`,
-meaning we can use the outer `y` in the match guard. Instead of specifying the
-pattern as `Some(y)`, which would have shadowed the outer `y`, we specify
-`Some(n)`. This creates a new variable `n` that doesn’t shadow anything because
-there is no `n` variable outside the `match`.
+Kode ini sekarang bakal mencetak `Default case, x = Some(5)`. _Pattern_ di arm 
+match yang kedua tidak memperkenalkan sebuah variabel baru `y` yang mana bakal 
+menimpa `y` yang ada di luar, yang berarti kita bisa memakai `y` luar tersebut di 
+dalam match guard-nya. Ketimbang menentukan _pattern_-nya sebagai `Some(y)`, yang mana 
+bakal menimpa `y` luar, kita menentukannya sebagai `Some(n)`. Ini membikin 
+sebuah variabel baru `n` yang tidak menimpa apa pun karena tidak ada variabel 
+`n` di luar `match`.
 
-The match guard `if n == y` is not a pattern and therefore doesn’t introduce new
-variables. This `y` _is_ the outer `y` rather than a new `y` shadowing it, and
-we can look for a value that has the same value as the outer `y` by comparing
-`n` to `y`.
+Match guard `if n == y` itu bukanlah sebuah _pattern_ dan makanya dia tidak 
+memperkenalkan variabel baru apa pun. `y` ini _adalah_ si `y` luar ketimbang 
+sebuah `y` baru yang menimpanya, dan kita bisa nyari-nyari sebuah nilai yang punya 
+nilai yang sama kayak si `y` luar tersebut dengan membandingkan `n` ke `y`.
 
-You can also use the _or_ operator `|` in a match guard to specify multiple
-patterns; the match guard condition will apply to all the patterns. Listing
-19-28 shows the precedence when combining a pattern that uses `|` with a match
-guard. The important part of this example is that the `if y` match guard
-applies to `4`, `5`, _and_ `6`, even though it might look like `if y` only
-applies to `6`.
+Anda juga bisa memakai operator _or_ `|` di dalam sebuah match guard buat 
+menentukan lebih dari satu _patterns_; di mana kondisi dari match guard tersebut 
+bakal berlaku buat kesemua _patterns_-nya. Listing 19-28 nunjukin hierarki (precedence) 
+saat ngegabungin sebuah _pattern_ yang memakai `|` dengan sebuah match guard. Bagian 
+yang penting dari contoh ini adalah bahwa si match guard `if y` ini berlaku buat 
+`4`, `5`, _dan_ `6`, biarpun dia mungkin kelihatannya kayak si `if y` ini cuma 
+berlaku buat `6` doang.
 
-<Listing number="19-28" caption="Combining multiple patterns with a match guard">
+<Listing number="19-28" caption="Menggabungkan banyak patterns sekaligus dengan sebuah match guard">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-28/src/main.rs:here}}
@@ -538,39 +591,40 @@ applies to `6`.
 
 </Listing>
 
-The match condition states that the arm only matches if the value of `x` is
-equal to `4`, `5`, or `6` _and_ if `y` is `true`. When this code runs, the
-pattern of the first arm matches because `x` is `4`, but the match guard `if y`
-is `false`, so the first arm is not chosen. The code moves on to the second
-arm, which does match, and this program prints `no`. The reason is that the
-`if` condition applies to the whole pattern `4 | 5 | 6`, not just to the last
-value `6`. In other words, the precedence of a match guard in relation to a
-pattern behaves like this:
+Kondisi _match_ itu menyatakan kalau arm tersebut cuma cocok kalau nilainya `x` 
+itu sama dengan `4`, `5`, atau `6` _dan_ kalau `y` itu `true`. Pas kode ini jalan, 
+_pattern_ dari arm pertama cocok karena `x` adalah `4`, tapi si match guard `if y` 
+itu `false`, jadi arm pertama tersebut tidak dipilih. Kodenya lanjut ke arm yang 
+kedua, yang mana emang cocok, dan program ini mencetak `no`. Alasannya adalah 
+karena kondisi `if` tersebut berlaku buat keseluruhan _pattern_ `4 | 5 | 6`, bukan 
+cuma buat nilai terakhir `6` aja. Dengan kata lain, hierarki dari sebuah match 
+guard sehubungan dengan (in relation to) sebuah _pattern_ itu berperilaku kayak gini:
 
 ```text
 (4 | 5 | 6) if y => ...
 ```
 
-rather than this:
+bukannya kayak gini:
 
 ```text
 4 | 5 | (6 if y) => ...
 ```
 
-After running the code, the precedence behavior is evident: if the match guard
-were applied only to the final value in the list of values specified using the
-`|` operator, the arm would have matched and the program would have printed
-`yes`.
+Setelah menjalankan kodenya, perilaku hierarki ini terlihat dengan jelas: kalau 
+match guard tersebut cuma diterapin ke nilai terakhir di daftar nilai yang ditentukan 
+memakai operator `|`, arm tersebut pasti udah cocok dan programnya pasti bakal 
+mencetak `yes`.
 
-### `@` Bindings
+### Binding Memakai `@`
 
-The _at_ operator `@` lets us create a variable that holds a value at the same
-time we’re testing that value for a pattern match. In Listing 19-29, we want to
-test that a `Message::Hello` `id` field is within the range `3..=7`. We also
-want to bind the value to the variable `id` so we can use it in the code
-associated with the arm.
+Operator _at_ `@` membiarkan kita membikin sebuah variabel yang nampung sebuah nilai 
+di waktu yang bersamaan dengan kita melakukan tes apakah nilai tersebut cocok sama 
+suatu _pattern_ (pattern match) atau tidak. Di Listing 19-29, kita mau ngetes apakah 
+field `id` di sebuah `Message::Hello` itu ada di dalam rentang `3..=7`. Kita juga mau 
+mengikat (bind) nilai tersebut ke variabel `id` supaya kita bisa memakainya di 
+dalam kode yang diasosiasikan (associated) sama arm tersebut.
 
-<Listing number="19-29" caption="Using `@` to bind to a value in a pattern while also testing it">
+<Listing number="19-29" caption="Memakai `@` buat nge-bind ke suatu nilai di dalam sebuah pattern sembari juga ngetes (testing) nilai tersebut">
 
 ```rust
 {{#rustdoc_include ../listings/ch19-patterns-and-matching/listing-19-29/src/main.rs:here}}
@@ -578,33 +632,41 @@ associated with the arm.
 
 </Listing>
 
-This example will print `Found an id in range: 5`. By specifying `id @` before
-the range `3..=7`, we’re capturing whatever value matched the range in a
-variable named `id` while also testing that the value matched the range pattern.
+Contoh ini bakal mencetak `Found an id in range: 5`. Dengan menspesifikasikan `id @` 
+sebelum rentang `3..=7`, kita lagi menangkap nilai apa pun yang sekiranya cocok sama 
+rentang itu lalu menaruhnya ke dalam sebuah variabel bernama `id`, dan sembari ngelakuin 
+itu kita juga ngetes kalau nilai tersebut cocok sama _pattern_ rentang (range 
+pattern) tersebut.
 
-In the second arm, where we only have a range specified in the pattern, the code
-associated with the arm doesn’t have a variable that contains the actual value
-of the `id` field. The `id` field’s value could have been 10, 11, or 12, but
-the code that goes with that pattern doesn’t know which it is. The pattern code
-isn’t able to use the value from the `id` field, because we haven’t saved the
-`id` value in a variable.
+Di arm yang kedua, di mana kita cuma menentukan sebuah rentang doang di dalam 
+_pattern_-nya, kode yang terkait sama arm tersebut tidak punya variabel yang berisi 
+nilai asli dari field `id` itu. Nilai dari field `id` itu bisa jadi adalah 10, 11, 
+atau 12, tapi kode yang ada di arm _pattern_ tersebut sama sekali tidak tahu nilainya yang 
+mana. Kode di _pattern_ tersebut tidak mampu buat memakai nilai dari field `id`, karena 
+kita belum nyimpan nilai `id` tersebut di sebuah variabel.
 
-In the last arm, where we’ve specified a variable without a range, we do have
-the value available to use in the arm’s code in a variable named `id`. The
-reason is that we’ve used the struct field shorthand syntax. But we haven’t
-applied any test to the value in the `id` field in this arm, as we did with the
-first two arms: any value would match this pattern.
+Di arm terakhir, di mana kita udah menyebutkan sebuah variabel tanpa adanya rentang, 
+kita bener-bener punya akses ke nilai yang bisa kita pakai di dalam kode untuk arm 
+tersebut di sebuah variabel bernama `id`. Alasannya adalah karena kita udah memakai 
+sintaks _shorthand_ field struct. Tapi kita belum menerapkan tes (test) apa-apa ke 
+dalam nilai di field `id` ini buat arm yang ini, seperti yang udah kita lakuin di dua 
+arm pertama: nilai apa pun bakal cocok dengan _pattern_ ini.
 
-Using `@` lets us test a value and save it in a variable within one pattern.
+Memakai `@` ngasih kita kemampuan buat ngetes sebuah nilai dan kemudian menyimpannya 
+ke dalam sebuah variabel dalam satu _pattern_ tunggal.
 
-## Summary
+## Ringkasan
 
-Rust’s patterns are very useful in distinguishing between different kinds of
-data. When used in `match` expressions, Rust ensures your patterns cover every
-possible value, or your program won’t compile. Patterns in `let` statements and
-function parameters make those constructs more useful, enabling the
-destructuring of values into smaller parts and assigning those parts to
-variables. We can create simple or complex patterns to suit our needs.
+_Patterns_ di Rust itu sangat berguna banget dalam membedakan (distinguishing) berbagai 
+macam jenis data yang berbeda. Pas mereka dipakai di dalam ekspresi `match`, Rust 
+memastikan kalau _patterns_ Anda udah mencakup semua kemungkinan nilai yang ada, 
+karena kalau tidak program Anda tidak bakal bisa di-compile. _Patterns_ yang ada di 
+dalam statement `let` dan parameter fungsi ngebikin konstruk-konstruk tersebut jadi 
+jauh lebih berguna, memungkinkan proses memecah (_destructuring_) sebuah nilai jadi 
+bagian-bagian yang lebih kecil dan meng-assign (ngasih nilai ke) bagian-bagian itu 
+ke dalam berbagai variabel. Kita bisa bikin _patterns_ yang simpel maupun yang 
+kompleks buat menyesuaikan dengan apa yang kita butuhkan.
 
-Next, for the penultimate chapter of the book, we’ll look at some advanced
-aspects of a variety of Rust’s features.
+Berikutnya, untuk bab kedua dari akhir buku ini, kita bakal melihat 
+beberapa aspek tingkat mahir (advanced aspects) dari berbagai macam fitur 
+yang ada di Rust.

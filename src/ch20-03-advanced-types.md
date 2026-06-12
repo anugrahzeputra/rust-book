@@ -1,76 +1,83 @@
-## Advanced Types
+## Advanced Types (Tipe Tingkat Lanjut)
 
-The Rust type system has some features that we’ve so far mentioned but haven’t
-yet discussed. We’ll start by discussing newtypes in general as we examine why
-newtypes are useful as types. Then we’ll move on to type aliases, a feature
-similar to newtypes but with slightly different semantics. We’ll also discuss
-the `!` type and dynamically sized types.
+Sistem tipe Rust punya beberapa fitur yang sejauh ini cuma kita sebut aja 
+tapi belum beneran kita bahas. Kita bakal mulai dengan membahas _newtypes_ 
+secara umum sembari kita menyelidiki kenapa _newtypes_ itu berguna sebagai tipe. 
+Terus kita bakal lanjut ke _type aliases_ (alias tipe), sebuah fitur yang mirip sama 
+_newtypes_ tapi punya semantik yang agak beda. Kita juga bakal ngebahas 
+tipe `!` dan _dynamically sized types_ (tipe-tipe yang berukuran dinamis).
 
-### Using the Newtype Pattern for Type Safety and Abstraction
+### Memakai Newtype Pattern Buat Keamanan Tipe dan Abstraksi
 
-This section assumes you’ve read the earlier section [“Using the Newtype Pattern
-to Implement External Traits”][using-the-newtype-pattern]<!--
-ignore -->. The newtype pattern is also useful for tasks beyond those we’ve
-discussed so far, including statically enforcing that values are never confused
-and indicating the units of a value. You saw an example of using newtypes to
-indicate units in Listing 20-16: recall that the `Millimeters` and `Meters`
-structs wrapped `u32` values in a newtype. If we wrote a function with a
-parameter of type `Millimeters`, we wouldn’t be able to compile a program that
-accidentally tried to call that function with a value of type `Meters` or a
-plain `u32`.
+Bagian ini berasumsi kalau Anda udah ngebaca bagian sebelumnya [“Memakai 
+Newtype Pattern Buat Mengimplementasikan External Traits”][using-the-newtype-pattern]. 
+_Newtype pattern_ (pola tipe baru) ini juga berguna buat hal-hal di luar dari 
+apa yang udah kita bahas sejauh ini, termasuk secara statis menegakkan 
+aturan supaya nilai-nilai tidak pernah tertukar (confused) dan buat 
+mengindikasikan satuan (units) dari sebuah nilai. Anda udah lihat contoh 
+pemakaian _newtypes_ buat mengindikasikan satuan di Listing 20-16: ingat 
+kembali kalau struct `Millimeters` dan `Meters` itu membungkus nilai `u32` 
+di dalam sebuah _newtype_. Kalau kita nulis sebuah fungsi dengan parameter 
+bertipe `Millimeters`, kita tidak bakal bisa men-compile program yang 
+secara tidak sengaja mencoba memanggil fungsi tersebut dengan nilai 
+bertipe `Meters` atau nilai `u32` biasa.
 
-We can also use the newtype pattern to abstract away some implementation
-details of a type: the new type can expose a public API that is different from
-the API of the private inner type.
+Kita juga bisa memakai _newtype pattern_ buat mengabstraksi beberapa detail 
+implementasi dari sebuah tipe: si tipe baru tersebut bisa ngekspos API _public_ 
+yang mana berbeda dari API milik tipe _private_ yang ada di dalamnya.
 
-Newtypes can also hide internal implementation. For example, we could provide a
-`People` type to wrap a `HashMap<i32, String>` that stores a person’s ID
-associated with their name. Code using `People` would only interact with the
-public API we provide, such as a method to add a name string to the `People`
-collection; that code wouldn’t need to know that we assign an `i32` ID to names
-internally. The newtype pattern is a lightweight way to achieve encapsulation to
-hide implementation details, which we discussed in [“Encapsulation that Hides
-Implementation Details”][encapsulation-that-hides-implementation-details]<!--
-ignore --> in Chapter 18.
+_Newtypes_ juga bisa menyembunyikan (hide) implementasi internal. Misalnya, kita 
+bisa aja menyediakan tipe `People` buat ngebungkus sebuah `HashMap<i32, String>` 
+yang nyimpan ID seseorang yang diasosiasikan dengan nama mereka. Kode yang 
+memakai `People` cuma bakal berinteraksi sama API _public_ yang kita sediakan, 
+kayak method buat nambahin string nama ke dalam koleksi `People`; kode tersebut 
+tidak perlu tahu kalau kita secara internal menaruh nilai ID `i32` ke nama-nama 
+tersebut. _Newtype pattern_ adalah cara yang ringan (lightweight) buat mendapatkan 
+enkapsulasi (encapsulation) guna menyembunyikan detail implementasi, yang mana 
+udah kita bahas di [“Encapsulation (Enkapsulasi) yang Menyembunyikan Detail 
+Implementasi”][encapsulation-that-hides-implementation-details] di Bab 18.
 
-### Creating Type Synonyms with Type Aliases
+### Membikin Sinonim Tipe dengan Type Aliases
 
-Rust provides the ability to declare a _type alias_ to give an existing type
-another name. For this we use the `type` keyword. For example, we can create
-the alias `Kilometers` to `i32` like so:
+Rust menyediakan kemampuan buat mendeklarasikan _type alias_ (alias tipe) buat 
+ngasih nama lain ke tipe yang udah ada. Buat hal ini kita memakai keyword 
+`type`. Misalnya, kita bisa membikin alias `Kilometers` buat `i32` kayak gini:
 
 ```rust
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:here}}
 ```
 
-Now the alias `Kilometers` is a _synonym_ for `i32`; unlike the `Millimeters`
-and `Meters` types we created in Listing 20-16, `Kilometers` is not a separate,
-new type. Values that have the type `Kilometers` will be treated the same as
-values of type `i32`:
+Sekarang si alias `Kilometers` adalah sebuah _sinonim_ buat `i32`; beda sama tipe 
+`Millimeters` dan `Meters` yang kita bikin di Listing 20-16, `Kilometers` 
+bukanlah sebuah tipe baru yang terpisah. Nilai-nilai yang punya tipe `Kilometers` 
+bakal diperlakukan persis sama kayak nilai-nilai bertipe `i32`:
 
 ```rust
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-04-kilometers-alias/src/main.rs:there}}
 ```
 
-Because `Kilometers` and `i32` are the same type, we can add values of both
-types and we can pass `Kilometers` values to functions that take `i32`
-parameters. However, using this method, we don’t get the type-checking benefits
-that we get from the newtype pattern discussed earlier. In other words, if we
-mix up `Kilometers` and `i32` values somewhere, the compiler will not give us
-an error.
+Karena `Kilometers` dan `i32` adalah tipe yang sama, kita bisa menjumlahkan nilai 
+dari kedua tipe tersebut dan kita bisa ngoper nilai `Kilometers` ke fungsi-fungsi 
+yang menerima parameter `i32`. Namun, dengan memakai cara ini, kita tidak 
+dapetin keuntungan pengecekan tipe (type-checking benefits) yang kita dapat 
+dari pemakaian _newtype pattern_ yang dibahas sebelumnya. Dengan kata lain, kalau kita 
+nyampur aduk (mix up) nilai `Kilometers` dan `i32` di suatu tempat, _compiler_ 
+tidak bakal ngasih kita error.
 
-The main use case for type synonyms is to reduce repetition. For example, we
-might have a lengthy type like this:
+Kegunaan utama (_main use case_) dari sinonim tipe adalah buat ngurangin 
+pengulangan (repetition). Misalnya, kita mungkin punya tipe yang panjang banget 
+kayak gini:
 
 ```rust,ignore
 Box<dyn Fn() + Send + 'static>
 ```
 
-Writing this lengthy type in function signatures and as type annotations all
-over the code can be tiresome and error prone. Imagine having a project full of
-code like that in Listing 20-25.
+Nulisin tipe sepanjang ini di _signatures_ fungsi dan sebagai anotasi tipe di 
+semua tempat di kode kita bisa jadi melelahkan dan rentan kena error (error 
+prone). Bayangin aja kalau punya sebuah project yang penuh dengan kode kayak 
+yang ada di Listing 20-25.
 
-<Listing number="20-25" caption="Using a long type in many places">
+<Listing number="20-25" caption="Memakai tipe yang panjang di banyak tempat">
 
 ```rust
 {{#rustdoc_include ../listings/ch20-advanced-features/listing-20-25/src/main.rs:here}}
@@ -78,11 +85,12 @@ code like that in Listing 20-25.
 
 </Listing>
 
-A type alias makes this code more manageable by reducing the repetition. In
-Listing 20-26, we’ve introduced an alias named `Thunk` for the verbose type and
-can replace all uses of the type with the shorter alias `Thunk`.
+Sebuah _type alias_ ngebikin kode ini jadi lebih gampang dikelola dengan cara 
+ngurangin pengulangan tersebut. Di Listing 20-26, kita memperkenalkan sebuah 
+alias bernama `Thunk` buat tipe yang panjang (_verbose_) tadi dan bisa mengganti 
+semua penggunaan dari tipe tersebut dengan si alias `Thunk` yang lebih pendek.
 
-<Listing number="20-26" caption="Introducing a type alias, `Thunk`, to reduce repetition">
+<Listing number="20-26" caption="Memperkenalkan sebuah _type alias_, `Thunk`, buat ngurangin pengulangan">
 
 ```rust
 {{#rustdoc_include ../listings/ch20-advanced-features/listing-20-26/src/main.rs:here}}
@@ -90,64 +98,69 @@ can replace all uses of the type with the shorter alias `Thunk`.
 
 </Listing>
 
-This code is much easier to read and write! Choosing a meaningful name for a
-type alias can help communicate your intent as well (_thunk_ is a word for code
-to be evaluated at a later time, so it’s an appropriate name for a closure that
-gets stored).
+Kode ini jadinya jauh lebih gampang buat dibaca dan ditulis! Milih nama yang punya 
+makna (_meaningful_) buat _type alias_ juga bisa ngebantu ngomunikasiin niat (intent) 
+Anda (_thunk_ adalah kata yang artinya kode yang bakal dievaluasi nanti, jadi ini 
+adalah nama yang tepat buat sebuah _closure_ yang lagi disimpen).
 
-Type aliases are also commonly used with the `Result<T, E>` type for reducing
-repetition. Consider the `std::io` module in the standard library. I/O
-operations often return a `Result<T, E>` to handle situations when operations
-fail to work. This library has a `std::io::Error` struct that represents all
-possible I/O errors. Many of the functions in `std::io` will be returning
-`Result<T, E>` where the `E` is `std::io::Error`, such as these functions in
-the `Write` trait:
+_Type aliases_ juga umumnya dipakai bareng sama tipe `Result<T, E>` buat ngurangin 
+pengulangan. Coba perhatikan modul `std::io` di _standard library_. Operasi 
+I/O (input/output) itu sering banget mengembalikan `Result<T, E>` buat menangani 
+situasi-situasi pas operasinya gagal jalan. Library ini punya struct 
+`std::io::Error` yang merepresentasikan semua kemungkinan error I/O. Banyak 
+dari fungsi-fungsi di `std::io` bakal mengembalikan `Result<T, E>` di mana si 
+`E` itu adalah `std::io::Error`, kayak misalnya fungsi-fungsi di dalam trait 
+`Write` ini:
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-05-write-trait/src/lib.rs}}
 ```
 
-The `Result<..., Error>` is repeated a lot. As such, `std::io` has this type
-alias declaration:
+Bagian `Result<..., Error>` itu diulang berkali-kali. Karena hal itu, `std::io` 
+punya deklarasi _type alias_ berikut ini:
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:here}}
 ```
 
-Because this declaration is in the `std::io` module, we can use the fully
-qualified alias `std::io::Result<T>`; that is, a `Result<T, E>` with the `E`
-filled in as `std::io::Error`. The `Write` trait function signatures end up
-looking like this:
+Karena deklarasi ini ada di dalam modul `std::io`, kita bisa memakai alias 
+_fully qualified_ `std::io::Result<T>`; yakni, sebuah `Result<T, E>` dengan si 
+`E` udah diisi sebagai `std::io::Error`. Alhasil, _signatures_ dari fungsi-fungsi di 
+trait `Write` kelihatannya jadi kayak gini deh:
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-06-result-alias/src/lib.rs:there}}
 ```
 
-The type alias helps in two ways: it makes code easier to write _and_ it gives
-us a consistent interface across all of `std::io`. Because it’s an alias, it’s
-just another `Result<T, E>`, which means we can use any methods that work on
-`Result<T, E>` with it, as well as special syntax like the `?` operator.
+_Type alias_ ini sangat ngebantu dalam dua hal: dia ngebikin kodenya jadi 
+lebih gampang ditulis _dan_ dia ngasih kita sebuah antarmuka (_interface_) yang 
+konsisten di seluruh `std::io`. Karena dia cuma sebuah alias, dia sebenernya 
+cuma `Result<T, E>` biasa aja, yang berarti kita bisa memakai method apa pun yang 
+berlaku buat `Result<T, E>` dengannya, sekaligus juga sintaks-sintaks spesial 
+kayak operator `?`.
 
-### The Never Type That Never Returns
+### Tipe Never (Tak Pernah) yang Tidak Pernah Mengembalikan Apa-apa
 
-Rust has a special type named `!` that’s known in type theory lingo as the
-_empty type_ because it has no values. We prefer to call it the _never type_
-because it stands in the place of the return type when a function will never
-return. Here is an example:
+Rust punya tipe spesial bernama `!` yang mana dikenal di bahasa gaulnya 
+teori tipe sebagai _empty type_ (tipe kosong) karena dia tidak punya nilai 
+sama sekali. Kita lebih milih menyebutnya _never type_ (tipe tak pernah) 
+karena dia berdiri menempati posisi dari tipe kembalian saat sebuah fungsi tidak 
+bakal pernah mengembalikan (never return) apa-apa. Ini adalah contohnya:
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-07-never-type/src/lib.rs:here}}
 ```
 
-This code is read as “the function `bar` returns never.” Functions that return
-never are called _diverging functions_. We can’t create values of the type `!`,
-so `bar` can never possibly return.
+Kode ini dibaca sebagai “fungsi `bar` mengembalikan never.” Fungsi-fungsi yang 
+mengembalikan `never` disebut _diverging functions_ (fungsi divergen). Kita 
+tidak bisa membikin nilai dari tipe `!`, jadi si `bar` itu emang tidak mungkin bisa 
+mengembalikan apa-apa.
 
-But what use is a type you can never create values for? Recall the code from
-Listing 2-5, part of the number-guessing game; we’ve reproduced a bit of it
-here in Listing 20-27.
+Tapi apa gunanya coba sebuah tipe yang Anda tidak bisa bikin nilai buatnya sama sekali? 
+Ingat kembali kode dari Listing 2-5, bagian dari game tebak angka; kita udah 
+menaruh sedikit dari bagian kode itu di sini di Listing 20-27.
 
-<Listing number="20-27" caption="A `match` with an arm that ends in `continue`">
+<Listing number="20-27" caption="Sebuah `match` dengan _arm_ yang berakhir dengan `continue`">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-05/src/main.rs:ch19}}
@@ -155,138 +168,150 @@ here in Listing 20-27.
 
 </Listing>
 
-At the time, we skipped over some details in this code. In [“The `match`
-Control Flow Construct”][the-match-control-flow-construct]<!-- ignore --> in
-Chapter 6, we discussed that `match` arms must all return the same type. So,
-for example, the following code doesn’t work:
+Waktu itu, kita mengabaikan (skipped over) beberapa detail di kode ini. Di 
+[“Konstruk Control Flow `match`”][the-match-control-flow-construct] di Bab 6, kita ngebahas 
+kalau *match arms* itu semuanya wajib mengembalikan tipe yang sama. Jadi, misalnya, 
+kode berikut ini tidak bakal jalan:
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-08-match-arms-different-types/src/main.rs:here}}
 ```
 
-The type of `guess` in this code would have to be an integer _and_ a string,
-and Rust requires that `guess` have only one type. So what does `continue`
-return? How were we allowed to return a `u32` from one arm and have another arm
-that ends with `continue` in Listing 20-27?
+Tipe dari `guess` di kode ini wajib jadi integer _sekaligus_ string, padahal 
+Rust mewajibkan `guess` buat cuma punya satu tipe aja. Terus si `continue` itu 
+ngembaliin apa dong? Gimana ceritanya kita dibolehin buat mengembalikan nilai 
+`u32` dari satu arm padahal punya arm lain yang berakhir dengan `continue` di 
+Listing 20-27?
 
-As you might have guessed, `continue` has a `!` value. That is, when Rust
-computes the type of `guess`, it looks at both match arms, the former with a
-value of `u32` and the latter with a `!` value. Because `!` can never have a
-value, Rust decides that the type of `guess` is `u32`.
+Seperti yang mungkin udah Anda tebak, `continue` itu punya nilai `!`. Yaitu, saat 
+Rust menghitung tipe dari `guess`, dia ngelihat ke kedua _match arms_ tersebut, 
+yang pertama bernilai `u32` dan yang terakhir (latter) bernilai `!`. Karena `!` 
+itu tidak bakal pernah bisa punya nilai, Rust memutuskan kalau tipe dari `guess` 
+adalah `u32`.
 
-The formal way of describing this behavior is that expressions of type `!` can
-be coerced into any other type. We’re allowed to end this `match` arm with
-`continue` because `continue` doesn’t return a value; instead, it moves control
-back to the top of the loop, so in the `Err` case, we never assign a value to
-`guess`.
+Cara formal buat mendeskripsikan perilaku ini adalah bahwa ekspresi-ekspresi dari 
+tipe `!` itu bisa dipaksa (_coerced_) menjadi tipe apa aja yang lain. Kita 
+dibolehin buat mengakhiri _match arm_ ini dengan `continue` karena `continue` 
+tidak mengembalikan nilai; sebagai gantinya, dia memindahkan kontrol kembali ke 
+atas perulangannya (loop), jadi di kasus `Err`, kita tidak pernah memberikan 
+sebuah nilai ke `guess`.
 
-The never type is useful with the `panic!` macro as well. Recall the `unwrap`
-function that we call on `Option<T>` values to produce a value or panic with
-this definition:
+Tipe _never_ ini berguna bareng macro `panic!` juga. Ingat kembali fungsi 
+`unwrap` yang kita panggil pada nilai-nilai `Option<T>` buat menghasilkan nilai atau 
+jadi _panic_ dengan definisi seperti ini:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-09-unwrap-definition/src/lib.rs:here}}
 ```
 
-In this code, the same thing happens as in the `match` in Listing 20-27: Rust
-sees that `val` has the type `T` and `panic!` has the type `!`, so the result
-of the overall `match` expression is `T`. This code works because `panic!`
-doesn’t produce a value; it ends the program. In the `None` case, we won’t be
-returning a value from `unwrap`, so this code is valid.
+Di kode ini, hal yang sama juga terjadi kayak yang ada di `match` di Listing 
+20-27: Rust ngelihat kalau `val` punya tipe `T` dan `panic!` punya tipe `!`, jadi 
+hasil dari keseluruhan ekspresi `match` tersebut adalah `T`. Kode ini bisa jalan 
+karena `panic!` tidak memproduksi sebuah nilai; dia sekadar memberhentikan programnya. 
+Di kasus `None`, kita tidak bakal mengembalikan nilai dari `unwrap`, jadi kode ini 
+itu valid.
 
-One final expression that has the type `!` is a `loop`:
+Satu ekspresi terakhir yang punya tipe `!` adalah sebuah `loop`:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-10-loop-returns-never/src/main.rs:here}}
 ```
 
-Here, the loop never ends, so `!` is the value of the expression. However, this
-wouldn’t be true if we included a `break`, because the loop would terminate
-when it got to the `break`.
+Di sini, _loop_ tersebut tidak pernah berakhir, jadi nilai dari ekspresinya 
+adalah `!`. Namun, ini tidak bakal benar kalau seandainya kita memasukkan 
+`break`, karena perulangan tersebut bakal dihentikan pas dia mencapai `break`.
 
-### Dynamically Sized Types and the `Sized` Trait
+### Tipe yang Berukuran Dinamis (Dynamically Sized Types) dan Trait `Sized`
 
-Rust needs to know certain details about its types, such as how much space to
-allocate for a value of a particular type. This leaves one corner of its type
-system a little confusing at first: the concept of _dynamically sized types_.
-Sometimes referred to as _DSTs_ or _unsized types_, these types let us write
-code using values whose size we can know only at runtime.
+Rust perlu tahu detail-detail tertentu tentang tipe-tipenya, seperti seberapa 
+banyak ruang yang harus dialokasikan buat menyimpan sebuah nilai dari suatu tipe 
+tertentu. Hal ini ngebikin satu sudut dari sistem tipenya jadi agak membingungkan 
+pada awalnya: yakni konsep tentang _dynamically sized types_ (tipe-tipe yang 
+berukuran dinamis). Terkadang disebut juga sebagai _DSTs_ atau _unsized types_ (tipe 
+tanpa ukuran tetap), tipe-tipe ini membiarkan kita nulis kode yang memakai 
+nilai-nilai yang mana ukurannya cuma bisa kita ketahui saat _runtime_.
 
-Let’s dig into the details of a dynamically sized type called `str`, which
-we’ve been using throughout the book. That’s right, not `&str`, but `str` on
-its own, is a DST. In many cases, such as when storing text entered by a user,
-we can’t know how long the string is until runtime. That means we can’t create
-a variable of type `str`, nor can we take an argument of type `str`. Consider
-the following code, which does not work:
+Mari kita gali detail-detail dari sebuah tipe berukuran dinamis yang bernama 
+`str`, yang mana udah sering kita pakai di sepanjang buku ini. Yap benar, bukan 
+`&str`, melainkan si `str` itu sendiri sendirian, dia itu adalah sebuah DST. Di 
+banyak kasus, kayak misalnya pas lagi nyimpan teks yang dimasukkan (entered) oleh 
+_user_, kita tidak bisa tahu seberapa panjang string-nya tersebut sampai _runtime_ 
+datang. Itu artinya kita tidak bisa membikin variabel dengan tipe `str`, dan 
+kita juga tidak bisa memakai argumen bertipe `str`. Coba perhatikan kode berikut, 
+yang mana tidak bisa jalan:
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-11-cant-create-str/src/main.rs:here}}
 ```
 
-Rust needs to know how much memory to allocate for any value of a particular
-type, and all values of a type must use the same amount of memory. If Rust
-allowed us to write this code, these two `str` values would need to take up the
-same amount of space. But they have different lengths: `s1` needs 12 bytes of
-storage and `s2` needs 15. This is why it’s not possible to create a variable
-holding a dynamically sized type.
+Rust butuh tahu seberapa besar memori yang harus dialokasikan buat nilai apa pun 
+dari suatu tipe tertentu, dan semua nilai dari sebuah tipe itu diwajibkan buat 
+memakai jumlah ruang memori yang sama. Kalau seandainya Rust ngebolehin kita buat 
+nulis kode ini, kedua nilai `str` ini pasti dituntut buat menempati jumlah ruang 
+yang sama besarnya. Tapi kenyataannya panjang mereka itu berbeda: `s1` butuh 
+penyimpanan memori 12 *bytes* dan `s2` butuh 15 *bytes*. Inilah alasan kenapa mustahil 
+buat ngebikin variabel yang menampung sebuah tipe berukuran dinamis secara langsung.
 
-So what do we do? In this case, you already know the answer: we make the types
-of `s1` and `s2` a `&str` rather than a `str`. Recall from [“String
-Slices”][string-slices]<!-- ignore --> in Chapter 4 that the slice data
-structure just stores the starting position and the length of the slice. So,
-although a `&T` is a single value that stores the memory address of where the
-`T` is located, a `&str` is _two_ values: the address of the `str` and its
-length. As such, we can know the size of a `&str` value at compile time: it’s
-twice the length of a `usize`. That is, we always know the size of a `&str`, no
-matter how long the string it refers to is. In general, this is the way in which
-dynamically sized types are used in Rust: they have an extra bit of metadata
-that stores the size of the dynamic information. The golden rule of dynamically
-sized types is that we must always put values of dynamically sized types behind
-a pointer of some kind.
+Terus apa yang harus kita lakuin? Di kasus ini, Anda sebenarnya udah tahu jawabannya: 
+kita harus membikin tipe dari `s1` dan `s2` menjadi `&str` ketimbang `str`. 
+Ingat kembali dari [“String Slices”][string-slices] di Bab 4 kalau struktur data _slice_ 
+itu cuma sekadar menyimpan posisi awal (_starting position_) dan panjang (_length_) 
+dari _slice_ tersebut. Jadi, meskipun `&T` itu merupakan sebuah nilai tunggal 
+yang menyimpan alamat memori di mana si `T` tersebut berada, sebuah `&str` itu 
+terdiri dari *dua* nilai: alamat dari si `str` dan juga panjangnya. Alhasil, kita bisa 
+tahu pasti ukuran dari nilai sebuah `&str` saat _compile time_: ukurannya adalah dua 
+kali panjang dari sebuah `usize`. Yaitu, kita selalu tahu ukuran dari sebuah `&str`, 
+tidak peduli sepanjang apa pun string yang ia tunjuk tersebut. Secara umum, beginilah 
+cara gimana tipe berukuran dinamis itu dipakai di Rust: mereka punya ekstra sedikit 
+metadata yang menyimpan besaran ukuran dari informasi yang dinamis tersebut. Aturan 
+emas (_golden rule_) dari tipe yang berukuran dinamis adalah kita harus selalu menaruh 
+nilai-nilai dari tipe berukuran dinamis tersebut di balik (_behind_) semacam _pointer_.
 
-We can combine `str` with all kinds of pointers: for example, `Box<str>` or
-`Rc<str>`. In fact, you’ve seen this before but with a different dynamically
-sized type: traits. Every trait is a dynamically sized type we can refer to by
-using the name of the trait. In [“Using Trait Objects to Abstract over Shared
-Behavior”][using-trait-objects-to-abstract-over-shared-behavior]<!-- ignore -->
-in Chapter 18, we mentioned that to use traits as trait objects, we must put
-them behind a pointer, such as `&dyn Trait` or `Box<dyn Trait>` (`Rc<dyn
-Trait>` would work too).
+Kita bisa menggabungkan `str` dengan berbagai macam pointer lainnya: misalnya, 
+`Box<str>` atau `Rc<str>`. Faktanya, Anda udah ngelihat hal ini sebelumnya tapi dengan 
+tipe berukuran dinamis yang berbeda: yakni, traits. Setiap trait itu adalah sebuah 
+tipe berukuran dinamis yang bisa kita rujuk (refer to) dengan memakai nama dari 
+trait tersebut. Di [“Memakai Trait Objects Buat Mengabstraksi Perilaku Bersama”][using-trait-objects-to-abstract-over-shared-behavior] 
+di Bab 18, kita nyebutin kalau buat memakai traits sebagai _trait objects_, kita wajib 
+menaruh mereka di balik sebuah _pointer_, seperti `&dyn Trait` atau `Box<dyn Trait>` 
+(`Rc<dyn Trait>` juga bisa jalan kok).
 
-To work with DSTs, Rust provides the `Sized` trait to determine whether or not
-a type’s size is known at compile time. This trait is automatically implemented
-for everything whose size is known at compile time. In addition, Rust
-implicitly adds a bound on `Sized` to every generic function. That is, a
-generic function definition like this:
+Buat bekerja sama DSTs, Rust menyediakan trait `Sized` buat menentukan apakah 
+ukuran dari suatu tipe itu bisa diketahui saat _compile time_ atau tidak. Trait ini 
+secara otomatis diimplementasikan buat semua hal yang ukurannya bisa diketahui 
+saat _compile time_. Selain itu, Rust juga secara implisit menambahkan batasan (bound) 
+pada `Sized` ke semua fungsi generik (generic function). Yakni, definisi fungsi 
+generik kayak gini:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-12-generic-fn-definition/src/lib.rs}}
 ```
 
-is actually treated as though we had written this:
+itu sebenernya bakal diperlakukan seolah-olah kita udah nulis kayak gini:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-13-generic-implicit-sized-bound/src/lib.rs}}
 ```
 
-By default, generic functions will work only on types that have a known size at
-compile time. However, you can use the following special syntax to relax this
-restriction:
+Secara bawaan (_by default_), fungsi-fungsi generik cuma bakal bekerja buat tipe-tipe 
+yang ukurannya itu diketahui pas _compile time_. Namun, Anda bisa memakai sintaks 
+spesial berikut ini buat mengendurkan (_relax_) pembatasan tersebut:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-14-generic-maybe-sized/src/lib.rs}}
 ```
 
-A trait bound on `?Sized` means “`T` may or may not be `Sized`” and this
-notation overrides the default that generic types must have a known size at
-compile time. The `?Trait` syntax with this meaning is only available for
-`Sized`, not any other traits.
+Batasan _trait bound_ pada `?Sized` itu artinya “`T` mungkin `Sized` atau mungkin juga 
+tidak `Sized`” dan notasi ini menimpa (overrides) sifat bawaan yang mewajibkan 
+tipe generik buat harus punya ukuran yang udah diketahui pas _compile time_. 
+Sintaks `?Trait` yang punya arti (meaning) kayak gini cuma tersedia buat trait 
+`Sized` doang ya, tidak bisa dipakai buat traits yang lain.
 
-Also note that we switched the type of the `t` parameter from `T` to `&T`.
-Because the type might not be `Sized`, we need to use it behind some kind of
-pointer. In this case, we’ve chosen a reference.
+Perhatikan juga kalau kita juga mengubah tipe dari parameter `t` dari asalnya `T` 
+menjadi `&T`. Karena tipe tersebut bisa aja tidak `Sized`, kita wajib memakai dia di 
+balik semacam _pointer_. Di kasus ini, kita milih buat memakai _reference_ (referensi).
 
-Next, we’ll talk about functions and closures!
+Berikutnya, kita bakal membahas tentang fungsi dan _closures_!
 
 [encapsulation-that-hides-implementation-details]: ch18-01-what-is-oo.html#encapsulation-that-hides-implementation-details
 [string-slices]: ch04-03-slices.html#string-slices

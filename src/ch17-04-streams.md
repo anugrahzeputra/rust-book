@@ -1,35 +1,37 @@
-## Streams: Futures in Sequence
+## Streams: Futures Berurutan
 
 <!-- Old headings. Do not remove or links may break. -->
 
 <a id="streams"></a>
 
-So far in this chapter, we’ve mostly stuck to individual futures. The one big
-exception was the async channel we used. Recall how we used the receiver for our
-async channel earlier in this chapter in the [“Message
-Passing”][17-02-messages]<!-- ignore --> section. The async `recv` method
-produces a sequence of items over time. This is an instance of a much more
-general pattern known as a _stream_.
+Sejauh ini di bab ini, kita sebagian besar berkutat dengan _futures_ individual. 
+Satu pengecualian besarnya adalah _async channel_ yang kita pakai. Ingat 
+kembali gimana kita memakai _receiver_ untuk _async channel_ kita sebelumnya di bab 
+ini di bagian [“Menghitung Naik di Dua Task Memakai Message Passing”][17-02-messages]. 
+Method _async_ `recv` menghasilkan serangkaian item seiring berjalannya waktu 
+(over time). Ini adalah sebuah instance dari pola yang jauh lebih umum yang 
+dikenal sebagai sebuah _stream_ (aliran).
 
-We saw a sequence of items back in Chapter 13, when we looked at the `Iterator`
-trait in [The Iterator Trait and the `next` Method][iterator-trait]<!-- ignore
---> section, but there are two differences between iterators and the async
-channel receiver. The first difference is time: iterators are synchronous, while
-the channel receiver is asynchronous. The second is the API. When working
-directly with `Iterator`, we call its synchronous `next` method. With the
-`trpl::Receiver` stream in particular, we called an asynchronous `recv` method
-instead. Otherwise, these APIs feel very similar, and that similarity
-isn’t a coincidence. A stream is like an asynchronous form of iteration. Whereas
-the `trpl::Receiver` specifically waits to receive messages, though, the
-general-purpose stream API is much broader: it provides the next item the
-way `Iterator` does, but asynchronously.
+Kita udah melihat serangkaian item dulu di Bab 13, waktu kita ngebahas trait 
+`Iterator` di bagian [Trait Iterator dan Method `next`][iterator-trait], tapi ada 
+dua perbedaan antara _iterators_ dan _async channel receiver_. Perbedaan pertama 
+adalah waktu: _iterators_ itu sinkron (synchronous), sementara _channel receiver_ 
+itu asinkron (asynchronous). Perbedaan kedua adalah API-nya. Pas bekerja secara 
+langsung pakai `Iterator`, kita memanggil method `next`-nya yang sinkron. Buat 
+_stream_ `trpl::Receiver` secara khusus, kita malah memanggil method `recv` 
+yang asinkron. Selain dari itu, API-API ini terasa mirip banget, dan 
+kemiripan ini bukanlah sebuah kebetulan. Sebuah _stream_ itu ibarat bentuk 
+iterasi _asynchronous_. Kalau `trpl::Receiver` itu spesifik nunggu buat 
+menerima pesan, API _stream_ yang bertujuan umum (general-purpose) itu jauh 
+lebih luas: dia menyediakan item berikutnya (next item) seperti yang dilakukan 
+sama `Iterator`, tapi secara _asynchronous_.
 
-The similarity between iterators and streams in Rust means we can actually
-create a stream from any iterator. As with an iterator, we can work with a
-stream by calling its `next` method and then awaiting the output, as in Listing
-17-30.
+Kemiripan antara _iterators_ dan _streams_ di Rust berarti kita sebenarnya 
+bisa membikin sebuah _stream_ dari _iterator_ mana pun. Sama kayak _iterator_, 
+kita bisa bekerja pakai sebuah _stream_ dengan memanggil method `next`-nya 
+lalu nge-_await_ hasil outputnya, kayak di Listing 17-30.
 
-<Listing number="17-30" caption="Creating a stream from an iterator and printing its values" file-name="src/main.rs">
+<Listing number="17-30" caption="Membikin sebuah stream dari sebuah iterator lalu mencetak nilai-nilainya" file-name="src/main.rs">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-30/src/main.rs:stream}}
@@ -37,13 +39,14 @@ stream by calling its `next` method and then awaiting the output, as in Listing
 
 </Listing>
 
-We start with an array of numbers, which we convert to an iterator and then call
-`map` on to double all the values. Then we convert the iterator into a stream
-using the `trpl::stream_from_iter` function. Next, we loop over the items in the
-stream as they arrive with the `while let` loop.
+Kita mulai dengan sebuah *array* angka, yang mana kita konversi jadi 
+sebuah _iterator_ lalu memanggil `map` padanya buat ngegandain (double) semua 
+nilainya. Terus kita konversi _iterator_ itu jadi sebuah _stream_ dengan 
+memakai fungsi `trpl::stream_from_iter`. Berikutnya, kita *loop* ngelewatin 
+item-item di dalam _stream_ saat mereka berdatangan memakai _loop_ `while let`.
 
-Unfortunately, when we try to run the code, it doesn’t compile, but instead it
-reports that there’s no `next` method available:
+Sayangnya, pas kita nyoba jalanin kodenya, dia tidak bisa di-compile, malah 
+dia ngelaporin kalau tidak ada method `next` yang tersedia:
 
 <!-- manual-regeneration
 cd listings/ch17-async-await/listing-17-30
@@ -77,25 +80,28 @@ help: there is a method `try_next` with a similar name
    |                                        ~~~~~~~~
 ```
 
-As this output explains, the reason for the compiler error is that we need the
-right trait in scope to be able to use the `next` method. Given our discussion
-so far, you might reasonably expect that trait to be `Stream`, but it’s actually
-`StreamExt`. Short for _extension_, `Ext` is a common pattern in the
-Rust community for extending one trait with another.
+Seperti yang dijelasin sama output ini, alasan error _compiler_ ini terjadi 
+adalah karena kita butuh trait yang tepat di dalam *scope* supaya bisa 
+memakai method `next`. Berdasarkan pembahasan kita sejauh ini, Anda mungkin 
+dengan masuk akal (reasonably) berharap kalau trait itu adalah `Stream`, tapi 
+sebenarnya dia itu `StreamExt`. Singkatan dari _extension_ (ekstensi), `Ext` 
+adalah pola yang umum di komunitas Rust buat memperluas satu trait dengan 
+trait lainnya.
 
-We’ll explain the `Stream` and `StreamExt` traits in a bit more detail at the
-end of the chapter, but for now all you need to know is that the `Stream` trait
-defines a low-level interface that effectively combines the `Iterator` and
-`Future` traits. `StreamExt` supplies a higher-level set of APIs on top of
-`Stream`, including the `next` method as well as other utility methods similar
-to those provided by the `Iterator` trait. `Stream` and `StreamExt` are not yet
-part of Rust’s standard library, but most ecosystem crates use the same
-definition.
+Kita bakal ngejelasin trait `Stream` dan `StreamExt` lebih detail sedikit 
+lagi di akhir bab ini, tapi buat sekarang yang perlu Anda tahu adalah 
+bahwa trait `Stream` mendefinisikan *interface* tingkat rendah (low-level) 
+yang secara efektif menggabungkan trait `Iterator` dan `Future`. `StreamExt` 
+menyediakan sekumpulan API tingkat lebih tinggi di atas `Stream`, termasuk 
+method `next` dan method-method utilitas lainnya yang mirip sama yang 
+disediakan oleh trait `Iterator`. `Stream` dan `StreamExt` belum jadi 
+bagian dari _standard library_ Rust, tapi sebagian besar *crates* di 
+ekosistem Rust memakai definisi yang sama.
 
-The fix to the compiler error is to add a `use` statement for `trpl::StreamExt`,
-as in Listing 17-31.
+Perbaikan buat error _compiler_ ini adalah menambahkan sebuah *statement* 
+`use` buat `trpl::StreamExt`, seperti di Listing 17-31.
 
-<Listing number="17-31" caption="Successfully using an iterator as the basis for a stream" file-name="src/main.rs">
+<Listing number="17-31" caption="Sukses memakai sebuah iterator sebagai basis buat sebuah stream" file-name="src/main.rs">
 
 ```rust
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-31/src/main.rs:all}}
@@ -103,12 +109,13 @@ as in Listing 17-31.
 
 </Listing>
 
-With all those pieces put together, this code works the way we want! What’s
-more, now that we have `StreamExt` in scope, we can use all of its utility
-methods, just as with iterators. For example, in Listing 17-32, we use the
-`filter` method to filter out everything but multiples of three and five.
+Dengan semua kepingan itu digabungin, kode ini berjalan sesuai yang kita mau! 
+Bahkan, karena kita udah punya `StreamExt` di dalam *scope*, kita bisa 
+memakai semua method utilitasnya, persis kayak sama _iterators_. Misalnya, 
+di Listing 17-32, kita memakai method `filter` buat menyaring (filter out) 
+semua angka kecuali yang merupakan kelipatan tiga dan lima.
 
-<Listing number="17-32" caption="Filtering a stream with the `StreamExt::filter` method" file-name="src/main.rs">
+<Listing number="17-32" caption="Menyaring stream dengan method `StreamExt::filter`" file-name="src/main.rs">
 
 ```rust
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-32/src/main.rs:all}}
@@ -116,26 +123,29 @@ methods, just as with iterators. For example, in Listing 17-32, we use the
 
 </Listing>
 
-Of course, this isn’t very interesting, since we could do the same with normal
-iterators and without any async at all. Let’s look at what
-we can do that _is_ unique to streams.
+Tentu saja, ini tidak terlalu menarik, karena kita bisa ngelakuin hal yang sama 
+pakai _iterators_ biasa tanpa perlu _async_ sama sekali. Mari kita lihat 
+apa yang bisa kita lakuin yang *unik* cuma buat _streams_.
 
-### Composing Streams
+### Menggabungkan (Composing) Streams
 
-Many concepts are naturally represented as streams: items becoming available in
-a queue, chunks of data being pulled incrementally from the filesystem when the
-full data set is too large for the computer’s memory, or data arriving over the
-network over time. Because streams are futures, we can use them with any other
-kind of future and combine them in interesting ways. For example, we can batch
-up events to avoid triggering too many network calls, set timeouts on sequences
-of long-running operations, or throttle user interface events to avoid doing
-needless work.
+Banyak konsep secara natural (naturally) direpresentasikan sebagai _streams_: 
+item-item yang jadi tersedia di dalam antrean (queue), bongkahan-bongkahan data 
+(chunks of data) yang ditarik sedikit-sedikit dari sistem file saat dataset 
+utuhnya terlalu besar buat muat di memori komputer, atau data yang berdatangan 
+lewat jaringan seiring berjalannya waktu. Karena _streams_ adalah _futures_, kita 
+bisa memakai mereka bareng _future_ jenis apa pun lainnya dan ngegabungin mereka 
+pakai cara-cara yang menarik. Misalnya, kita bisa menge-kelompokkan (batch up) 
+beberapa *events* (kejadian) buat menghindari memicu terlalu banyak panggilan 
+jaringan, nge-set *timeouts* pada rentetan operasi yang lambat, atau mengerem 
+(throttle) *events* dari *user interface* (antarmuka pengguna) buat menghindari 
+ngelakuin kerjaan yang tidak perlu.
 
-Let’s start by building a little stream of messages as a stand-in for a stream
-of data we might see from a WebSocket or another real-time communication
-protocol, as shown in Listing 17-33.
+Mari mulai dengan ngebangun sebuah _stream_ pesan kecil-kecilan sebagai 
+pengganti _stream_ data yang mungkin kita lihat dari sebuah WebSocket atau 
+protokol komunikasi *real-time* lainnya, seperti yang ditunjukin di Listing 17-33.
 
-<Listing number="17-33" caption="Using the `rx` receiver as a `ReceiverStream`" file-name="src/main.rs">
+<Listing number="17-33" caption="Memakai _receiver_ `rx` sebagai `ReceiverStream`" file-name="src/main.rs">
 
 ```rust
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-33/src/main.rs:all}}
@@ -143,15 +153,17 @@ protocol, as shown in Listing 17-33.
 
 </Listing>
 
-First, we create a function called `get_messages` that returns `impl Stream<Item
-= String>`. For its implementation, we create an async channel, loop over the
-first 10 letters of the English alphabet, and send them across the channel.
+Pertama, kita membikin sebuah fungsi bernama `get_messages` yang mengembalikan 
+`impl Stream<Item = String>`. Untuk implementasinya, kita membikin sebuah 
+_async channel_, *loop* ngelewatin 10 huruf pertama alfabet Inggris, dan ngirim 
+mereka lewat _channel_ tersebut.
 
-We also use a new type: `ReceiverStream`, which converts the `rx` receiver from
-the `trpl::channel` into a `Stream` with a `next` method. Back in `main`, we use
-a `while let` loop to print all the messages from the stream.
+Kita juga memakai sebuah tipe baru: `ReceiverStream`, yang mengonversi _receiver_ 
+`rx` dari `trpl::channel` menjadi sebuah `Stream` yang punya method `next`. 
+Balik lagi di `main`, kita memakai _loop_ `while let` buat mencetak semua pesan 
+dari _stream_ tersebut.
 
-When we run this code, we get exactly the results we would expect:
+Saat kita menjalankan kode ini, kita dapet hasil persis kayak yang kita harapin:
 
 <!-- Not extracting output because changes to this output aren't significant;
 the changes are likely to be due to the threads running differently rather than
@@ -170,12 +182,13 @@ Message: 'i'
 Message: 'j'
 ```
 
-Again, we could do this with the regular `Receiver` API or even the regular
-`Iterator` API, though, so let’s add a feature that requires streams: adding a
-timeout that applies to every item in the stream, and a delay on the items we
-emit, as shown in Listing 17-34.
+Sekali lagi, kita bisa ngerjain ini pakai API `Receiver` biasa atau bahkan API 
+`Iterator` biasa, jadi mari kita nambahin fitur yang emang butuh _streams_: 
+nambahin *timeout* yang berlaku buat setiap item di dalam _stream_ tersebut, 
+dan sebuah _delay_ (jeda) buat item-item yang kita keluarin (emit), seperti 
+yang ditunjukin di Listing 17-34.
 
-<Listing number="17-34" caption="Using the `StreamExt::timeout` method to set a time limit on the items in a stream" file-name="src/main.rs">
+<Listing number="17-34" caption="Memakai method `StreamExt::timeout` buat ngeset batas waktu buat item-item di dalam sebuah stream" file-name="src/main.rs">
 
 ```rust
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-34/src/main.rs:timeout}}
@@ -183,21 +196,22 @@ emit, as shown in Listing 17-34.
 
 </Listing>
 
-We start by adding a timeout to the stream with the `timeout` method, which
-comes from the `StreamExt` trait. Then we update the body of the `while let`
-loop, because the stream now returns a `Result`. The `Ok` variant indicates a
-message arrived in time; the `Err` variant indicates that the timeout elapsed
-before any message arrived. We `match` on that result and either print the
-message when we receive it successfully or print a notice about the timeout.
-Finally, notice that we pin the messages after applying the timeout to them,
-because the timeout helper produces a stream that needs to be pinned to be
-polled.
+Kita mulai dengan nambahin *timeout* ke _stream_ dengan memakai method `timeout`, 
+yang mana berasal dari trait `StreamExt`. Terus kita meng-update _body_ dari 
+_loop_ `while let`, karena _stream_-nya sekarang mengembalikan sebuah `Result`. 
+Varian `Ok` mengindikasikan ada pesan yang nyampai tepat waktu; varian `Err` 
+mengindikasikan kalau *timeout*-nya keburu abis sebelum ada pesan yang nyampai. 
+Kita ngelakuin `match` pada hasil tersebut dan antara nyetak pesannya saat kita 
+berhasil nerimanya atau nyetak pemberitahuan soal *timeout* itu. Terakhir, 
+perhatikan kalau kita nge-_pin_ pesan-pesan itu setelah nerapin *timeout* 
+kepadanya, karena fungsi pembantu *timeout* ngasilin sebuah _stream_ yang 
+perlu di-_pin_ buat bisa di-_poll_.
 
-However, because there are no delays between messages, this timeout does not
-change the behavior of the program. Let’s add a variable delay to the messages
-we send, as shown in Listing 17-35.
+Namun, karena tidak ada jeda (delays) di antara pesan-pesan tersebut, *timeout* ini 
+tidak mengubah perilaku dari programnya. Mari kita nambahin jeda yang bervariasi 
+ke pesan-pesan yang kita kirim, kayak yang ditunjukin di Listing 17-35.
 
-<Listing number="17-35" caption="Sending messages through `tx` with an async delay without making `get_messages` an async function" file-name="src/main.rs">
+<Listing number="17-35" caption="Mengirim pesan-pesan lewat `tx` dengan jeda async tanpa membikin `get_messages` jadi sebuah fungsi async" file-name="src/main.rs">
 
 ```rust
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-35/src/main.rs:messages}}
@@ -205,36 +219,43 @@ we send, as shown in Listing 17-35.
 
 </Listing>
 
-In `get_messages`, we use the `enumerate` iterator method with the `messages`
-array so that we can get the index of each item we’re sending along with the
-item itself. Then we apply a 100-millisecond delay to even-index items and a
-300-millisecond delay to odd-index items to simulate the different delays we
-might see from a stream of messages in the real world. Because our timeout is
-for 200 milliseconds, this should affect half of the messages.
+Di `get_messages`, kita memakai method _iterator_ `enumerate` dengan *array* 
+`messages` supaya kita bisa dapet indeks dari tiap item yang lagi kita kirim 
+beserta item itu sendiri. Terus kita nerapin jeda 100 milidetik ke item dengan 
+indeks genap (even-index items) dan jeda 300 milidetik ke item dengan indeks 
+ganjil (odd-index items) buat mensimulasikan jeda yang beda-beda yang mungkin 
+kita jumpai dari sebuah _stream_ pesan di dunia nyata. Karena *timeout* kita 
+diset buat 200 milidetik, ini seharusnya memengaruhi separuh dari pesan-pesan 
+tersebut.
 
-To sleep between messages in the `get_messages` function without blocking, we
-need to use async. However, we can’t make `get_messages` itself into an async
-function, because then we’d return a `Future<Output = Stream<Item = String>>`
-instead of a `Stream<Item = String>>`. The caller would have to await
-`get_messages` itself to get access to the stream. But remember: everything in a
-given future happens linearly; concurrency happens _between_ futures. Awaiting
-`get_messages` would require it to send all the messages, including the sleep
-delay between each message, before returning the receiver stream. As a result,
-the timeout would be useless. There would be no delays in the stream itself;
-they would all happen before the stream was even available.
+Buat ngasih jeda (`sleep`) di antara setiap pesan di dalam fungsi `get_messages` 
+tanpa memblokir (blocking), kita harus pakai _async_. Namun, kita tidak bisa 
+ngebikin `get_messages` itu sendiri jadi fungsi _async_, karena kalau gitu 
+kita bakal memulangkan (return) sebuah `Future<Output = Stream<Item = String>>` 
+ketimbang `Stream<Item = String>>`. Si pemanggilnya (caller) bakal harus nge-_await_ 
+`get_messages` itu sendiri buat dapet akses ke _stream_-nya. Tapi inget: semua hal 
+di dalam sebuah _future_ tertentu itu terjadi secara linear; konkurensi terjadi 
+_di antara_ (between) _futures_. Nge-_await_ `get_messages` bakal mewajibkan dia 
+buat ngirim semua pesannya, termasuk nge-_sleep_ jeda di antara tiap pesannya, 
+sebelum dia bisa memulangkan _receiver stream_-nya. Hasilnya, *timeout*-nya bakal 
+jadi tidak berguna. Tidak bakal ada jeda di dalam _stream_ itu sendiri; semuanya 
+udah kelar duluan sebelum _stream_-nya bahkan tersedia.
 
-Instead, we leave `get_messages` as a regular function that returns a stream,
-and we spawn a task to handle the async `sleep` calls.
+Sebagai gantinya, kita membiarkan `get_messages` jadi fungsi biasa yang 
+mengembalikan sebuah _stream_, dan kita membikin (`spawn`) sebuah _task_ buat 
+nangani pemanggilan `sleep` yang _async_ tersebut.
 
-> Note: Calling `spawn_task` in this way works because we already set up our
-> runtime; had we not, it would cause a panic. Other implementations choose
-> different tradeoffs: they might spawn a new runtime and avoid the panic but
-> end up with a bit of extra overhead, or they may simply not provide a
-> standalone way to spawn tasks without reference to a runtime. Make sure you
-> know what tradeoff your runtime has chosen and write your code accordingly!
+> Catatan: Manggil `spawn_task` pakai cara ini bisa jalan karena kita udah 
+> nge-_setup_ _runtime_ kita sebelumnya; seandainya belum, ini bakal menyebabkan 
+> *panic*. Implementasi-implementasi lain milih *tradeoffs* (pertukaran) yang beda: 
+> mereka mungkin membikin _runtime_ baru dan menghindari *panic* tapi malah kena 
+> sedikit _overhead_ tambahan, atau mereka bisa jadi tidak nyediain cara mandiri 
+> (standalone) buat ngebikin _tasks_ tanpa merujuk ke sebuah _runtime_ sama sekali. 
+> Pastikan Anda tahu *tradeoff* apa yang dipilih sama _runtime_ Anda dan tulis kode 
+> Anda sesuai dengan hal itu!
 
-Now our code has a much more interesting result. Between every other pair of
-messages, a `Problem: Elapsed(())` error.
+Sekarang kode kita punya hasil yang jauh lebih menarik. Di sela-sela setiap 
+pasang pesan, muncul error `Problem: Elapsed(())`.
 
 <!-- Not extracting output because changes to this output aren't significant;
 the changes are likely to be due to the threads running differently rather than
@@ -258,27 +279,30 @@ Problem: Elapsed(())
 Message: 'j'
 ```
 
-The timeout doesn’t prevent the messages from arriving in the end. We still get
-all of the original messages, because our channel is _unbounded_: it can hold as
-many messages as we can fit in memory. If the message doesn’t arrive before the
-timeout, our stream handler will account for that, but when it polls the stream
-again, the message may now have arrived.
+*Timeout* tersebut tidak mencegah pesan-pesannya buat nyampai di akhir. Kita 
+tetep dapet semua pesan aslinya, karena _channel_ kita itu sifatnya tidak terbatas 
+(unbounded): dia bisa nampung pesan sebanyak apa pun yang muat di memori kita. 
+Kalau pesannya tidak nyampai sebelum *timeout* abis, _stream handler_ kita 
+bakal nyatet itu, tapi pas dia nge-_poll_ _stream_-nya lagi, pesannya mungkin 
+sekarang udah nyampai.
 
-You can get different behavior if needed by using other kinds of channels or
-other kinds of streams more generally. Let’s see one of those in practice by
-combining a stream of time intervals with this stream of messages.
+Anda bisa dapet perilaku yang beda kalau butuh dengan memakai jenis _channels_ 
+lain atau jenis _streams_ lain pada umumnya. Mari kita lihat salah satunya beraksi 
+dengan ngegabungin sebuah _stream_ yang ngeluarin interval waktu bareng _stream_ 
+pesan ini.
 
-### Merging Streams
+### Menggabungkan (Merging) Streams
 
-First, let’s create another stream, which will emit an item every millisecond if
-we let it run directly. For simplicity, we can use the `sleep` function to send
-a message on a delay and combine it with the same approach we used in
-`get_messages` of creating a stream from a channel. The difference is that this
-time, we’re going to send back the count of intervals that have elapsed, so the
-return type will be `impl Stream<Item = u32>`, and we can call the function
-`get_intervals` (see Listing 17-36).
+Pertama, mari kita bikin _stream_ lain, yang bakal ngeluarin item setiap 
+milidetik kalau kita biarin dia jalan sendiri. Biar gampang, kita bisa pakai 
+fungsi `sleep` buat ngirim pesan setelah _delay_ tertentu dan menggabungkannya 
+pakai pendekatan yang sama kayak yang kita pakai di `get_messages` yaitu dengan 
+bikin sebuah _stream_ dari sebuah _channel_. Bedanya adalah kali ini kita bakal 
+ngirim balik jumlah interval yang udah terlewat, jadi tipe kembaliannya bakal 
+berupa `impl Stream<Item = u32>`, dan kita bisa menamain fungsinya `get_intervals` 
+(lihat Listing 17-36).
 
-<Listing number="17-36" caption="Creating a stream with a counter that will be emitted once every millisecond" file-name="src/main.rs">
+<Listing number="17-36" caption="Membikin sebuah stream yang isinya counter yang bakal dikeluarin sekali setiap milidetik" file-name="src/main.rs">
 
 ```rust
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-36/src/main.rs:intervals}}
@@ -286,22 +310,26 @@ return type will be `impl Stream<Item = u32>`, and we can call the function
 
 </Listing>
 
-We start by defining a `count` in the task. (We could define it outside the
-task, too, but it’s clearer to limit the scope of any given variable.) Then we
-create an infinite loop. Each iteration of the loop asynchronously sleeps for
-one millisecond, increments the count, and then sends it over the channel.
-Because this is all wrapped in the task created by `spawn_task`, all of
-it—including the infinite loop—will get cleaned up along with the runtime.
+Kita mulai dengan mendefinisikan sebuah `count` di dalam _task_ tersebut. (Kita 
+bisa juga sih mendefinisikannya di luar _task_, tapi itu lebih jelas kalau kita 
+mbatasin *scope* dari sebuah variabel.) Terus kita bikin sebuah *infinite loop* 
+(perulangan tanpa henti). Setiap iterasi dari _loop_ tersebut bakal secara 
+_asynchronous_ nge-_sleep_ selama satu milidetik, nambahin jumlah di `count`, dan 
+lalu ngirim jumlah itu lewat _channel_-nya. Karena ini semua dibungkus di dalam 
+_task_ yang dibikin sama `spawn_task`, semuanya—termasuk *infinite loop* tersebut—
+bakal dibersihin (cleaned up) berbarengan sama _runtime_-nya.
 
-This kind of infinite loop, which ends only when the whole runtime gets torn
-down, is fairly common in async Rust: many programs need to keep running
-indefinitely. With async, this doesn’t block anything else, as long as there is
-at least one await point in each iteration through the loop.
+Jenis *infinite loop* yang cuma berhenti pas seluruh _runtime_-nya dibongkar (torn 
+down) ini lumayan umum di Rust _async_: banyak program yang emang butuh buat 
+jalan terus tanpa henti (indefinitely). Dengan _async_, ini tidak bakal nge-blokir 
+hal lain, asalkan ada minimal satu titik _await_ di tiap iterasi yang ngelewatin 
+_loop_ tersebut.
 
-Now, back in our main function’s async block, we can attempt to merge the
-`messages` and `intervals` streams, as shown in Listing 17-37.
+Sekarang, kembali ke dalam blok _async_ di fungsi `main` kita, kita bisa mencoba 
+buat menggabungkan (merge) _stream_ `messages` dan `intervals`, seperti yang 
+ditunjukin di Listing 17-37.
 
-<Listing number="17-37" caption="Attempting to merge the `messages` and `intervals` streams" file-name="src/main.rs">
+<Listing number="17-37" caption="Mencoba buat ngegabungin stream `messages` dan `intervals`" file-name="src/main.rs">
 
 ```rust,ignore,does_not_compile
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-37/src/main.rs:main}}
@@ -309,26 +337,29 @@ Now, back in our main function’s async block, we can attempt to merge the
 
 </Listing>
 
-We start by calling `get_intervals`. Then we merge the `messages` and
-`intervals` streams with the `merge` method, which combines multiple streams
-into one stream that produces items from any of the source streams as soon as
-the items are available, without imposing any particular ordering. Finally, we
-loop over that combined stream instead of over `messages`.
+Kita mulai dengan memanggil `get_intervals`. Terus kita gabungin _stream_ 
+`messages` dan `intervals` pakai method `merge`, yang ngegabungin beberapa 
+_stream_ jadi satu _stream_ yang ngeluarin item-item dari salah satu _stream_ 
+sumbernya sesaat setelah item-item itu tersedia, tanpa maksain urutan (ordering) 
+apa pun secara spesifik. Terakhir, kita *loop* ngelewatin _stream_ gabungan 
+(combined stream) tersebut ketimbang cuma ngelewatin `messages`.
 
-At this point, neither `messages` nor `intervals` needs to be pinned or mutable,
-because both will be combined into the single `merged` stream. However, this
-call to `merge` doesn’t compile! (Neither does the `next` call in the `while
-let` loop, but we’ll come back to that.) This is because the two streams have
-different types. The `messages` stream has the type `Timeout<impl Stream<Item =
-String>>`, where `Timeout` is the type that implements `Stream` for a `timeout`
-call. The `intervals` stream has the type `impl Stream<Item = u32>`. To merge
-these two streams, we need to transform one of them to match the other. We’ll
-rework the intervals stream, because messages is already in the basic format we
-want and has to handle timeout errors (see Listing 17-38).
+Pada titik ini, baik `messages` maupun `intervals` tidak perlu di-_pin_ atau 
+_mutable_, karena keduanya bakal digabung ke dalam satu _stream_ tunggal `merged`. 
+Namun, pemanggilan ke `merge` ini belum bisa di-compile! (Pemanggilan `next` 
+di dalam _loop_ `while let` juga belum, tapi kita bakal balik lagi ke situ.) 
+Ini karena kedua _stream_ itu punya tipe yang berbeda. _Stream_ `messages` 
+punya tipe `Timeout<impl Stream<Item = String>>`, di mana `Timeout` adalah 
+tipe yang mengimplementasikan `Stream` buat panggilan `timeout`. _Stream_ 
+`intervals` punya tipe `impl Stream<Item = u32>`. Buat ngegabungin kedua 
+_streams_ ini, kita perlu mentransformasi (transform) salah satu dari mereka 
+biar cocok sama yang satunya lagi. Kita bakal merombak (rework) _stream_ intervals 
+itu, karena messages udah ada di format dasar yang kita mau dan dia harus nanganin 
+error *timeout* (lihat Listing 17-38).
 
 <!-- We cannot directly test this one, because it never stops. -->
 
-<Listing number="17-38" caption="Aligning the type of the the `intervals` stream with the type of the `messages` stream" file-name="src/main.rs">
+<Listing number="17-38" caption="Menyamakan tipe dari stream `intervals` dengan tipe stream `messages`" file-name="src/main.rs">
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-38/src/main.rs:main}}
@@ -336,17 +367,19 @@ want and has to handle timeout errors (see Listing 17-38).
 
 </Listing>
 
-First, we can use the `map` helper method to transform the `intervals` into a
-string. Second, we need to match the `Timeout` from `messages`. Because we don’t
-actually _want_ a timeout for `intervals`, though, we can just create a timeout
-which is longer than the other durations we are using. Here, we create a
-10-second timeout with `Duration::from_secs(10)`. Finally, we need to make
-`stream` mutable, so that the `while let` loop’s `next` calls can iterate
-through the stream, and pin it so that it’s safe to do so. That gets us _almost_
-to where we need to be. Everything type checks. If you run this, though, there
-will be two problems. First, it will never stop! You’ll need to stop it with
-<span class="keystroke">ctrl-c</span>. Second, the messages from the English
-alphabet will be buried in the midst of all the interval counter messages:
+Pertama, kita bisa memakai method pembantu `map` buat mentransformasi `intervals` 
+jadi sebuah string. Kedua, kita perlu mencocokkannya sama `Timeout` dari `messages`. 
+Karena kita sebenarnya *tidak mau* *timeout* buat `intervals`, kita bisa 
+aja bikin *timeout* yang durasinya lebih lama daripada durasi-durasi lain yang lagi 
+kita pakai. Di sini, kita bikin *timeout* 10 detik pakai `Duration::from_secs(10)`. 
+Terakhir, kita perlu membikin `stream`-nya jadi _mutable_, supaya pemanggilan 
+`next` dari _loop_ `while let` bisa beriterasi melewati _stream_ tersebut, dan 
+nge-_pin_ dia supaya aman buat ngelakuin itu. Kode ini ngebawa kita _hampir_ ke 
+tempat yang kita butuhkan. Semua tipenya udah bener. Tapi kalau Anda menjalankan ini, 
+bakal ada dua masalah. Pertama, dia tidak bakal pernah berhenti! Anda harus 
+menghentikannya pakai <span class="keystroke">ctrl-c</span>. Kedua, pesan-pesan dari 
+abjad bahasa Inggris bakal tenggelam (buried) di tengah-tengah semua pesan *counter* 
+interval:
 
 <!-- Not extracting output because changes to this output aren't significant;
 the changes are likely to be due to the tasks running differently rather than
@@ -364,9 +397,9 @@ Interval: 43
 --snip--
 ```
 
-Listing 17-39 shows one way to solve these last two problems.
+Listing 17-39 nunjukin salah satu cara buat nyelesein dua masalah terakhir ini.
 
-<Listing number="17-39" caption="Using `throttle` and `take` to manage the merged streams" file-name="src/main.rs">
+<Listing number="17-39" caption="Memakai `throttle` dan `take` buat nanganin streams yang digabungkan" file-name="src/main.rs">
 
 ```rust
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-39/src/main.rs:throttle}}
@@ -374,26 +407,30 @@ Listing 17-39 shows one way to solve these last two problems.
 
 </Listing>
 
-First, we use the `throttle` method on the `intervals` stream so that it doesn’t
-overwhelm the `messages` stream. _Throttling_ is a way of limiting the rate at
-which a function will be called—or, in this case, how often the stream will be
-polled. Once every 100 milliseconds should do, because that’s roughly how often
-our messages arrive.
+Pertama, kita pakai method `throttle` pada _stream_ `intervals` supaya dia tidak 
+"menenggelamkan" (overwhelm) _stream_ `messages`. _Throttling_ (mengerem) adalah cara 
+buat membatasi kecepatan (rate) seberapa sering sebuah fungsi bakal dipanggil—atau, 
+di kasus ini, seberapa sering _stream_-nya bakal di-_poll_ (dicek). Sekali tiap 100 
+milidetik harusnya udah cukup, karena itu kurang lebih sama dengan seberapa 
+sering pesan kita berdatangan.
 
-To limit the number of items we will accept from a stream, we apply the `take`
-method to the `merged` stream, because we want to limit the final output, not
-just one stream or the other.
+Buat ngebatesin jumlah item yang bakal kita terima dari sebuah _stream_, kita 
+menerapkan method `take` pada _stream_ `merged` tersebut, karena kita pengen 
+ngebatesin hasil akhir secara keseluruhan, bukan cuma satu _stream_ atau _stream_ 
+yang satunya lagi.
 
-Now when we run the program, it stops after pulling 20 items from the stream,
-and the intervals don’t overwhelm the messages. We also don’t get `Interval:
-100` or `Interval: 200` or so on, but instead get `Interval: 1`, `Interval: 2`,
-and so on—even though we have a source stream that _can_ produce an event every
-millisecond. That’s because the `throttle` call produces a new stream that wraps
-the original stream so that the original stream gets polled only at the throttle
-rate, not its own “native” rate. We don’t have a bunch of unhandled interval
-messages we’re choosing to ignore. Instead, we never produce those interval
-messages in the first place! This is the inherent “laziness” of Rust’s futures
-at work again, allowing us to choose our performance characteristics.
+Sekarang pas kita menjalankan programnya, dia berhenti setelah narik 20 item dari 
+_stream_, dan interval-interval itu tidak lagi menenggelamkan pesan-pesannya. 
+Kita juga tidak dapat `Interval: 100` atau `Interval: 200` atau semacamnya, tapi 
+sebaliknya dapet `Interval: 1`, `Interval: 2`, dan seterusnya—biarpun kita punya 
+_stream_ sumber yang *bisa* ngeluarin sebuah _event_ setiap milidetik. Itu karena 
+panggilan `throttle` ngasilin sebuah _stream_ baru yang ngebungkus _stream_ aslinya 
+sehingga _stream_ aslinya cuma di-_poll_ sesuai kecepatan *throttle*-nya, bukan 
+kecepatan "aslinya" dia. Kita tidak membiarkan setumpuk pesan interval yang tidak 
+terhandle menumpuk terus sengaja kita abaikan. Malah, dari awal kita bener-bener 
+tidak pernah ngasilin pesan-pesan interval itu! Inilah bukti sifat dasar "malas" 
+(laziness) dari _futures_ di Rust lagi beraksi, yang memungkinkan kita buat milih 
+gimana kita mau ngatur karakteristik performa kita.
 
 <!-- Not extracting output because changes to this output aren't significant;
 the changes are likely to be due to the threads running differently rather than
@@ -422,16 +459,17 @@ Problem: Elapsed(())
 Interval: 12
 ```
 
-There’s one last thing we need to handle: errors! With both of these
-channel-based streams, the `send` calls could fail when the other side of the
-channel closes—and that’s just a matter of how the runtime executes the futures
-that make up the stream. Up until now, we’ve ignored this possibility by calling
-`unwrap`, but in a well-behaved app, we should explicitly handle the error, at
-minimum by ending the loop so we don’t try to send any more messages. Listing
-17-40 shows a simple error strategy: print the issue and then `break` from the
-loops.
+Ada satu hal terakhir yang perlu kita tangani: error! Dengan kedua _streams_ 
+berbasis _channel_ ini, pemanggilan `send` bisa gagal pas sisi sebelah sana dari 
+_channel_-nya ditutup—dan itu cuma bergantung sama gimana _runtime_ mengeksekusi 
+_futures_ yang ngebentuk _stream_ tersebut. Sampai sekarang, kita mengabaikan 
+kemungkinan itu dengan memanggil `unwrap`, tapi di sebuah aplikasi yang berkelakuan 
+baik (well-behaved app), kita seharusnya menangani error tersebut secara 
+eksplisit, paling tidak dengan menghentikan _loop_-nya sehingga kita tidak perlu 
+nyoba mengirim pesan lebih banyak lagi. Listing 17-40 nunjukin strategi penanganan 
+error yang simpel: cetak masalahnya lalu nge-`break` keluar dari _loops_-nya.
 
-<Listing number="17-40" caption="Handling errors and shutting down the loops">
+<Listing number="17-40" caption="Nanganin error dan nge-shut down loops">
 
 ```rust
 {{#rustdoc_include ../listings/ch17-async-await/listing-17-40/src/main.rs:errors}}
@@ -439,12 +477,13 @@ loops.
 
 </Listing>
 
-As usual, the correct way to handle a message send error will vary; just make
-sure you have a strategy.
+Seperti biasa, cara yang bener buat nanganin error pas ngirim pesan itu 
+bisa beda-beda; pastikan aja Anda punya suatu strategi buat nanganin itu.
 
-Now that we’ve seen a bunch of async in practice, let’s take a step back and dig
-into a few of the details of how `Future`, `Stream`, and the other key traits
-Rust uses to make async work.
+Sekarang karena kita udah melihat serangkaian cara pakai _async_ di dunia nyata, 
+mari kita mundur selangkah dan gali beberapa detail tentang gimana `Future`, 
+`Stream`, dan trait kunci lainnya yang dipakai sama Rust buat ngebikin _async_ 
+bisa bekerja.
 
 [17-02-messages]: ch17-02-concurrency-with-async.html#message-passing
 [iterator-trait]: ch13-02-iterators.html#the-iterator-trait-and-the-next-method

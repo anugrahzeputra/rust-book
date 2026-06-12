@@ -1,163 +1,174 @@
-# Fundamentals of Asynchronous Programming: Async, Await, Futures, and Streams
+# Dasar-dasar Pemrograman Asynchronous: Async, Await, Futures, dan Streams
 
-Many operations we ask the computer to do can take a while to finish. It would
-be nice if we could do something else while we are waiting for those
-long-running processes to complete. Modern computers offer two techniques for
-working on more than one operation at a time: parallelism and concurrency. Once
-we start writing programs that involve parallel or concurrent operations,
-though, we quickly encounter new challenges inherent to _asynchronous
-programming_, where operations may not finish sequentially in the order they
-were started. This chapter builds on Chapter 16’s use of threads for parallelism
-and concurrency by introducing an alternative approach to asynchronous
-programming: Rust’s Futures, Streams, the `async` and `await` syntax that
-supports them, and the tools for managing and coordinating between asynchronous
-operations.
+Banyak operasi yang kita suruh komputer buat lakukan bisa memakan waktu agak lama 
+buat selesai. Bakal menyenangkan banget kalau kita bisa melakukan hal lain selagi 
+kita nungguin proses-proses yang panjang itu buat kelar. Komputer modern menawarkan 
+dua teknik buat mengerjakan lebih dari satu operasi pada satu waktu: _parallelism_ 
+(paralelisme) dan _concurrency_ (konkurensi). Tapi, begitu kita mulai nulis 
+program yang ngelibatin operasi paralel atau konkuren, kita bakal cepat 
+menemukan tantangan baru yang melekat pada _asynchronous programming_ (pemrograman 
+asynchronous), di mana operasi mungkin tidak selesai berurutan seperti saat mereka 
+dimulai. Bab ini dibangun di atas penggunaan _threads_ buat paralelisme dan 
+konkurensi di Bab 16 dengan memperkenalkan pendekatan alternatif buat pemrograman 
+_asynchronous_: _Futures_, _Streams_, sintaks `async` dan `await` di Rust yang 
+mendukungnya, serta _tools_ buat mengelola dan mengoordinasi berbagai operasi 
+_asynchronous_.
 
-Let’s consider an example. Say you’re exporting a video you’ve created of a
-family celebration, an operation that could take anywhere from minutes to hours.
-The video export will use as much CPU and GPU power as it can. If you had only
-one CPU core and your operating system didn’t pause that export until it
-completed—that is, if it executed the export _synchronously_—you couldn’t do
-anything else on your computer while that task was running. That would be a
-pretty frustrating experience. Fortunately, your computer’s operating system
-can, and does, invisibly interrupt the export often enough to let you get other
-work done simultaneously.
+Mari kita pertimbangkan sebuah contoh. Katakanlah Anda lagi ngekspor video perayaan 
+keluarga yang sudah Anda bikin, sebuah operasi yang bisa memakan waktu mulai 
+dari beberapa menit sampai berjam-jam. Ekspor video bakal memakai sebanyak 
+mungkin tenaga CPU dan GPU yang bisa dia dapatkan. Kalau Anda cuma punya satu 
+_core_ (inti) CPU dan sistem operasi Anda tidak nge-_pause_ ekspor itu sampai ia 
+selesai—yaitu, kalau ia mengeksekusi ekspornya secara _synchronous_ (sinkron)—Anda 
+tidak bakal bisa ngelakuin hal lain di komputer Anda saat tugas itu berjalan. Itu 
+bakal jadi pengalaman yang cukup bikin frustrasi. Untungnya, sistem operasi di 
+komputer Anda bisa, dan emang ngelakuin itu, menginterupsi proses ekspor secara 
+kasatmata (invisibly) cukup sering biar Anda bisa mengerjakan tugas lain di saat 
+yang bersamaan.
 
-Now say you’re downloading a video shared by someone else, which can also take a
-while but does not take up as much CPU time. In this case, the CPU has to wait
-for data to arrive from the network. While you can start reading the data once
-it starts to arrive, it might take some time for all of it to show up. Even once
-the data is all present, if the video is quite large, it could take at least a
-second or two to load it all. That might not sound like much, but it’s a very
-long time for a modern processor, which can perform billions of operations every
-second. Again, your operating system will invisibly interrupt your program to
-allow the CPU to perform other work while waiting for the network call to
-finish.
+Sekarang katakanlah Anda lagi men-download video yang di-_share_ sama orang lain, 
+yang juga bisa memakan waktu lumayan lama tapi tidak terlalu menyita banyak waktu 
+CPU. Di kasus ini, CPU harus menunggu data dari jaringan (network) buat tiba. 
+Meskipun Anda bisa mulai membaca data tersebut begitu dia mulai berdatangan, itu 
+bisa memakan waktu beberapa saat sampai semuanya muncul. Bahkan setelah semua 
+datanya ada, kalau videonya gede banget, itu bisa memakan waktu setidaknya satu 
+atau dua detik buat nge-_load_ semuanya. Itu mungkin tidak kedengeran terlalu 
+lama, tapi itu adalah waktu yang sangat lama buat prosesor modern, yang mana 
+bisa melakukan miliaran operasi setiap detik. Sekali lagi, sistem operasi Anda 
+bakal menginterupsi program Anda secara kasatmata buat membiarkan CPU mengerjakan 
+tugas lain sembari nunggu pemanggilan jaringan selesai.
 
-The video export is an example of a _CPU-bound_ or _compute-bound_ operation.
-It’s limited by the computer’s potential data processing speed within the CPU or
-GPU, and how much of that speed it can dedicate to the operation. The video
-download is an example of an _IO-bound_ operation, because it’s limited by the
-speed of the computer’s _input and output_; it can only go as fast as the data
-can be sent across the network.
+Ekspor video adalah contoh dari operasi _CPU-bound_ atau _compute-bound_ 
+(bergantung pada prosesor). Dia dibatasi oleh potensi kecepatan pemrosesan data 
+komputer di dalam CPU atau GPU, dan seberapa besar dari kecepatan itu yang bisa 
+didedikasikan buat operasi tersebut. Download video adalah contoh dari operasi 
+_IO-bound_ (bergantung pada input-output), karena dia dibatasi oleh kecepatan 
+_input dan output_ komputer; dia cuma bisa berjalan secepat data yang bisa dikirim 
+lewat jaringan.
 
-In both of these examples, the operating system’s invisible interrupts provide a
-form of concurrency. That concurrency happens only at the level of the entire
-program, though: the operating system interrupts one program to let other
-programs get work done. In many cases, because we understand our programs at a
-much more granular level than the operating system does, we can spot
-opportunities for concurrency that the operating system can’t see.
+Di dua contoh ini, interupsi kasatmata dari sistem operasi ngasih suatu bentuk 
+konkurensi. Namun, konkurensi itu cuma terjadi di tingkat keseluruhan program: 
+sistem operasi menginterupsi satu program buat membiarkan program lain 
+mengerjakan tugasnya. Di banyak kasus, karena kita paham program kita di tingkat 
+yang jauh lebih spesifik (granular) ketimbang sistem operasi, kita bisa menemukan 
+peluang-peluang buat konkurensi yang tidak bisa dilihat sama sistem operasi.
 
-For example, if we’re building a tool to manage file downloads, we should be
-able to write our program so that starting one download won’t lock up the UI,
-and users should be able to start multiple downloads at the same time. Many
-operating system APIs for interacting with the network are _blocking_, though;
-that is, they block the program’s progress until the data they’re processing is
-completely ready.
+Misalnya, kalau kita lagi bikin _tool_ buat mengelola download file, kita seharusnya 
+bisa menulis program kita sedemikian rupa sehingga pas mulai nge-download satu 
+file UI-nya tidak _freeze_ (macet), dan _user_ seharusnya bisa memulai banyak 
+download di saat yang bersamaan. Namun, banyak API sistem operasi buat berinteraksi 
+dengan jaringan itu sifatnya _blocking_ (memblokir); yakni, mereka memblokir 
+progress program sampai data yang mereka proses itu benar-benar siap seutuhnya.
 
-> Note: This is how _most_ function calls work, if you think about it. However,
-> the term _blocking_ is usually reserved for function calls that interact with
-> files, the network, or other resources on the computer, because those are the
-> cases where an individual program would benefit from the operation being
-> _non_-blocking.
+> Catatan: Ini adalah cara kerja _kebanyakan_ pemanggilan fungsi, kalau dipikir-pikir. 
+> Namun, istilah _blocking_ biasanya dikhususkan buat pemanggilan fungsi yang 
+> berinteraksi dengan file, jaringan, atau *resources* lain di komputer, karena 
+> itu adalah kasus-kasus di mana suatu program individu bakal dapat keuntungan 
+> kalau operasi tersebut _non_-blocking.
 
-We could avoid blocking our main thread by spawning a dedicated thread to
-download each file. However, the overhead of those threads would eventually
-become a problem. It would be preferable if the call didn’t block in the first
-place. It would also be better if we could write in the same direct style we use
-in blocking code, similar to this:
+Kita bisa menghindari memblokir _main thread_ kita dengan membikin sebuah _spawned 
+thread_ yang didedikasikan buat men-download tiap file. Namun, _overhead_ (beban) 
+dari _threads_ itu pada akhirnya bakal jadi masalah. Bakal lebih oke kalau pemanggilan 
+fungsinya dari awal emang tidak memblokir. Bakal lebih baik lagi kalau kita bisa nulis 
+kodenya pake gaya langsung yang sama dengan yang kita pakai di kode _blocking_, 
+kayak gini contohnya:
 
 ```rust,ignore,does_not_compile
 let data = fetch_data_from(url).await;
 println!("{data}");
 ```
 
-That is exactly what Rust’s _async_ (short for _asynchronous_) abstraction gives
-us. In this chapter, you’ll learn all about async as we cover the following
-topics:
+Nah, itulah persisnya yang dikasih sama abstraksi _async_ (singkatan dari _asynchronous_) 
+di Rust buat kita. Di bab ini, Anda bakal belajar semua hal tentang _async_ 
+selagi kita membahas topik-topik berikut:
 
-- How to use Rust’s `async` and `await` syntax
-- How to use the async model to solve some of the same challenges we looked at
-  in Chapter 16
-- How multithreading and async provide complementary solutions, that you can
-  combine in many cases
+- Gimana cara memakai sintaks `async` dan `await` di Rust
+- Gimana cara memakai model _async_ buat nyelesein beberapa tantangan yang sama 
+  seperti yang udah kita lihat di Bab 16
+- Gimana _multithreading_ dan _async_ menyediakan solusi yang saling melengkapi, 
+  yang bisa Anda gabungkan di banyak kasus
 
-Before we see how async works in practice, though, we need to take a short
-detour to discuss the differences between parallelism and concurrency.
+Tapi, sebelum kita lihat gimana cara kerja _async_ di praktiknya, kita perlu sedikit 
+belok sebentar buat ngebahas perbedaan antara paralelisme dan konkurensi.
 
-### Parallelism and Concurrency
+### Paralelisme dan Konkurensi
 
-We’ve treated parallelism and concurrency as mostly interchangeable so far. Now
-we need to distinguish between them more precisely, because the differences will
-show up as we start working.
+Sejauh ini kita memperlakukan paralelisme dan konkurensi seolah-olah maknanya bisa 
+dituker-tukar (interchangeable). Sekarang kita harus bisa membedakannya dengan 
+lebih presisi, karena perbedaannya bakal kerasa pas kita udah mulai ngerjain kode.
 
-Consider the different ways a team could split up work on a software project.
-You could assign a single member multiple tasks, assign each member one task, or
-use a mix of the two approaches.
+Bayangin aja cara-cara beda yang bisa dipakai sebuah tim buat ngebagi kerjaan 
+di suatu proyek _software_. Anda bisa menugaskan satu orang beberapa tugas, 
+menugaskan tiap anggota satu tugas, atau memakai campuran dari kedua pendekatan 
+tersebut.
 
-When an individual works on several different tasks before any of them is
-complete, this is _concurrency_. Maybe you have two different projects checked
-out on your computer, and when you get bored or stuck on one project, you switch
-to the other. You’re just one person, so you can’t make progress on both tasks
-at the exact same time, but you can multi-task, making progress on one at a time
-by switching between them (see Figure 17-1).
-
-<figure>
-
-<img src="img/trpl17-01.svg" class="center" alt="A diagram with boxes labeled Task A and Task B, with diamonds in them representing subtasks. There are arrows pointing from A1 to B1, B1 to A2, A2 to B2, B2 to A3, A3 to A4, and A4 to B3. The arrows between the subtasks cross the boxes between Task A and Task B." />
-
-<figcaption>Figure 17-1: A concurrent workflow, switching between Task A and Task B</figcaption>
-
-</figure>
-
-When the team splits up a group of tasks by having each member take one task and
-work on it alone, this is _parallelism_. Each person on the team can make
-progress at the exact same time (see Figure 17-2).
+Saat satu orang individu mengerjakan beberapa tugas yang berbeda sebelum satupun 
+dari tugas-tugas itu selesai, ini dinamakan _konkurensi_. Mungkin Anda punya dua 
+project berbeda yang lagi jalan di komputer Anda, dan pas Anda bosan atau mentok 
+di satu project, Anda beralih ke project yang satu lagi. Anda cuma satu orang, jadi 
+Anda tidak bisa bikin progress di kedua tugas pada waktu yang sama persis, tapi 
+Anda bisa _multi-task_, bikin progress pada satu tugas secara bergantian dengan 
+beralih di antara mereka (lihat Gambar 17-1).
 
 <figure>
 
-<img src="img/trpl17-02.svg" class="center" alt="A diagram with boxes labeled Task A and Task B, with diamonds in them representing subtasks. There are arrows pointing from A1 to A2, A2 to A3, A3 to A4, B1 to B2, and B2 to B3. No arrows cross between the boxes for Task A and Task B." />
+<img src="img/trpl17-01.svg" class="center" alt="Sebuah diagram dengan kotak-kotak berlabel Tugas A dan Tugas B, dengan belah ketupat di dalamnya yang melambangkan subtugas. Ada panah yang menunjuk dari A1 ke B1, B1 ke A2, A2 ke B2, B2 ke A3, A3 ke A4, dan A4 ke B3. Panah di antara subtugas-subtugas ini menyilang di antara kotak untuk Tugas A dan Tugas B." />
 
-<figcaption>Figure 17-2: A parallel workflow, where work happens on Task A and Task B independently</figcaption>
+<figcaption>Gambar 17-1: Sebuah alur kerja konkuren, beralih di antara Tugas A dan Tugas B</figcaption>
 
 </figure>
 
-In both of these workflows, you might have to coordinate between different
-tasks. Maybe you _thought_ the task assigned to one person was totally
-independent from everyone else’s work, but it actually requires another person
-on the team to finish their task first. Some of the work could be done in
-parallel, but some of it was actually _serial_: it could only happen in a
-series, one task after the other, as in Figure 17-3.
+Saat sebuah tim membagi sekelompok tugas dengan nyuruh setiap anggota mengambil satu 
+tugas lalu mengerjakannya sendirian, ini dinamakan _paralelisme_. Setiap orang di tim 
+tersebut bisa membikin progress pada waktu yang sama persis (lihat Gambar 17-2).
 
 <figure>
 
-<img src="img/trpl17-03.svg" class="center" alt="A diagram with boxes labeled Task A and Task B, with diamonds in them representing subtasks. There are arrows pointing from A1 to A2, A2 to a pair of thick vertical lines like a “pause” symbol, from that symbol to A3, B1 to B2, B2 to B3, which is below that symbol, B3 to A3, and B3 to B4." />
+<img src="img/trpl17-02.svg" class="center" alt="Sebuah diagram dengan kotak-kotak berlabel Tugas A dan Tugas B, dengan belah ketupat di dalamnya yang melambangkan subtugas. Ada panah yang menunjuk dari A1 ke A2, A2 ke A3, A3 ke A4, B1 ke B2, dan B2 ke B3. Tidak ada panah yang menyilang antara kotak untuk Tugas A dan Tugas B." />
 
-<figcaption>Figure 17-3: A partially parallel workflow, where work happens on Task A and Task B independently until Task A3 is blocked on the results of Task B3.</figcaption>
+<figcaption>Gambar 17-2: Sebuah alur kerja paralel, di mana pekerjaan terjadi pada Tugas A dan Tugas B secara independen</figcaption>
 
 </figure>
 
-Likewise, you might realize that one of your own tasks depends on another of
-your tasks. Now your concurrent work has also become serial.
+Di kedua alur kerja (workflows) ini, Anda mungkin harus mengoordinasikan antara 
+tugas-tugas yang berbeda. Mungkin Anda _pikir_ tugas yang diberikan ke satu orang 
+itu benar-benar independen dari pekerjaan orang lain, tapi ternyata dia butuh orang 
+lain di tim itu buat nyelesein tugas mereka lebih dulu. Beberapa pekerjaan bisa 
+dilakukan secara paralel, tapi sebagian darinya itu sebenarnya _serial_: dia 
+cuma bisa terjadi dalam satu urutan, satu tugas setelah tugas lainnya, kayak di 
+Gambar 17-3.
 
-Parallelism and concurrency can intersect with each other, too. If you learn
-that a colleague is stuck until you finish one of your tasks, you’ll probably
-focus all your efforts on that task to “unblock” your colleague. You and your
-coworker are no longer able to work in parallel, and you’re also no longer able
-to work concurrently on your own tasks.
+<figure>
 
-The same basic dynamics come into play with software and hardware. On a machine
-with a single CPU core, the CPU can perform only one operation at a time, but it
-can still work concurrently. Using tools such as threads, processes, and async,
-the computer can pause one activity and switch to others before eventually
-cycling back to that first activity again. On a machine with multiple CPU cores,
-it can also do work in parallel. One core can be performing one task while
-another core performs a completely unrelated one, and those operations actually
-happen at the same time.
+<img src="img/trpl17-03.svg" class="center" alt="Sebuah diagram dengan kotak-kotak berlabel Tugas A dan Tugas B, dengan belah ketupat di dalamnya yang melambangkan subtugas. Ada panah yang menunjuk dari A1 ke A2, A2 ke sepasang garis vertikal tebal seperti simbol “pause”, dari simbol itu ke A3, B1 ke B2, B2 ke B3, yang berada di bawah simbol itu, B3 ke A3, dan B3 ke B4." />
 
-When working with async in Rust, we’re always dealing with concurrency.
-Depending on the hardware, the operating system, and the async runtime we are
-using (more on async runtimes shortly), that concurrency may also use parallelism
-under the hood.
+<figcaption>Gambar 17-3: Sebuah alur kerja yang sebagiannya paralel, di mana pekerjaan terjadi pada Tugas A dan Tugas B secara independen sampai Tugas A3 terhambat (blocked) menunggu hasil dari Tugas B3.</figcaption>
 
-Now, let’s dive into how async programming in Rust actually works.
+</figure>
+
+Sama halnya, Anda mungkin sadar kalau salah satu tugas Anda sendiri itu bergantung 
+sama tugas Anda yang lainnya. Sekarang pekerjaan konkuren Anda juga udah jadi serial.
+
+Paralelisme dan konkurensi juga bisa bersinggungan (intersect) satu sama lain. 
+Kalau Anda tahu kalau rekan kerja Anda lagi mentok sampai Anda nyelesein salah 
+satu tugas Anda, Anda mungkin bakal memusatkan seluruh usaha Anda pada tugas itu 
+buat "membuka jalan" (unblock) rekan kerja Anda tersebut. Anda dan rekan kerja Anda 
+tidak lagi bisa bekerja secara paralel, dan Anda juga tidak lagi bisa bekerja 
+secara konkuren di tugas Anda masing-masing.
+
+Dinamika dasar yang sama mulai berlaku pada perangkat lunak dan perangkat keras 
+(_software_ dan _hardware_). Di mesin yang punya satu _core_ CPU, CPU cuma bisa 
+melakukan satu operasi pada satu waktu, tapi dia tetap bisa bekerja secara konkuren. 
+Memakai alat seperti _threads_, proses, dan _async_, komputer bisa mem-_pause_ satu 
+aktivitas lalu beralih ke aktivitas lain sebelum akhirnya berputar kembali ke aktivitas 
+pertama tadi. Di mesin dengan banyak _core_ CPU, dia juga bisa mengerjakan tugas 
+secara paralel. Satu _core_ bisa ngerjain satu tugas sementara _core_ lain ngerjain 
+tugas yang sama sekali tidak ada hubungannya, dan operasi-operasi itu benar-benar 
+terjadi pada waktu yang bersamaan.
+
+Saat berurusan dengan _async_ di Rust, kita bakal selalu berurusan dengan konkurensi. 
+Tergantung pada perangkat keras, sistem operasi, dan *async runtime* yang lagi kita 
+pakai (*async runtimes* bakal dibahas sebentar lagi), konkurensi itu mungkin juga 
+memakai paralelisme di balik layar.
+
+Sekarang, mari kita selami gimana cara kerja _async programming_ di Rust sebenarnya.
