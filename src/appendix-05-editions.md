@@ -1,4 +1,4 @@
-## Lampiran E - Editions (Edisi)
+## Lampiran E - Edisi (Editions)
 
 Di Bab 1, Anda sudah melihat kalau perintah `cargo new` itu menambahkan sedikit 
 metadata ke dalam file _Cargo.toml_ Anda terkait sebuah _edition_ (edisi). Lampiran 
@@ -53,9 +53,7 @@ _crates_ dari sembarang edisi yang disokong untuk jalan bersama-sama. Perubahan
 edisi itu cuma berdampak pada cara sang _compiler_ mengurai (parses) kode Anda pada 
 awalnya. Oleh karena itu, kalau Anda lagi memakai Rust 2015 dan salah satu _dependency_ 
 (dependensi) Anda memakai Rust 2018, project Anda dijamin bakal tetap bisa sukses 
-di-compile dan bisa memakai dependensi tersebut. Situasi kebalikannya, di mana 
-project Anda memakai Rust 2018 sedangkan sebuah dependensinya memakai Rust 2015, juga 
-bakal tetap bekerja dengan baik.
+di-compile dan bisa memakai dependensi tersebut. Dari sisi sebaliknya pun begitu.
 
 Biar lebih jelas: sebagian besar fitur itu bakal tetap tersedia di semua edisi. 
 Para pengembang yang memakai edisi Rust yang mana pun bakal terus bisa melihat 
