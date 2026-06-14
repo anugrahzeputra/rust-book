@@ -5,7 +5,7 @@ yang berarti dia tidak bakal memproses koneksi yang kedua sebelum proses untuk
 koneksi yang pertama selesai (finished processing). Kalau server ini nerima 
 makin banyak _requests_, eksekusi secara berurutan (serial execution) kayak gini 
 bakal jadi makin kurang optimal. Kalau server ini nerima sebuah _request_ yang 
-makan waktu lama banget buat diproses, _requests_ yang masuk berikutnya 
+makan waktu lama sekali buat diproses, _requests_ yang masuk berikutnya 
 (subsequent requests) bakal terpaksa harus nungguin sampai _request_ lama itu 
 selesai, biarpun _requests_ yang baru ini sebenernya bisa aja diproses dengan cepat. 
 Kita perlu benerin ini nih, tapi pertama-tama mari kita ngelihat aksinya masalah 
@@ -44,16 +44,16 @@ diterima, server kita ini bakal tidur (sleep) selama lima detik sebelum dia nge-
 halaman HTML yang isinya sukses tersebut. Arm yang ketiga bunyinya sama persis kayak 
 blok `else` dari Listing 21-9.
 
-Anda bisa ngelihat sendiri betapa primitifnya (primitive) server kita ini: 
+Kita bisa ngelihat sendiri betapa primitifnya (primitive) server kita ini: 
 _libraries_ sungguhan (real libraries) itu biasanya nanganin proses rekognisi 
 (pengenalan) banyak _requests_ dengan cara yang jauh tidak lebih _verbose_ 
 (kepanjangan nulisnya) dari ini!
 
 Jalanin servernya memakai `cargo run`. Terus buka dua jendela (windows) browser: 
 satu buat _http://127.0.0.1:7878_ dan satu lagi buat _http://127.0.0.1:7878/sleep_. 
-Kalau Anda masukin URI _/_ beberapa kali kayak sebelumnya, Anda bakal ngelihat kalau dia 
-nge-responsnya cepet banget. Tapi kalau Anda masukin _/sleep_ dan kemudian muat (_load_) 
-_/_ di tab lain, Anda bakal ngelihat kalau _/_ ini terpaksa harus nungguin (waits) 
+Kalau kita masukin URI _/_ beberapa kali kayak sebelumnya, kita bakal ngelihat kalau dia 
+nge-responsnya cepet sekali. Tapi kalau kita masukin _/sleep_ dan kemudian muat (_load_) 
+_/_ di tab lain, kita bakal ngelihat kalau _/_ ini terpaksa harus nungguin (waits) 
 sampai si `sleep` tadi selesai tidur selama durasi penuh lima detiknya sebelum 
 halamannya bisa dimuat.
 
@@ -74,8 +74,8 @@ tersedia (available) buat nanganin tugas-tugas lain yang masuk saat _thread_ yan
 pertama tadi lagi sibuk memproses. Pas _thread_ pertama udah beres ngerjain tugasnya, 
 dia dikembaliin (_returned_) lagi ke dalam _pool_ yang isinya _threads_ nganggur (idle 
 threads), terus dia siap (ready) buat nanganin tugas baru lagi. Sebuah _thread pool_ 
-memungkinkan Anda buat memproses banyak koneksi secara konkuren (bersamaan), ningkatin 
-_throughput_ (kemampuan nangani permintaan) dari server Anda.
+memungkinkan kita buat memproses banyak koneksi secara konkuren (bersamaan), ningkatin 
+_throughput_ (kemampuan nangani permintaan) dari server kita.
 
 Kita bakal membatasi (limit) jumlah _threads_ yang ada di dalam _pool_ ini menjadi 
 angka yang kecil buat melindungi (protect) kita dari serangan DoS (Denial of Service); 
@@ -93,24 +93,24 @@ mengambil (_pop off_) satu _request_ dari antrean ini, menangani _request_ terse
 dan lalu minta satu _request_ lagi ke antrean tersebut. Pakai desain kayak gini, 
 kita bisa memproses maksimal _`N`_ _requests_ secara konkuren, di mana _`N`_ itu 
 adalah jumlah _threads_ yang ada. Kalau setiap _thread_ itu lagi sibuk merespons ke 
-_requests_ yang jalan lama banget, _requests_ yang masuk berikutnya emang masih 
+_requests_ yang jalan lama sekali, _requests_ yang masuk berikutnya emang masih 
 tetap bisa pada numpuk di dalem antreannya, tapi kita udah ningkatin seberapa banyak jumlah 
-_requests_ yang jalannya lama banget yang sanggup kita tangani sebelum kita nyampe ke titik 
+_requests_ yang jalannya lama sekali yang sanggup kita tangani sebelum kita nyampe ke titik 
 jenuh tersebut.
 
 Teknik ini itu hanyalah salah satu dari sekian banyak cara yang ada buat ningkatin 
-_throughput_ dari sebuah web server. Opsi-opsi lain yang mungkin bisa Anda eksplorasi 
+_throughput_ dari sebuah web server. Opsi-opsi lain yang mungkin bisa kita eksplorasi 
 adalah model _fork/join_, model _single-threaded async I/O_, sama model _multithreaded 
-async I/O_. Kalau Anda tertarik sama topik ini, Anda bisa ngebaca lebih lanjut soal 
+async I/O_. Kalau kita tertarik sama topik ini, kita bisa ngebaca lebih lanjut soal 
 solusi-solusi lainnya dan nyobain mengimplementasikan mereka; dengan bahasa pemrograman 
-tingkat rendah (low-level) kayak Rust ini, semua opsi ini sangat mungkin banget buat 
+tingkat rendah (low-level) kayak Rust ini, semua opsi ini sangat mungkin sekali buat 
 dikerjain (possible).
 
 Sebelum kita mulai mengimplementasikan sebuah _thread pool_, mari kita obrolin kayak gimana 
 rupa dari memakai si _pool_ ini nantinya (what using the pool should look like). 
-Pas Anda lagi mencoba mendesain (_design_) sebuah kode, menulis *interface* 
-_client_-nya terlebih dahulu bisa ngebantu memandu jalannya desain Anda. Tulis API 
-dari kodenya sehingga strukturnya itu udah sesuai dengan cara Anda manggil dia nantinya; 
+Pas kita lagi mencoba mendesain (_design_) sebuah kode, menulis *interface* 
+_client_-nya terlebih dahulu bisa ngebantu memandu jalannya desain kita. Tulis API 
+dari kodenya sehingga strukturnya itu udah sesuai dengan cara kita manggil dia nantinya; 
 baru deh setelah itu implementasikan fungsionalitasnya di dalam struktur tersebut 
 ketimbang mikirin fungsionalitasnya duluan baru mikirin desain API _public_-nya belakangan.
 
@@ -119,7 +119,7 @@ di dalam _project_ kita pas Bab 12 kemarin, kita bakal memakai *compiler-driven 
 (pengembangan berbasis _compiler_) di sini. Kita bakal nulis kode yang manggil 
 fungsi-fungsi yang pengen kita panggil, lalu baru deh kita ngelihat ke error-error 
 yang dikasih sama _compiler_ buat nentuin apa yang harus kita ubah berikutnya supaya 
-kodenya bisa beneran jalan. Tapi sebelum kita melakukan itu, kita bakal nyelidikin 
+kodenya bisa benar-benar jalan. Tapi sebelum kita melakukan itu, kita bakal nyelidikin 
 teknik yang _tidak_ bakal kita pakai dulu sebagai titik mulai kita.
 
 <!-- Old headings. Do not remove or links may break. -->
@@ -129,7 +129,7 @@ teknik yang _tidak_ bakal kita pakai dulu sebagai titik mulai kita.
 #### Menelurkan (Spawning) Sebuah Thread Buat Setiap Request
 
 Pertama-tama, mari kita eksplorasi kira-kira kayak gimana kelihatannya kode kita ini kalau 
-seandainya dia *beneran* ngebikin _thread_ baru buat setiap koneksi yang masuk. Seperti yang 
+seandainya dia *benar-benar* ngebikin _thread_ baru buat setiap koneksi yang masuk. Seperti yang 
 udah kita sebutin sebelumnya, ini itu bukan rencana akhir kita gara-gara ada masalah yang 
 mana kita berpotensi bakal netasin _threads_ dalam jumlah yang tidak terbatas, tapi cara ini 
 adalah titik pijak (starting point) yang oke buat ngebikin supaya server _multithreaded_ 
@@ -149,18 +149,18 @@ _stream_ yang ada di dalam _loop_ `for` tersebut.
 
 </Listing>
 
-Kayak yang udah Anda pelajarin di Bab 16, `thread::spawn` itu bakal ngebikin _thread_ 
+Kayak yang udah kita pelajarin di Bab 16, `thread::spawn` itu bakal ngebikin _thread_ 
 baru lalu dia bakal ngejalanin kode yang ada di dalam _closure_ tersebut di dalem si _thread_ 
-yang baru ini. Kalau Anda jalanin kode ini dan memuat _/sleep_ di browser Anda, lalu buka 
-_/_ di dua tab browser yang lain, Anda beneran bakal ngelihat kalau _requests_ ke _/_ itu 
+yang baru ini. Kalau kita jalanin kode ini dan memuat _/sleep_ di browser kita, lalu buka 
+_/_ di dua tab browser yang lain, kita benar-benar bakal ngelihat kalau _requests_ ke _/_ itu 
 tidak perlu lagi nungguin si _/sleep_ sampai selesai beres (finish). Namun, seperti yang 
 tadi udah kita sebutin, cara ini pada akhirnya bakal bikin sistemnya kewalahan (overwhelm 
-the system) karena Anda bakal terus-terusan ngebikin _threads_ baru tanpa ada batas 
+the system) karena kita bakal terus-terusan ngebikin _threads_ baru tanpa ada batas 
 sama sekali.
 
-Anda juga mungkin masih inget dari Bab 17 kalau ini itu adalah tipe-tipe situasi 
-persis yang mana _async_ dan _await_ bakal beneran bersinar! Simpan pikiran itu di kepala 
-Anda ya selagi kita ngebangun _thread pool_ ini dan coba renungkan (think about) gimana 
+Kita juga mungkin masih inget dari Bab 17 kalau ini itu adalah tipe-tipe situasi 
+persis yang mana _async_ dan _await_ bakal benar-benar bersinar! Simpan pikiran itu di kepala 
+kita ya selagi kita ngebangun _thread pool_ ini dan coba renungkan (think about) gimana 
 situasinya bakal kelihatan berbeda atau malah sama aja kalau kita pakai _async_.
 
 <!-- Old headings. Do not remove or links may break. -->
@@ -185,7 +185,7 @@ kita pakai ketimbang `thread::spawn`.
 
 Kita memakai `ThreadPool::new` buat ngebikin sebuah _thread pool_ baru dengan jumlah 
 _threads_ yang bisa dikonfigurasi, yang di kasus ini yaitu empat biji. Terus, di dalam 
-_loop_ `for`, si `pool.execute` ini punya antarmuka (interface) yang mirip banget 
+_loop_ `for`, si `pool.execute` ini punya antarmuka (interface) yang mirip sekali 
 sama `thread::spawn` karena dia juga nerima sebuah _closure_ yang mana seharusnya bakal 
 dijalanin sama si _pool_ tersebut buat setiap _stream_ yang masuk. Kita perlu mengimplementasikan 
 `pool.execute` ini sedemikian rupa sehingga dia bakal ngambil _closure_ yang diterimanya 
@@ -199,7 +199,7 @@ supaya si _compiler_ bisa memandu (guide) kita soal gimana caranya ngeberesin in
 
 #### Ngebangun `ThreadPool` Memakai Compiler-Driven Development (Pengembangan Berbasis Compiler)
 
-Silakan bikin perubahan-perubahan yang ada di Listing 21-12 ke file _src/main.rs_ Anda, 
+Silakan bikin perubahan-perubahan yang ada di Listing 21-12 ke file _src/main.rs_ kita, 
 dan lalu mari kita pakai pesan-pesan error _compiler_ yang asalnya dari `cargo check` 
 buat mengarahkan jalan (_drive_) dari proses _development_ kita. Ini dia error 
 pertama yang kita dapet:
@@ -208,7 +208,7 @@ pertama yang kita dapet:
 {{#include ../listings/ch21-web-server/listing-21-12/output.txt}}
 ```
 
-Sip banget! (Great!) Error ini ngasih tahu kita kalau kita ini butuh punya tipe atau 
+Sip sekali! (Great!) Error ini ngasih tahu kita kalau kita ini butuh punya tipe atau 
 modul `ThreadPool`, jadi kita bakal ngebangunnya sekarang juga. Implementasi `ThreadPool` 
 kita ini sifatnya bakal independen (independent) dan tidak peduli apa jenis kerjaan 
 yang lagi dilakuin sama web server kita ini. Jadi mari kita alihkan (switch) 
@@ -231,7 +231,7 @@ saat ini:
 </Listing>
 
 
-Terus edit file _main.rs_ Anda buat ngebawa (bring) `ThreadPool` tersebut masuk ke 
+Terus edit file _main.rs_ kita buat ngebawa (bring) `ThreadPool` tersebut masuk ke 
 dalam _scope_ yang asalnya dari _library crate_ dengan nambahin kode berikut ke bagian 
 paling atas (top) dari _src/main.rs_:
 
@@ -312,13 +312,13 @@ ngelihat kalau si `spawn` ini memakai `FnOnce` sebagai _trait bound_ (batasan tr
 buat `F`-nya. Ini juga merupakan trait yang kemungkinan besar kita inginkan, karena 
 nantinya argumen _closure_ yang kita dapat di dalam `execute` ini juga pada akhirnya 
 bakal kita operin (pass) ke dalam `spawn`. Kita bisa makin yakin kalau `FnOnce` itu 
-adalah trait yang beneran pengen kita pake soalnya _thread_ yang dijalanin buat 
+adalah trait yang benar-benar pengen kita pake soalnya _thread_ yang dijalanin buat 
 nanganin satu _request_ itu emang cuma bakal mengeksekusi _closure_ buat _request_ tersebut 
 sebanyak satu kali doang, yang mana ya cocok persis (matches) sama embel-embel kata 
 `Once` (sekali) di dalam trait `FnOnce`.
 
 Parameter bertipe `F` itu juga punya _trait bound_ `Send` dan _lifetime bound_ 
-(batasan rentang hidup) `'static`, yang mana emang berguna banget buat situasi kita 
+(batasan rentang hidup) `'static`, yang mana emang sangat berguna buat situasi kita 
 saat ini: kita butuh trait `Send` ini buat mindahin (transfer) si _closure_ 
 ini dari satu _thread_ ke _thread_ yang lainnya dan `'static` ini gara-gara kita tidak 
 tahu seberapa lama waktu yang dibutuhkan sama si _thread_ tersebut buat selesai 
@@ -350,13 +350,13 @@ mau ngebikin kode kita sukses di-compile doang buat saat ini. Mari kita cek (che
 {{#include ../listings/ch21-web-server/no-listing-03-define-execute/output.txt}}
 ```
 
-Kompilasi sukses! (It compiles!) Tapi perlu dicatet nih kalau seandainya Anda 
+Kompilasi sukses! (It compiles!) Tapi perlu dicatet nih kalau seandainya kita 
 mencoba ngejalanin pake `cargo run` dan terus nyoba ngasih sebuah _request_ dari browser, 
-Anda bakal ngelihat lagi error-error di browser tadi yang sempat kita lihat di 
+kita bakal ngelihat lagi error-error di browser tadi yang sempat kita lihat di 
 bagian awal bab ini. _Library_ kita ini masih belum secara harfiah (actually) memanggil 
 _closure_ yang dioper ke dalem fungsi `execute` lho ya!
 
-> Catatan: Pepatah yang mungkin sering Anda dengar soal bahasa-bahasa pemrograman 
+> Catatan: Pepatah yang mungkin sering kita dengar soal bahasa-bahasa pemrograman 
 > yang _compiler_-nya rewel (strict compilers), kayak Haskell dan Rust, adalah 
 > "kalau kodenya berhasil di-compile, berarti kodenya jalan." Tapi pepatah ini 
 > itu tidak selalu bener kok. Project kita ini sukses di-compile kan, padahal 
@@ -407,7 +407,7 @@ sama fungsi `Config::build` di dalem *project* I/O kita di Listing 12-9.
 Tapi kita udah memutuskan kalau di kasus kali ini usaha buat ngebikin sebuah _thread pool_ 
 tanpa punya satupun _threads_ di dalamnya (without any threads) itu seharusnya 
 dijadikan sebuah error yang tidak bisa dipulihkan (unrecoverable error). Kalau 
-Anda lagi ngerasa ambisius hari ini, cobain deh buat nulis sebuah fungsi bernama 
+kita lagi ngerasa ambisius hari ini, cobain deh buat nulis sebuah fungsi bernama 
 `build` dengan _signature_ berikut buat ngebandingin hasilnya dengan fungsi 
 `new` ini:
 
@@ -469,7 +469,7 @@ lebih efisien dan cepet ketimbang makek fungsi `Vec::new` yang mana dia itu baka
 mengubah ukurannya sendiri (_resizes itself_) setiap kali ada elemen baru yang 
 dimasukin ke dalam situ.
 
-Pas Anda jalanin perintah `cargo check` lagi, dia harusnya berhasil (succeed).
+Pas kita jalanin perintah `cargo check` lagi, dia harusnya berhasil (succeed).
 
 <!-- Old headings. Do not remove or links may break. -->
 <a id ="a-worker-struct-responsible-for-sending-code-from-the-threadpool-to-a-thread"></a>
@@ -531,8 +531,8 @@ ini memakai cara di bawah ini:
    `Worker` baru pakai `id` tadi, terus masukin dan simpan si `Worker` baru itu ke 
    dalam _vector_-nya.
 
-Kalau Anda ngerasa pengen nyari tantangan, coba deh kerjain sendiri perubahan-perubahan 
-ini (implementing these changes on your own) sebelum Anda ngelihat ke kodenya di 
+Kalau kita ngerasa pengen nyari tantangan, coba deh kerjain sendiri perubahan-perubahan 
+ini (implementing these changes on your own) sebelum kita ngelihat ke kodenya di 
 Listing 21-15.
 
 Udah siap (Ready)? Ini dia Listing 21-15 yang berisi salah satu cara buat ngebikin (make) 
@@ -566,7 +566,7 @@ instance ini dibikin dengan cara menelurkan sebuah _thread_ baru memakai _closur
 > sebenarnya berhasil dengan lancar (might succeed). Demi urusan kemudahan buat 
 > dipelajari (simplicity's sake), membiarkan kelakuan ini terjadi itu sah-sah 
 > saja kok (is fine), tapi kalau di kasus implementasi *thread pool* tipe tingkat produksi 
-> (_production_), Anda bakal jauh lebih direkomendasiin (likely want to) buat memakai 
+> (_production_), kita bakal jauh lebih direkomendasiin (likely want to) buat memakai 
 > [`std::thread::Builder`][builder] barengan sama method 
 > [`spawn`][builder-spawn]-nya karena method tersebut nge-return (ngembaliin) tipe `Result` 
 > sebagai gantinya.
@@ -593,7 +593,7 @@ miliknya buat dijalankan.
 
 Saluran komunikasi (_channels_) yang sempat kita pelajarin di Bab 16—sebuah 
 cara yang simpel buat berkomunikasi di antara dua buah _threads_—itu bakal jadi pilihan 
-(candidate) yang luar biasa pas banget (_perfect_) buat menangani skenario (use case) 
+(candidate) yang luar biasa pas sekali (_perfect_) buat menangani skenario (use case) 
 ini. Kita bakal memakai sebuah _channel_ supaya dia bisa bertindak (function) sebagai antrean 
 pekerjaan (_queue of jobs_) tersebut, dan method `execute` bakal mengirimkan (_send_) 
 sebuah pekerjaan (_job_) dari dalam `ThreadPool` menuju *instances* `Worker`, yang 
@@ -658,7 +658,7 @@ error ini nih:
 
 Kodenya ini lagi berusaha (trying to) ngoper nilai `receiver` yang cuma satu ini ke 
 banyak *instances* `Worker` secara bebarengan. Ini jelas tidak bisa jalan (won't work), seperti 
-yang pasti Anda masih ingat (_recall_) dari memori Anda pas lagi ngebaca Bab 16: bentuk implementasi 
+yang pasti kita masih ingat (_recall_) dari memori kita pas lagi ngebaca Bab 16: bentuk implementasi 
 _channel_ yang disediain sama Rust itu formatnya adalah sistem **banyak pengirim (multiple producer), 
 tapi cuma satu penerima (single consumer)**. Ini bermakna kalau kita ini tidak bisa lho sekadar nge-_clone_ 
 (kloning) si bagian _consumer_ (pengkonsumsi) dari saluran komunikasi ini buat mbetulin kode 
@@ -706,10 +706,10 @@ hampir nyampe (getting there) ke tujuan akhir kita ini loh!
 
 #### Mengimplementasikan Method `execute`
 
-Mari kita beneran akhirnya mulai ngerjain dan mengimplementasikan method `execute` 
+Mari kita benar-benar akhirnya mulai ngerjain dan mengimplementasikan method `execute` 
 pada `ThreadPool` tersebut secara tuntas. Kita juga bakal ngubah tipe `Job` ini dari asalnya sebuah struct menjadi 
 sebuah _type alias_ (alias buat sebuah tipe) aja buat nampung si _trait object_ (objek trait) yang mana 
-beneran bakal nampung (hold) secara bener tipe dari _closure_ asli yang mana si `execute` ini tadi lagi nerima. 
+benar-benar bakal nampung (hold) secara bener tipe dari _closure_ asli yang mana si `execute` ini tadi lagi nerima. 
 Kayak yang barusan kelar dibahas di [“Membikin Sinonim Tipe dengan Type Aliases”][creating-type-synonyms-with-type-aliases] 
 di dalem Bab 20 kemaren, fitur _type aliases_ ini ngebolehin kita buat mempersingkat (make shorter) 
 nama dari tipe-tipe yang kelihatannya sumpek kepanjangan supaya nanti mereka itu jadi jauh lebih 
@@ -739,16 +739,16 @@ yang udah jalan milik kita ini masih bakal terus melenggang jalan narik ngegas p
 (continue executing) sekuat lama umur (as long as) *pool* milik kita ini juga masih dibiarin buat tetep *exist*. 
 Satu-satunya alasan kenapa kita dengan berani masang (use) fitur `unwrap` di situ adalah karena 
 berbekal jaminan (_know_) dari diri kita sendiri kalau skenario kemungkinan gagalnya (_failure case_) ini sebenernya emang 
-beneran secara harfiah tidak bakal pernah terwujud kejadian sama sekali, tapi ya sayangnya si 
+benar-benar secara harfiah tidak bakal pernah terwujud kejadian sama sekali, tapi ya sayangnya si 
 _compiler_ ini mana ngerti kalau di kenyataannya kelakuan ini itu tidak bakal pernah berbuat salah macam itu (doesn't know that).
 
-Tapi kita ini juga belum beneran beres juga nih kerjaannya! Di dalam bagian _Worker_ itu, si `closure` 
+Tapi kita ini juga belum benar-benar beres juga nih kerjaannya! Di dalam bagian _Worker_ itu, si `closure` 
 kepunyaan kita ini yang tadinya dioper ke dalem `thread::spawn` kan emang tugas utamanya dia itu _cuma_ 
 lagi ngerujuk (meminjam referensi/*references*) doang kan ke si ujung penerima (_receiving end_) milik si saluran itu. 
-Padahal yang bener-bener kita harapkan di sini adalah, kita ngebutuhin banget supaya 
-si `closure` ini beneran bisa berputar dan berkeliling di dalam *loop* buat selama-lamanya (forever), 
+Padahal yang bener-bener kita harapkan di sini adalah, kita ngebutuhin sekali supaya 
+si `closure` ini benar-benar bisa berputar dan berkeliling di dalam *loop* buat selama-lamanya (forever), 
 nanyain dan malakin (asking) si ujung penerima *channel* ini mulu nanyain apaan dia ini lagi dapet kerjaan _job_ 
-sambil setelahnya dia beneran ngejalanin isi dari si pekerjaan (*running the job*) ini langsung abis dia kebetulan berhasil 
+sambil setelahnya dia benar-benar ngejalanin isi dari si pekerjaan (*running the job*) ini langsung abis dia kebetulan berhasil 
 ngedapetin satu *job*. Makanya, mari kita lakuin rombakan perubahan barusan yang ada kelihatan nyempil di 
 Listing 21-20 tersebut ke dalam dalem fungsi `Worker::new` ini.
 
@@ -838,7 +838,7 @@ Worker 0 got a job; executing.
 Worker 2 got a job; executing.
 ```
 
-Sukses mulus (Success)! Kita sekarang ngenalin kalau kita emang akhirnya sukses beneran punyain sebuah bentuk 
+Sukses mulus (Success)! Kita sekarang ngenalin kalau kita emang akhirnya sukses benar-benar punyain sebuah bentuk 
 sejati dari sebuah _thread pool_ murni yang mengeksekusi koneksi-koneksi yang singgah dari depan ini 
 ngejalanin proses eksekusinya berbarengan asinkron tidak usah gantian satu-satu lgi secara sinkron (_asynchronously_). 
 Emang kenyataannya kagak bakal pernah (_never_) ada riwayat kejadian di mana lebih dari jumlah sekian empet (_four_) potong _threads_ ini 
@@ -851,7 +851,7 @@ ke alamat lintasan jalur (_path_) tujuan kita ini di _/sleep_, maka server kita 
 tetep tegak berdiri bisa santai terus dengan gampangnya bisa ngelayanin ngeresponi (serve) panggilan para rentetan requests yang lainnya 
 gara-gara dia tinggal nyuruh _thread_ *Worker* lain yang emang dari kemaren emang nganggur buat sekalian ikutan terjun ngerjain bantu manggil fungsi *tasks* tersebut.
 
-> Catatan: Andai kata lu maksa nekat ngebuka *path* rute link URL tujuan yang ditaruh di dalem rute khusus jebakan si _/sleep_ ini di dalem banyakan (multiple) jajaran tumpukan sekian puluhan (multiple) *browser windows* secara bareng-bareng langsung sekaligus jebred dalam waktu sekerdipan mata bebarengan (_simultaneously_), Anda mungkina aja kelewatan bingung kepancing ngerasa panik dan nyangka kok kelihatannya dia ngeladenin ngememuat nge-load-nya ganti-gantian dengan selang pelan durasi santai (_time intervals_) per *five-second* (selang *lima deik*) sekali padahal kita udah makek *pool* multithread. Aslinya beneran sebagian (_some_) tipe dari program jenis peramban _web browsers_ jaman di luar sekarang (today) emang emang punya perilaku ngeksekusi kelakuan ganjil ngerapihin nge-barisin numpuk antrian deretan dari satu deretan *requests*-nya yang asalnya identik dan modelnya bener-bener punya *endpoint* rute kembar sama persis ganjil secara sengaja satu per satu berurut bergantian (sequentially), ya murni semata-mata itu gara-gara (reasons) sekadar buat tujuan urusan nge-*caching*. Intinya pembatasan kebodohan macem (_limitation_) begini ini mah samsek seutuhnya _tidak_ diakibatin bersumber murni disebabkan (_not caused by_) ulah dari kelakuan kinerja web server yang kita lagi pada bikin ini.
+> Catatan: Andai kata lu maksa nekat ngebuka *path* rute link URL tujuan yang ditaruh di dalem rute khusus jebakan si _/sleep_ ini di dalem banyakan (multiple) jajaran tumpukan sekian puluhan (multiple) *browser windows* secara bareng-bareng langsung sekaligus jebred dalam waktu sekerdipan mata bebarengan (_simultaneously_), kita mungkina aja kelewatan bingung kepancing ngerasa panik dan nyangka kok kelihatannya dia ngeladenin ngememuat nge-load-nya ganti-gantian dengan selang pelan durasi santai (_time intervals_) per *five-second* (selang *lima deik*) sekali padahal kita udah makek *pool* multithread. Aslinya benar-benar sebagian (_some_) tipe dari program jenis peramban _web browsers_ jaman di luar sekarang (today) emang emang punya perilaku ngeksekusi kelakuan ganjil ngerapihin nge-barisin numpuk antrian deretan dari satu deretan *requests*-nya yang asalnya identik dan modelnya bener-bener punya *endpoint* rute kembar sama persis ganjil secara sengaja satu per satu berurut bergantian (sequentially), ya murni semata-mata itu gara-gara (reasons) sekadar buat tujuan urusan nge-*caching*. Intinya pembatasan kebodohan macem (_limitation_) begini ini mah samsek seutuhnya _tidak_ diakibatin bersumber murni disebabkan (_not caused by_) ulah dari kelakuan kinerja web server yang kita lagi pada bikin ini.
 
 Saat-saat momen sekarang yang ini emang kelihatannya pas rasanya emang waktu jeda yang enak (good time) 
 buat minggir mingser ambil napas ngaso sebentar ngecoba ngebayangin nyimak (pause and consider) ngebandingin 
@@ -876,7 +876,7 @@ Abis panjang lebar berpuas-puas dirimu beres nuntasin masa masa ngulik ngebaca b
 
 Jujur emang barisan rombongan susunan set perabot alat tempur kode-kodean ini mah emang aslinya (this code compiles and runs) pantes sukses bisa di-*compile* lalu berhasil sukses diajak buat *running* nyala-nyala aja aslinya asalkan dipanggil mah tanpa cacat, akan tetapi (_but_) sayangnya kelakuannya dia tidak bakal sanggup membikin lalu menyetorkan membuahkan asilnya tingkah prilaku eksekusi pola ngantri tata perlintasan multi _threading_ yang aslinya sembenernya emang jujur jadi inceran idam-idaman (*desired threading behavior*) sasaran awal milik hajat (_desired_) diri kita: gara-gara ujung-ujungnya ya ntar sebuah *request* yang super lelet lambat (*a slow request*) jalannya bakal cuman ngehasilkan _requests_ yang berentet di antrean lain di belakangnya yang tetep ngadat mandek mandeg antri merana kudu terpaksa harus disuruh _wait_ menunggu dan antri ngurut memanjang barisan kebagian jatah jadwal biar mereka bisa dieksekusi dikelarin dibereskan dan diproses (processed). Perkara alasan dibalik _reason_ kejanggalan ginian ini tergolong ada sedari kelakuan halus _subtle_: bahwa sesungguhnya susunan wujud si struct _Mutex_ ini emang takditakdirkan emang tidak dikasih *public method* (*metode publik*) khusus sengaja dikasih nama panggilan buat fitur nge-*unlock* karena nyatanya status penguasa kunci miliknya kepemilikan jatah buat kuncian rahasia tersebut ini aslinya udah emang *based on* terikat mutlak dikunci ditentuin dari seberapa panjang seberapa bentar siklus riwayat hidup umur *lifetime* umurnya si benda keramat bertipe perlindungan yang menyandang identitas `MutexGuard<T>` yang mana sosok tersebut disisipkan rapi di perut selimut isi *LockResult<MutexGuard<T>>* yang emang udah jadi kodrat nasib jatah tugas buat metode dari fitur bernama *`lock`* buat dia setorkan ngeluarin dia (returns) pas selesai beres dia dipanggil beroperasi jalan. Menjelang masa kompilasi (*at compile time*), sosok mandor tukang sensor pinjeman `borrow checker` inilah yang selanjutnya ganti berjaga bakal dengan telitinya bisa memelototi lalu memberlakukan narapain menegakkan menembakkan _enforce the rule_ maklumat seputar tata kaidah yang ngegarisbawahi kalau setiap butir selongsong _resource_ (sumber daya) yang tadinya ketat diselimuti diborgol ketat (guarded) diawasi pelindungan di belakang benteng pelindung sebuah palang gembok berjenis _Mutex_ itu niscaya haram statusnya diharamkan (_cannot be accessed_) sama sekali dilarang terjamah alias tidak bakal mempan dibolehin buat bisa diutak-atik (diakses) oleh siapapun pun kalau seumpamanya status kita saat di kejadian eksekusi saat itu kondisinya lagi belom emang kita megang lalu punya si *lock* stempel kuncinya ini di tangan (unless we hold the lock). Masalahnya adalah, penerapan (_implementation_) kode yang bergaya ngasal semacam ini berisiko nimbul-nimbulin bahaya efek di mana wujud kuncian (`lock`) dari yang mestinya diserahin kembali ini ternyata masih dipaksa kudu bertahan kepeluk tertahan kepegang erat-erat tertahan di genggaman (_being held_) jauh memakan durasi yang kepanjangan sangat jauh di luar dari maksud jadwal normal target awal selesainya tugas aslinya seandainya (intended if we aren't mindful) andaikata otak pikiran kita belom ngerasa gih hati-hati nyadari seputaran *mindful* ngeh dan perduli buat memandang mikirin masalah masa waktu jeda _lifetime_ (lama waktu) dari _MutexGuard<T>_ tersebut.
 
-Sepetak bentuk kodingan susunan naskah dari balok kode di balikan dalem ruang gubahan *Listing 21-20* yang menumpukan tumpuannya di dalam bentuk susunan gaya pemakaian dari format pemanggilan dari perkenalan lajur baris berupa panggilan *`let job = receiver.lock().unwrap().recv().unwrap();`* beneran jalan bekerja karena aslinya dengan membiasakan manggil (_with `let`_), rupa jenis semua ragam dari kumpulan serpihan serentetan aneka serabut serangkaian sosok rentetan sekian harga biji *temporary values* nilai-nilai angka dadakan instan bayangan yang kebetulan aja sementara disisipin (_temporary values_) dipakai sengaja dipakai di daleman seonggok kumpulan bongkahan _expression_ tersebut yang ada bertumpuk mojok mentereng ngendon mangkal terparkir mejeng di perbatasan tapal batas perlintasan di ruas sisi lajur paling _right-hand side_ pojokan sebelah barisan pinggiran sisi seberang belahan sisi arah sebelah kanannya dari batasan silang palang lintasan lambang sama dengan (the equal sign) bakal emang nasibnya dengan sadar seketika cepatnya dalam detik waktu itu juga (immediately dropped) dimusnahin diputus di-drop hilang tak bersisa ditiadakan pas waktu (when) persis saat barisan deretan panggilan milik sang _let statement_ ini nemuin garis ajalnya dan kelar nyampe berakhir tamat ngakhirin garis _ends_ nasib eksekusinya. Beda malang apes nasib halnya, si konstruksi kelakuan si panggilan buat `while let` (dan tak pelak kelakuan yang kembar sama juga melekat pada panggilan buat deretan panggilan di struktur perlintasan buat konstruksi barisan kelakuan *`if let`* dan juga konstruksi yang ngerujuk seputaran kelakuan _`match`_) sifat kodrat aslinya pantang dan sejatinya anti dan juga (does not) tidak pernah sekalipun membuang secara sepihak memusnahkan (*drop*) barang bawaannya beruba wujud barang rakitan nilai-nilai aneka rentetan sosok figur *temporary values* angka naskah serpihan bawaan serba sementaranya (_temporary values_) sisaan tersebut sebelum rentetan eksekusinya ini beneran merayap tuntas tiba berjalan sampai ngejejak sukses nutup berhasil (_until the end of_) merambat tiba menapaki penghujung purna tutup gawang palang blok kodenya (_the associated block_). Merujuk narasi skenario paparan kejadian malang perbandingan percontohan yang tergambar pas nongkrong mojok di sela daleman sketsa yang terbingkai rapi di sela *Listing 21-21* ini tadi, sosok batang kuncian yang ditugasin gembok gerbang (`lock`) tetep ajeg kepaksa bakal awet mangkal terkunci (_remains held_) nangkring mengunci selagi sepanjang (*for the duration of*) di sepanjang rentetan durasi berlangsungnya kelakuan waktu (*the call to*) lamanya rentang periode pas fungsi tugas sang  _`job()`_ tersebut lagi ngejalanin rutinitas gawang di dalam masa rutinitasnya buat menunaikan (_call to_) ngejalanin seisi jeroan badan pemanggilan tugas kerjanya tsb., niscaya memunculkan satu hal arti rupa artian yang maknanya adalah emang pada saat detik-detik nasib gembok lagi kehalang nutup rupa begini maka segenap sekompi pasukan komplotan deretan gerombolan *_Worker instances_* yang *other* (para punggawa lainnya) bakal pastinya pada terpojok tak kan sanggup alias buntu dilarang masuk narik _cannot receive jobs_ alias tidak ada satu pun mereka yang bakal sukses nerima narik sisa gilir antrian tugas sisa deretan job sisanya tsb.
+Sepetak bentuk kodingan susunan naskah dari balok kode di balikan dalem ruang gubahan *Listing 21-20* yang menumpukan tumpuannya di dalam bentuk susunan gaya pemakaian dari format pemanggilan dari perkenalan lajur baris berupa panggilan *`let job = receiver.lock().unwrap().recv().unwrap();`* benar-benar jalan bekerja karena aslinya dengan membiasakan manggil (_with `let`_), rupa jenis semua ragam dari kumpulan serpihan serentetan aneka serabut serangkaian sosok rentetan sekian harga biji *temporary values* nilai-nilai angka dadakan instan bayangan yang kebetulan aja sementara disisipin (_temporary values_) dipakai sengaja dipakai di daleman seonggok kumpulan bongkahan _expression_ tersebut yang ada bertumpuk mojok mentereng ngendon mangkal terparkir mejeng di perbatasan tapal batas perlintasan di ruas sisi lajur paling _right-hand side_ pojokan sebelah barisan pinggiran sisi seberang belahan sisi arah sebelah kanannya dari batasan silang palang lintasan lambang sama dengan (the equal sign) bakal emang nasibnya dengan sadar seketika cepatnya dalam detik waktu itu juga (immediately dropped) dimusnahin diputus di-drop hilang tak bersisa ditiadakan pas waktu (when) persis saat barisan deretan panggilan milik sang _let statement_ ini nemuin garis ajalnya dan kelar nyampe berakhir tamat ngakhirin garis _ends_ nasib eksekusinya. Beda malang apes nasib halnya, si konstruksi kelakuan si panggilan buat `while let` (dan tak pelak kelakuan yang kembar sama juga melekat pada panggilan buat deretan panggilan di struktur perlintasan buat konstruksi barisan kelakuan *`if let`* dan juga konstruksi yang ngerujuk seputaran kelakuan _`match`_) sifat kodrat aslinya pantang dan sejatinya anti dan juga (does not) tidak pernah sekalipun membuang secara sepihak memusnahkan (*drop*) barang bawaannya beruba wujud barang rakitan nilai-nilai aneka rentetan sosok figur *temporary values* angka naskah serpihan bawaan serba sementaranya (_temporary values_) sisaan tersebut sebelum rentetan eksekusinya ini benar-benar merayap tuntas tiba berjalan sampai ngejejak sukses nutup berhasil (_until the end of_) merambat tiba menapaki penghujung purna tutup gawang palang blok kodenya (_the associated block_). Merujuk narasi skenario paparan kejadian malang perbandingan percontohan yang tergambar pas nongkrong mojok di sela daleman sketsa yang terbingkai rapi di sela *Listing 21-21* ini tadi, sosok batang kuncian yang ditugasin gembok gerbang (`lock`) tetep ajeg kepaksa bakal awet mangkal terkunci (_remains held_) nangkring mengunci selagi sepanjang (*for the duration of*) di sepanjang rentetan durasi berlangsungnya kelakuan waktu (*the call to*) lamanya rentang periode pas fungsi tugas sang  _`job()`_ tersebut lagi ngejalanin rutinitas gawang di dalam masa rutinitasnya buat menunaikan (_call to_) ngejalanin seisi jeroan badan pemanggilan tugas kerjanya tsb., niscaya memunculkan satu hal arti rupa artian yang maknanya adalah emang pada saat detik-detik nasib gembok lagi kehalang nutup rupa begini maka segenap sekompi pasukan komplotan deretan gerombolan *_Worker instances_* yang *other* (para punggawa lainnya) bakal pastinya pada terpojok tak kan sanggup alias buntu dilarang masuk narik _cannot receive jobs_ alias tidak ada satu pun mereka yang bakal sukses nerima narik sisa gilir antrian tugas sisa deretan job sisanya tsb.
 
 [creating-type-synonyms-with-type-aliases]: ch20-03-advanced-types.html#creating-type-synonyms-with-type-aliases
 [integer-types]: ch03-02-data-types.html#integer-types

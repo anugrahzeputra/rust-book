@@ -1,10 +1,10 @@
 ## Memperlakukan Smart Pointers seperti Referensi Biasa dengan `Deref`
 
-Mengimplementasikan trait `Deref` memungkinkan Anda buat mengkustomisasi 
+Mengimplementasikan trait `Deref` memungkinkan kita buat mengkustomisasi 
 perilaku dari _dereference operator_ (operator dereferensi) `*` (jangan 
 tertukar sama operator perkalian atau operator glob). Dengan 
 mengimplementasikan `Deref` sedemikian rupa sehingga sebuah _smart pointer_ 
-bisa diperlakukan seperti referensi biasa, Anda bisa menulis kode yang 
+bisa diperlakukan seperti referensi biasa, kita bisa menulis kode yang 
 beroperasi pada referensi dan memakai kode tersebut buat _smart pointers_ 
 juga.
 
@@ -157,7 +157,7 @@ Listing 15-10 mengandung implementasi `Deref` buat ditambahkan ke definisi
 
 Sintaks `type Target = T;` mendefinisikan sebuah _associated type_ buat 
 dipakai oleh trait `Deref`. _Associated types_ adalah cara yang sedikit 
-berbeda dalam mendeklarasikan sebuah parameter generik, tapi Anda tidak usah 
+berbeda dalam mendeklarasikan sebuah parameter generik, tapi kita tidak usah 
 pusing dulu soal itu buat sekarang; kita bakal membahasnya lebih detail 
 di Bab 20.
 
@@ -288,8 +288,8 @@ saat _runtime_ karena memanfaatkan _deref coercion_!
 
 ### Gimana Deref Coercion Berinteraksi sama Mutabilitas
 
-Sama seperti gimana Anda memakai trait `Deref` buat menimpa operator `*` pada 
-referensi _immutable_, Anda juga bisa memakai trait `DerefMut` buat menimpa 
+Sama seperti gimana kita memakai trait `Deref` buat menimpa operator `*` pada 
+referensi _immutable_, kita juga bisa memakai trait `DerefMut` buat menimpa 
 operator `*` pada referensi _mutable_.
 
 Rust melakukan _deref coercion_ saat ia menemukan tipe-tipe dan implementasi 
@@ -300,15 +300,15 @@ trait di tiga kasus ini:
 3. Dari `&mut T` ke `&U` saat `T: Deref<Target=U>`
 
 Dua kasus pertama itu sama saja kecuali kalau yang kedua mengimplementasikan 
-mutabilitas. Kasus pertama menyatakan kalau Anda punya sebuah `&T`, dan `T` 
-mengimplementasikan `Deref` ke suatu tipe `U`, Anda bisa mendapatkan sebuah 
+mutabilitas. Kasus pertama menyatakan kalau kita punya sebuah `&T`, dan `T` 
+mengimplementasikan `Deref` ke suatu tipe `U`, kita bisa mendapatkan sebuah 
 `&U` secara transparan. Kasus kedua menyatakan kalau _deref coercion_ yang 
 sama terjadi buat referensi _mutable_.
 
 Kasus ketiga itu sedikit lebih _tricky_: Rust juga bakal me-*coerce* sebuah 
 referensi _mutable_ menjadi referensi _immutable_. Tapi kebalikannya itu 
 _tidak_ mungkin: referensi _immutable_ tidak bakal pernah bisa di-*coerce* 
-menjadi referensi _mutable_. Karena aturan _borrowing_, kalau Anda punya sebuah 
+menjadi referensi _mutable_. Karena aturan _borrowing_, kalau kita punya sebuah 
 referensi _mutable_, referensi _mutable_ tersebut haruslah menjadi satu-satunya 
 referensi ke data tersebut (kalau tidak, programnya tidak bakal bisa 
 di-compile). Mengonversi satu referensi _mutable_ menjadi satu referensi 

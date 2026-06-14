@@ -5,7 +5,7 @@ dan _crates_.
 
 Sebuah _crate_ adalah jumlah kode paling kecil yang dipertimbangkan sama _compiler_ 
 Rust dalam satu waktu. Walaupun kita jalanin `rustc` bukannya `cargo` terus 
-masukin satu file source code (kayak yang kita lakuin dulu banget di “Menulis 
+masukin satu file source code (kayak yang kita lakuin dulu sekali di “Menulis 
 dan Menjalankan Program Rust” di Bab 1), _compiler_ nganggep file itu sebagai 
 sebuah crate. Crates bisa isinya modul, dan modul itu mungkin didefinisikan di 
 file lain yang bakal di-compile barengan sama crate-nya, kayak yang bakal kita 

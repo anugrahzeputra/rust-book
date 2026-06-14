@@ -7,11 +7,11 @@
 Di sepanjang bab ini, kita sudah memakai trait `Future`, `Stream`, dan 
 `StreamExt` dengan berbagai cara. Sejauh ini, kita memang sengaja menghindari 
 membahas terlalu dalam soal gimana detail cara kerja mereka atau gimana mereka 
-saling berhubungan, yang mana sebenarnya sah-sah saja buat pekerjaan Rust Anda 
-sehari-hari. Tapi kadang-kadang, Anda bakal menjumpai situasi di mana Anda butuh 
+saling berhubungan, yang mana sebenarnya sah-sah saja buat pekerjaan Rust kita 
+sehari-hari. Tapi kadang-kadang, kita bakal menjumpai situasi di mana kita butuh 
 memahami lebih banyak detail soal trait-trait ini, bersamaan dengan tipe `Pin` 
 dan trait `Unpin`. Di bagian ini, kita bakal menggalinya secukupnya saja buat 
-membantu Anda di skenario-skenario tersebut, sembari tetap membiarkan pembahasan 
+membantu kita di skenario-skenario tersebut, sembari tetap membiarkan pembahasan 
 yang _bener-bener_ mendalam buat dokumentasi lainnya.
 
 <!-- Old headings. Do not remove or links may break. -->
@@ -61,15 +61,15 @@ nanti. Varian `Ready` mengindikasikan kalau `Future`-nya sudah selesai
 mengerjakan tugasnya dan nilai `T` sudah tersedia.
 
 > Catatan: Jarang sekali ada kebutuhan buat memanggil `poll` secara langsung, 
-> tapi kalau Anda memang butuh melakukannya, ingatlah kalau pada kebanyakan 
+> tapi kalau kita memang butuh melakukannya, ingatlah kalau pada kebanyakan 
 > _futures_, si pemanggil tidak seharusnya memanggil `poll` lagi setelah 
 > _future_-nya mengembalikan `Ready`. Banyak _futures_ yang bakal _panic_ kalau 
 > di-_poll_ lagi setelah mereka jadi siap. _Futures_ yang aman buat di-_poll_ 
 > lagi bakal menyatakannya secara eksplisit di dalam dokumentasinya. Perilaku 
 > ini mirip sama gimana `Iterator::next` bekerja.
 
-Pas Anda melihat kode yang memakai `await`, Rust sebenarnya mengompilasi kode 
-tersebut di balik layar menjadi kode yang memanggil `poll`. Kalau Anda melihat 
+Pas kita melihat kode yang memakai `await`, Rust sebenarnya mengompilasi kode 
+tersebut di balik layar menjadi kode yang memanggil `poll`. Kalau kita melihat 
 balik ke Listing 17-4, di mana kita mencetak judul halaman buat satu URL begitu 
 dia selesai, Rust mengompilasinya jadi sesuatu yang kira-kira (biarpun nggak 
 persis sama) kayak gini:
@@ -105,7 +105,7 @@ loop {
 }
 ```
 
-Tapi kalau seandainya Rust beneran mengompilasi kode yang persis kayak gitu, 
+Tapi kalau seandainya Rust benar-benar mengompilasi kode yang persis kayak gitu, 
 tiap `await` jadinya bakal memblokir—persis kebalikan dari apa yang mau kita 
 capai! Sebaliknya, Rust memastikan kalau perulangannya bisa menyerahkan kontrol 
 ke sesuatu yang bisa me-_pause_ pekerjaan pada _future_ ini buat mengerjakan 
@@ -164,8 +164,8 @@ Ini mungkin mengejutkan. Lagian, tidak ada satu pun dari blok asinkron tersebut
 yang mengembalikan apa-apa, jadi masing-masing memproduksi sebuah 
 `Future<Output = ()>`. Tapi ingat kalau `Future` itu adalah sebuah trait, dan 
 _compiler_ membikin sebuah enum yang unik buat tiap blok asinkron, biarpun tipe 
-output mereka identik. Sama halnya kayak Anda tidak bisa menaruh dua buah 
-struct tulisan tangan yang berbeda ke dalam sebuah `Vec`, Anda juga tidak bisa 
+output mereka identik. Sama halnya kayak kita tidak bisa menaruh dua buah 
+struct tulisan tangan yang berbeda ke dalam sebuah `Vec`, kita juga tidak bisa 
 mencampur aduk enum-enum buatan _compiler_ tersebut.
 
 Terus kita mengoper koleksi _futures_ tersebut ke fungsi `trpl::join_all` lalu 
@@ -220,7 +220,7 @@ mengimplementasikan trait `Future`, dan `Box<T>` mengimplementasikan `Future`
 cuma kalau `T` yang ia bungkus itu adalah sebuah _future_ yang 
 mengimplementasikan trait `Unpin`.
 
-Duh, banyak banget yang harus diserap ya! Biar beneran paham, mari kita gali 
+Duh, sangat banyak yang harus diserap ya! Biar benar-benar paham, mari kita gali 
 sedikit lebih jauh soal gimana cara trait `Future` sebenarnya bekerja, terutama 
 seputar urusan *pinning*. Mari kita lihat lagi definisi dari trait `Future`:
 
@@ -237,9 +237,9 @@ pub trait Future {
 ```
 
 Parameter `cx` dan tipe `Context`-nya adalah kunci gimana sebuah _runtime_ bisa 
-beneran tahu kapan harus mengecek sembarang _future_ yang diberikan sambil 
+benar-benar tahu kapan harus mengecek sembarang _future_ yang diberikan sambil 
 tetap bersifat malas. Sekali lagi, detail gimana itu bekerja ada di luar 
-cakupan bab ini, dan Anda umumnya cuma perlu memikirkan hal ini pas lagi 
+cakupan bab ini, dan kita umumnya cuma perlu memikirkan hal ini pas lagi 
 menulis implementasi `Future` kustom. Kita bakal fokus saja ke tipe buat 
 `self`, karena ini adalah pertama kalinya kita melihat sebuah method di mana 
 `self` punya anotasi tipe. Sebuah anotasi tipe buat `self` bekerja kayak 
@@ -306,13 +306,13 @@ di ilustrasi yang disederhanakan di Gambar 17-4.
 
 Tapi secara bawaan, objek apa saja yang punya referensi ke dirinya sendiri itu 
 sifatnya tidak aman buat dipindahkan, karena referensi itu selalu menunjuk ke 
-alamat memori asli dari apa pun yang dirujuknya (lihat Gambar 17-5). Kalau Anda 
+alamat memori asli dari apa pun yang dirujuknya (lihat Gambar 17-5). Kalau kita 
 memindahkan struktur datanya itu sendiri, referensi internal tadi bakal 
 ditinggalkan dalam posisi menunjuk ke lokasi yang lama. Padahal, lokasi memori 
 tersebut sekarang sudah tidak valid. Di satu sisi, nilainya tidak bakal di-
-update pas Anda melakukan perubahan ke struktur datanya. Di sisi lain—yang 
+update pas kita melakukan perubahan ke struktur datanya. Di sisi lain—yang 
 lebih penting—komputernya sekarang bebas buat memakai ulang memori tersebut buat 
-keperluan lain! Anda bisa berakhir membaca data yang sama sekali tidak ada 
+keperluan lain! Kita bisa berakhir membaca data yang sama sekali tidak ada 
 hubungannya nanti.
 
 <figure>
@@ -329,13 +329,13 @@ banyak beban performa, apalagi kalau ada jaring-jaring referensi utuh yang
 perlu di-update. Kalau kita sebaliknya bisa memastikan struktur data yang 
 dimaksud itu *tidak pindah-pindah di memori*, kita tidak perlu repot-repot meng-
 update referensi apa pun. Nah, itulah gunanya _borrow checker_ milik Rust: di 
-dalam kode yang aman, ia mencegah Anda dari memindahkan item apa saja yang 
+dalam kode yang aman, ia mencegah kita dari memindahkan item apa saja yang 
 punya referensi aktif yang menunjuk kepadanya.
 
 `Pin` dibangun di atas hal tersebut buat memberikan jaminan persis yang kita 
 butuhkan. Pas kita me-_pin_ sebuah nilai dengan membungkus sebuah pointer ke 
 nilai tersebut di dalam `Pin`, dia sudah tidak bisa pindah lagi. Jadi, kalau 
-Anda punya `Pin<Box<SuatuTipe>>`, Anda sebenarnya sedang me-_pin_ nilai 
+kita punya `Pin<Box<SuatuTipe>>`, kita sebenarnya sedang me-_pin_ nilai 
 `SuatuTipe` tersebut, *bukan* pointer `Box`-nya. Gambar 17-6 mengilustrasikan 
 proses ini.
 
@@ -353,7 +353,7 @@ itu tetap diam di tempat. Kalau sebuah pointer pindah-pindah, *tapi data yang
 ditunjuknya* tetap ada di tempat yang sama, kayak di Gambar 17-7, nggak bakal 
 ada masalah potensial. (Sebagai latihan mandiri, coba lihat dokumentasi buat 
 tipe-tipe tersebut sekaligus modul `std::pin` dan coba cari tahu gimana cara 
-Anda melakukan ini pakai `Pin` yang membungkus sebuah `Box`.) Kuncinya adalah 
+kita melakukan ini pakai `Pin` yang membungkus sebuah `Box`.) Kuncinya adalah 
 tipe *self-referential*-nya itu sendiri nggak bisa pindah, karena ia tetap di-
 _pin_.
 
@@ -369,10 +369,10 @@ Meskipun begitu, mayoritas tipe itu benar-benar aman buat dipindah-pindahkan,
 biarpun mereka kebetulan ada di balik sebuah pointer `Pin`. Kita cuma perlu 
 mikirin soal *pinning* pas item-itemnya punya referensi internal. Nilai-nilai 
 primitif kayak angka dan Boolean itu aman karena mereka jelas nggak punya 
-referensi internal apa-apa. Begitu juga sama mayoritas tipe yang biasa Anda 
-pakai di Rust. Anda bisa memindah-mindahkan sebuah `Vec`, misalnya, tanpa perlu 
-khawatir. Mengingat apa yang sudah kita lihat sejauh ini, kalau Anda punya 
-`Pin<Vec<String>>`, Anda bakal dipaksa melakukan segalanya lewat API milik `Pin` 
+referensi internal apa-apa. Begitu juga sama mayoritas tipe yang biasa kita 
+pakai di Rust. Kita bisa memindah-mindahkan sebuah `Vec`, misalnya, tanpa perlu 
+khawatir. Mengingat apa yang sudah kita lihat sejauh ini, kalau kita punya 
+`Pin<Vec<String>>`, kita bakal dipaksa melakukan segalanya lewat API milik `Pin` 
 yang aman tapi membatasi, padahal sebuah `Vec<String>` itu selalu aman buat 
 dipindahkan kalau tidak ada referensi lain kepadanya. Kita butuh sebuah cara 
 buat memberi tahu _compiler_ kalau tidak apa-apa buat memindah-mindahkan item di 
@@ -397,7 +397,7 @@ sebuah pointer ke tipe tersebut dipakai di dalam sebuah `Pin`.
 Dengan kata lain, ada dua hal yang harus diingat soal hubungan antara `Pin` dan 
 `Unpin`. Pertama, `Unpin` adalah kasus yang "normal", dan `!Unpin` adalah kasus 
 yang spesial. Kedua, apakah suatu tipe mengimplementasikan `Unpin` atau 
-`!Unpin` itu *hanya* berpengaruh pas Anda lagi memakai pointer yang di-_pin_ ke 
+`!Unpin` itu *hanya* berpengaruh pas kita lagi memakai pointer yang di-_pin_ ke 
 tipe tersebut kayak `Pin<&mut SuatuTipe>`.
 
 Buat menjadikannya konkret, coba pikirkan soal sebuah `String`: ia punya sebuah 
@@ -454,32 +454,32 @@ menambah atau menghapus _futures_ dari vector-nya pas _runtime_ lalu
 menggabungkan mereka semua.
 
 `Pin` dan `Unpin` itu paling banyak kepake pas lagi membangun *lower-level 
-libraries*, atau pas Anda lagi membangun sebuah _runtime_ itu sendiri, bukannya 
-buat kode Rust sehari-hari. Tapi pas Anda melihat trait-trait ini muncul di 
-dalam pesan error, setidaknya sekarang Anda punya gambaran yang lebih oke soal 
-gimana cara membetulkan kode Anda!
+libraries*, atau pas kita lagi membangun sebuah _runtime_ itu sendiri, bukannya 
+buat kode Rust sehari-hari. Tapi pas kita melihat trait-trait ini muncul di 
+dalam pesan error, setidaknya sekarang kita punya gambaran yang lebih oke soal 
+gimana cara membetulkan kode kita!
 
 > Catatan: Kombinasi antara `Pin` dan `Unpin` ini memungkinkan implementasi 
 > aman dari keseluruhan kelas tipe-tipe kompleks di Rust yang tadinya bakal 
 > terbukti menantang gara-gara mereka bersifat *self-referential*. Tipe-tipe 
 > yang mewajibkan `Pin` paling sering muncul di Rust asinkron saat ini, tapi 
-> sekali-sekali, Anda mungkin juga bakal menjumpai mereka di konteks lain.
+> sekali-sekali, kita mungkin juga bakal menjumpai mereka di konteks lain.
 >
 > Detail spesifik soal gimana `Pin` dan `Unpin` bekerja, dan aturan apa saja 
 > yang wajib mereka junjung tinggi, sudah dibahas secara ekstensif di dalam 
-> dokumentasi API buat `std::pin`, jadi kalau Anda tertarik buat belajar lebih 
+> dokumentasi API buat `std::pin`, jadi kalau kita tertarik buat belajar lebih 
 > lanjut, itu adalah tempat yang bagus buat memulai.
 >
-> Kalau Anda mau memahami gimana cara kerja di balik layarnya secara lebih 
+> Kalau kita mau memahami gimana cara kerja di balik layarnya secara lebih 
 > detail lagi, silakan baca Bab [2][under-the-hood]<!-- ignore --> dan 
 > [4][pinning]<!-- ignore --> dari buku 
 > [_Asynchronous Programming in Rust_][async-book].
 
 ### Trait `Stream`
 
-Sekarang setelah Anda punya pemahaman yang lebih dalam soal trait `Future`, 
+Sekarang setelah kita punya pemahaman yang lebih dalam soal trait `Future`, 
 `Pin`, dan `Unpin`, kita bisa mengalihkan perhatian kita ke trait `Stream`. 
-Kayak yang sudah Anda pelajari sebelumnya di bab ini, _streams_ itu mirip kayak 
+Kayak yang sudah kita pelajari sebelumnya di bab ini, _streams_ itu mirip kayak 
 iterator asinkron. Tapi beda sama `Iterator` dan `Future`, `Stream` itu tidak 
 punya definisi di dalam *standard library* pada saat tulisan ini dibuat, tapi 
 emang *ada* definisi yang sangat umum dari _crate_ `futures` yang dipakai di 
@@ -524,7 +524,7 @@ kayak sebuah iterator.
 
 Sesuatu yang sangat mirip dengan definisi ini kemungkinan besar bakal berakhir 
 menjadi bagian dari _standard library_ milik Rust. Sembari menunggu, ia adalah 
-bagian dari peralatan milik mayoritas _runtimes_, jadi Anda bisa 
+bagian dari peralatan milik mayoritas _runtimes_, jadi kita bisa 
 mengandalkannya, dan segala hal yang kita bahas selanjutnya secara umum bakal 
 tetap berlaku!
 
@@ -568,9 +568,9 @@ kemudahan tanpa mengganggu trait dasarnya.
 Di versi `StreamExt` yang dipakai di _crate_ `trpl`, trait-nya tidak cuma 
 mendefinisikan method `next` tapi juga menyuplai implementasi default dari 
 `next` yang secara benar menangani detail-detail pemanggilan 
-`Stream::poll_next`. Ini artinya bahkan pas Anda perlu menulis tipe data *streaming* 
-Anda sendiri, Anda *cuma* harus mengimplementasikan `Stream`, dan nantinya 
-siapa saja yang memakai tipe data Anda bisa memakai `StreamExt` beserta method-
+`Stream::poll_next`. Ini artinya bahkan pas kita perlu menulis tipe data *streaming* 
+kita sendiri, kita *cuma* harus mengimplementasikan `Stream`, dan nantinya 
+siapa saja yang memakai tipe data kita bisa memakai `StreamExt` beserta method-
 methodnya secara otomatis.
 
 Nah, segitu saja pembahasan kita soal detail-detail tingkat rendah pada trait-

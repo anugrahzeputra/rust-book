@@ -2,7 +2,7 @@
 
 Buat mencari sumber bacaan (resources) dalam bahasa selain bahasa Inggris. Sebagian 
 besar di antaranya masih dalam taraf pengerjaan; silakan cek 
-[label Translations][label] andaikata Anda ingin membantu atau ingin memberi 
+[label Translations][label] andaikata kita ingin membantu atau ingin memberi 
 tahu kami tentang adanya proyek terjemahan baru!
 
 [label]: https://github.com/rust-lang/book/issues?q=is%3Aopen+is%3Aissue+label%3ATranslations

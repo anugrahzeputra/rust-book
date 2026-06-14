@@ -2,7 +2,7 @@
 
 Kita pertama kali ngebahas soal traits di [“Traits: Mendefinisikan Perilaku 
 Bersama”][traits-defining-shared-behavior] di Bab 10, tapi kita tidak ngebahas 
-detail-detail yang lebih mahirnya. Sekarang setelah Anda tahu lebih banyak soal 
+detail-detail yang lebih mahirnya. Sekarang setelah kita tahu lebih banyak soal 
 Rust, kita bisa masuk ke seluk beluk (nitty-gritty) dari traits ini.
 
 <!-- Old link, do not remove -->
@@ -18,7 +18,7 @@ Si peng-implementasi (implementor) dari trait tersebut bakal menentukan tipe
 konkret yang bakal dipakai buat menggantikan tipe _placeholder_ itu buat 
 implementasi khususnya. Dengan begitu, kita bisa mendefinisikan sebuah trait 
 yang memakai tipe-tipe tertentu tanpa perlu tahu persis apa tipe-tipe tersebut 
-sampai trait-nya beneran diimplementasikan.
+sampai trait-nya benar-benar diimplementasikan.
 
 Kita udah mendeskripsikan sebagian besar fitur-fitur tingkat lanjut di bab ini 
 sebagai hal-hal yang jarang dibutuhkan. _Associated types_ ini letaknya ada di 
@@ -102,15 +102,15 @@ _associated type_ di dalam dokumentasi API adalah sebuah praktik yang baik.
 Saat kita memakai parameter tipe generik, kita bisa menentukan tipe konkret default 
 (bawaan) buat tipe generik tersebut. Ini ngehapus kebutuhan bagi para peng-implementasi 
 dari trait tersebut buat menentukan tipe konkret kalau tipe default-nya emang udah pas. 
-Anda menentukan sebuah tipe default saat mendeklarasikan sebuah tipe generik dengan 
+Kita menentukan sebuah tipe default saat mendeklarasikan sebuah tipe generik dengan 
 sintaks `<PlaceholderType=ConcreteType>`.
 
-Satu contoh keren dari situasi di mana teknik ini berguna banget adalah pada 
-_operator overloading_ (penumpukan fungsi operator), di mana Anda mengkustomisasi 
+Satu contoh keren dari situasi di mana teknik ini sangat berguna adalah pada 
+_operator overloading_ (penumpukan fungsi operator), di mana kita mengkustomisasi 
 perilaku dari sebuah operator (seperti `+`) di situasi-situasi tertentu.
 
-Rust tidak mengizinkan Anda buat membikin operator Anda sendiri atau melakukan 
-_overload_ pada sembarang operator. Tapi Anda bisa melakukan _overload_ pada operasi-
+Rust tidak mengizinkan kita buat membikin operator kita sendiri atau melakukan 
+_overload_ pada sembarang operator. Tapi kita bisa melakukan _overload_ pada operasi-
 operasi dan trait-trait korespondennya yang terdaftar di `std::ops` dengan 
 mengimplementasikan trait-trait yang berkaitan sama operator tersebut. Misalnya, 
 di Listing 20-15 kita melakukan _overload_ pada operator `+` buat menjumlahkan 
@@ -174,22 +174,22 @@ dengan `Meters` sebagai si `Rhs`, seperti yang ditunjukkan di Listing 20-16.
 Buat menjumlahkan `Millimeters` dan `Meters`, kita menentukan `impl Add<Meters>` 
 buat menge-set nilai dari parameter tipe `Rhs` ketimbang memakai nilai default `Self`.
 
-Anda bakal memakai parameter tipe default dalam dua cara utama:
+Kita bakal memakai parameter tipe default dalam dua cara utama:
 
 1. Buat memperluas sebuah tipe tanpa merusak kode yang udah ada (existing code)
 2. Buat memungkinkan adanya kustomisasi di kasus-kasus spesifik yang mana mayoritas 
    _user_ tidak bakal membutuhkannya
 
 Trait `Add` di _standard library_ adalah contoh dari tujuan yang kedua: biasanya, 
-Anda bakal menjumlahkan dua tipe yang sama, tapi trait `Add` menyediakan kemampuan 
+kita bakal menjumlahkan dua tipe yang sama, tapi trait `Add` menyediakan kemampuan 
 buat melakukan kustomisasi lebih dari itu. Memakai sebuah parameter tipe default di 
-dalam definisi trait `Add` berarti Anda tidak perlu menyebutkan parameter tambahan itu 
+dalam definisi trait `Add` berarti kita tidak perlu menyebutkan parameter tambahan itu 
 di sebagian besar waktunya. Dengan kata lain, sedikit _boilerplate code_ (kode 
 berulang-ulang) tidak lagi diperlukan, ngebikin penggunaan trait-nya jadi lebih 
 gampang.
 
-Tujuan pertama itu mirip sama tujuan kedua tapi kebalikannya: kalau Anda mau 
-nambahin sebuah parameter tipe ke sebuah trait yang udah ada, Anda bisa ngasih dia 
+Tujuan pertama itu mirip sama tujuan kedua tapi kebalikannya: kalau kita mau 
+nambahin sebuah parameter tipe ke sebuah trait yang udah ada, kita bisa ngasih dia 
 sebuah nilai default biar ekstensi fungsionalitas dari trait tersebut tidak 
 merusak kode implementasi yang udah ada.
 
@@ -200,13 +200,13 @@ merusak kode implementasi yang udah ada.
 ### Menghilangkan Ambiguitas (Disambiguating) di Antara Method-method yang Punya Nama yang Sama
 
 Tidak ada aturan di Rust yang mencegah sebuah trait dari punya method dengan nama 
-yang sama dengan method dari trait lain, dan Rust juga tidak mencegah Anda buat 
+yang sama dengan method dari trait lain, dan Rust juga tidak mencegah kita buat 
 mengimplementasikan kedua trait tersebut pada satu tipe. Sangat mungkin juga buat 
 mengimplementasikan sebuah method secara langsung pada tipe tersebut dengan nama 
 yang sama kayak nama-nama method dari trait-trait tadi.
 
-Pas Anda memanggil method-method yang punya nama yang sama ini, Anda harus ngasih 
-tahu Rust mana yang mau Anda pakai. Coba perhatikan kode di Listing 20-17 di mana 
+Pas kita memanggil method-method yang punya nama yang sama ini, kita harus ngasih 
+tahu Rust mana yang mau kita pakai. Coba perhatikan kode di Listing 20-17 di mana 
 kita udah mendefinisikan dua trait, `Pilot` dan `Wizard`, yang mana dua-duanya punya 
 sebuah method bernama `fly`. Kita lalu mengimplementasikan kedua trait tersebut pada 
 sebuah tipe `Human` yang ternyata juga udah punya sebuah method bernama `fly` yang 
@@ -267,8 +267,8 @@ mana yang harus dipakai berdasarkan tipe dari `self`.
 
 Namun, _associated functions_ (fungsi terkait) yang bukan methods tidak punya parameter 
 `self`. Saat ada beberapa tipe atau trait yang mendefinisikan fungsi-fungsi non-method 
-dengan nama fungsi yang sama, Rust tidak selalu tahu tipe mana yang Anda maksud 
-kecuali kalau Anda memakai _fully qualified syntax_ (sintaks yang dikualifikasikan secara 
+dengan nama fungsi yang sama, Rust tidak selalu tahu tipe mana yang kita maksud 
+kecuali kalau kita memakai _fully qualified syntax_ (sintaks yang dikualifikasikan secara 
 penuh). Misalnya, di Listing 20-20 kita membikin sebuah trait buat penampungan hewan 
 (animal shelter) yang mau menamai semua anjing bayi (baby dogs) dengan nama Spot. 
 Kita membikin sebuah trait `Animal` dengan sebuah fungsi _associated_ non-method 
@@ -353,12 +353,12 @@ Secara umum, _fully qualified syntax_ didefinisikan kayak gini:
 
 Buat _associated functions_ yang bukan method, tidak bakal ada yang namanya 
 `receiver` (penerima): yang ada cuma daftar dari argumen-argumen lainnya aja. 
-Anda bisa aja memakai _fully qualified syntax_ di mana-mana setiap kali Anda manggil 
-fungsi atau method. Namun, Anda dibolehin buat ngilangin (_omit_) bagian apa pun dari 
+Kita bisa aja memakai _fully qualified syntax_ di mana-mana setiap kali kita manggil 
+fungsi atau method. Namun, kita dibolehin buat ngilangin (_omit_) bagian apa pun dari 
 sintaks ini yang mana Rust bisa cari tahu sendiri dari informasi lain di programnya. 
-Anda cuma perlu memakai sintaks yang lebih panjang (_verbose_) ini di kasus-kasus di 
+Kita cuma perlu memakai sintaks yang lebih panjang (_verbose_) ini di kasus-kasus di 
 mana ada banyak implementasi yang memakai nama yang sama dan Rust butuh bantuan buat 
-mengidentifikasi implementasi mana yang mau Anda panggil.
+mengidentifikasi implementasi mana yang mau kita panggil.
 
 <!-- Old link, do not remove -->
 
@@ -366,12 +366,12 @@ mengidentifikasi implementasi mana yang mau Anda panggil.
 
 ### Memakai Supertraits
 
-Terkadang Anda mungkin menulis sebuah definisi trait yang bergantung sama trait 
-lain: supaya sebuah tipe bisa mengimplementasikan trait yang pertama, Anda mau 
-mewajibkan agar tipe tersebut juga mengimplementasikan trait yang kedua. Anda bakal 
-melakukan ini supaya definisi trait Anda bisa memanfaatkan item-item _associated_ 
+Terkadang kita mungkin menulis sebuah definisi trait yang bergantung sama trait 
+lain: supaya sebuah tipe bisa mengimplementasikan trait yang pertama, kita mau 
+mewajibkan agar tipe tersebut juga mengimplementasikan trait yang kedua. Kita bakal 
+melakukan ini supaya definisi trait kita bisa memanfaatkan item-item _associated_ 
 (terkait) dari trait yang kedua tersebut. Trait yang diandalkan (relied on) oleh 
-definisi trait Anda itu disebut sebagai sebuah _supertrait_ dari trait Anda.
+definisi trait kita itu disebut sebagai sebuah _supertrait_ dari trait kita.
 
 Misalnya, katakanlah kita mau membikin sebuah trait `OutlinePrint` dengan sebuah 
 method `outline_print` yang bakal mencetak sebuah nilai yang udah diformat sehingga 

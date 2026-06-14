@@ -73,7 +73,7 @@ dan `sign_in_count` dapet nilai `1`.
 
 </Listing>
 
-Masuk akal banget kan buat ngasih nama parameter fungsi sama kayak nama field 
+Masuk akal sekali kan buat ngasih nama parameter fungsi sama kayak nama field 
 struct-nya, tapi harus ngulang-ngulang nama field `email` sama `username` dan 
 variabelnya itu agak ribet. Kalau struct-nya punya lebih banyak field lagi, 
 ngulangin tiap namanya bakal makin nyebelin. Untungnya, ada cara singkat yang 

@@ -1,23 +1,23 @@
 ## Memakai `Box<T>` buat Menunjuk ke Data di Heap
 
 _Smart pointer_ yang paling sederhana adalah *box* (kotak), yang tipenya 
-ditulis `Box<T>`. _Boxes_ memungkinkan Anda buat nyimpan data di _heap_ 
+ditulis `Box<T>`. _Boxes_ memungkinkan kita buat nyimpan data di _heap_ 
 ketimbang di _stack_. Apa yang tersisa di _stack_ adalah si pointer yang 
 menunjuk ke data di _heap_ tersebut. Silakan merujuk lagi ke Bab 4 buat 
 me-review perbedaan antara _stack_ dan _heap_.
 
 Boxes tidak punya _overhead_ performa, selain harus menyimpan data mereka 
 di _heap_ alih-alih di _stack_. Tapi mereka juga tidak punya banyak 
-kemampuan ekstra. Anda bakal paling sering memakainya di situasi-situasi 
+kemampuan ekstra. Kita bakal paling sering memakainya di situasi-situasi 
 berikut:
 
-- Saat Anda punya sebuah tipe yang ukurannya tidak bisa diketahui secara 
-  pasti pas _compile time_ dan Anda mau memakai sebuah nilai dari tipe itu 
+- Saat kita punya sebuah tipe yang ukurannya tidak bisa diketahui secara 
+  pasti pas _compile time_ dan kita mau memakai sebuah nilai dari tipe itu 
   di konteks yang membutuhkan ukuran yang persis
-- Saat Anda punya jumlah data yang besar dan Anda mau mentransfer 
+- Saat kita punya jumlah data yang besar dan kita mau mentransfer 
   kepemilikannya (ownership) tapi tetap pengen memastikan kalau datanya 
-  tidak bakal disalin (copied) saat Anda melakukannya
-- Saat Anda pengen memiliki sebuah nilai dan Anda cuma peduli kalau nilai 
+  tidak bakal disalin (copied) saat kita melakukannya
+- Saat kita pengen memiliki sebuah nilai dan kita cuma peduli kalau nilai 
   itu adalah tipe yang mengimplementasikan _trait_ tertentu, bukannya 
   merupakan suatu tipe spesifik
 
@@ -31,8 +31,8 @@ pointer yang kecil itu doang yang bakal disalin mondar-mandir di _stack_,
 sementara data yang ditunjuknya tetap diam di satu tempat di _heap_. 
 Kasus ketiga dikenal sebagai _trait object_, dan [“Memakai Trait Objects yang 
 Mengizinkan Nilai Dari Tipe yang Berbeda-beda”][trait-objects] di Bab 18 
-memang dikhususkan untuk membahas topik tersebut. Jadi, apa yang Anda 
-pelajari di sini bakal Anda terapkan lagi di bagian itu!
+memang dikhususkan untuk membahas topik tersebut. Jadi, apa yang kita 
+pelajari di sini bakal kita terapkan lagi di bagian itu!
 
 ### Memakai `Box<T>` buat Menyimpan Data di Heap
 
@@ -61,7 +61,7 @@ sebagaimana yang terjadi pada `b` di akhir dari `main`, dia bakal di-_deallocate
 (yang disimpan di _stack_) maupun untuk data yang ditunjuknya (yang 
 disimpan di _heap_).
 
-Menaruh satu nilai tunggal di _heap_ itu tidak terlalu berguna, jadi Anda 
+Menaruh satu nilai tunggal di _heap_ itu tidak terlalu berguna, jadi kita 
 tidak akan terlalu sering memakai _boxes_ sendirian kayak gini. Membiarkan 
 nilai-like satu `i32` tunggal ada di _stack_, di mana memang di situlah 
 mereka disimpan secara default, itu lebih tepat buat mayoritas situasi. Mari 
@@ -81,10 +81,10 @@ memungkinkan tipe rekursif ini dengan menyelipkan (inserting) sebuah _box_ ke
 dalam definisi tipe rekursifnya.
 
 Sebagai contoh tipe rekursif, mari kita eksplorasi _cons list_. Ini adalah 
-tipe data yang sering banget dijumpai di bahasa pemrograman fungsional. Tipe 
+tipe data yang sering sekali dijumpai di bahasa pemrograman fungsional. Tipe 
 _cons list_ yang bakal kita definisikan itu mudah dipahami kecuali pada 
 bagian rekursinya; maka dari itu, konsep-konsep di dalam contoh yang bakal 
-kita kerjakan ini bakal berguna kapan pun Anda masuk ke situasi yang lebih 
+kita kerjakan ini bakal berguna kapan pun kita masuk ke situasi yang lebih 
 kompleks yang melibatkan tipe rekursif.
 
 #### Info Lebih Lanjut soal Cons List
@@ -113,7 +113,7 @@ bahwa ini tidak sama dengan konsep “null” atau “nil” yang dibahas di Bab
 mana itu artinya nilai yang tidak valid atau absen.
 
 _Cons list_ bukanlah struktur data yang sering dipakai di Rust. Kebanyakan 
-waktunya saat Anda punya sebuah list yang berisi item-item di Rust, `Vec<T>` 
+waktunya saat kita punya sebuah list yang berisi item-item di Rust, `Vec<T>` 
 adalah pilihan yang lebih baik buat dipakai. Namun, tipe data rekursif lainnya 
 yang lebih kompleks _memang_ berguna di berbagai situasi, tapi dengan memulai 
 pakai _cons list_ di bab ini, kita bisa mengeksplorasi gimana _boxes_ memungkinkan 

@@ -14,24 +14,24 @@ Parameter fungsi, statement `let`, dan _loop_ `for` cuma bisa nerima _patterns_
 yang _irrefutable_ karena programnya tidak bisa ngelakuin hal berguna apa pun 
 kalau nilainya ternyata tidak cocok. Ekspresi `if let` dan `while let` serta 
 statement `let...else` bisa nerima _patterns_ yang _refutable_ maupun 
-_irrefutable_, tapi _compiler_ bakal ngasih peringatan (warning) kalau Anda 
+_irrefutable_, tapi _compiler_ bakal ngasih peringatan (warning) kalau kita 
 memakai _patterns_ yang _irrefutable_ di sana. Hal ini karena, secara definisi, 
 konstruk-konstruk tersebut memang ditujukan buat menangani kemungkinan gagal: 
 fungsionalitas dari sebuah kondisional ada pada kemampuannya buat melakukan 
 hal yang berbeda-beda tergantung pada apakah dia sukses atau gagal.
 
-Secara umum, Anda tidak perlu pusing mikirin perbedaan antara _patterns_ yang 
-_refutable_ dan _irrefutable_; namun, Anda tetap harus familier dengan konsep 
-_refutability_ ini supaya Anda tahu apa yang harus dilakukan pas Anda ngelihat 
-istilah ini di dalam sebuah pesan error. Di kasus-kasus seperti itu, Anda perlu 
-mengubah entah _pattern_-nya atau konstruk tempat Anda memakai _pattern_ 
-tersebut, tergantung dari perilaku yang Anda inginkan buat kodenya.
+Secara umum, kita tidak perlu pusing mikirin perbedaan antara _patterns_ yang 
+_refutable_ dan _irrefutable_; namun, kita tetap harus familier dengan konsep 
+_refutability_ ini supaya kita tahu apa yang harus dilakukan pas kita ngelihat 
+istilah ini di dalam sebuah pesan error. Di kasus-kasus seperti itu, kita perlu 
+mengubah entah _pattern_-nya atau konstruk tempat kita memakai _pattern_ 
+tersebut, tergantung dari perilaku yang kita inginkan buat kodenya.
 
 Mari kita lihat sebuah contoh tentang apa yang terjadi pas kita nyoba memakai 
 sebuah _pattern_ yang _refutable_ di tempat di mana Rust mewajibkan _pattern_ yang 
 _irrefutable_, dan sebaliknya. Listing 19-8 menunjukkan sebuah statement `let`, 
 tapi buat _pattern_-nya, kita menentukan `Some(x)`, yang mana adalah sebuah 
-_pattern_ yang _refutable_. Seperti yang mungkin Anda tebak, kode ini tidak bakal 
+_pattern_ yang _refutable_. Seperti yang mungkin kita tebak, kode ini tidak bakal 
 bisa di-compile.
 
 <Listing number="19-8" caption="Mencoba memakai sebuah pattern refutable bersama `let`">
@@ -102,6 +102,6 @@ memakai sebuah _pattern_ _irrefutable_ di dalam sebuah `match` yang cuma punya s
 arm, tapi sintaks ini tidak terlalu berguna dan bisa aja diganti pakai sebuah 
 statement `let` yang lebih sederhana.
 
-Sekarang karena Anda udah tahu di mana aja bisa memakai _patterns_ dan perbedaan 
+Sekarang karena kita udah tahu di mana aja bisa memakai _patterns_ dan perbedaan 
 antara _patterns_ _refutable_ dan _irrefutable_, mari kita bahas semua sintaks yang 
 bisa kita pakai buat bikin _patterns_.

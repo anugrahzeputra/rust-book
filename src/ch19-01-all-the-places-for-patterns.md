@@ -1,7 +1,7 @@
 ## Semua Tempat di Mana Patterns Bisa Dipakai
 
-_Patterns_ muncul di berbagai tempat di Rust, dan Anda sebenarnya udah 
-sering banget memakai mereka tanpa menyadarinya! Bagian ini membahas semua 
+_Patterns_ muncul di berbagai tempat di Rust, dan kita sebenarnya udah 
+sering sekali memakai mereka tanpa menyadarinya! Bagian ini membahas semua 
 tempat di mana _patterns_ itu valid untuk dipakai.
 
 ### Lengan (Arms) dari `match`
@@ -40,7 +40,7 @@ sebelah kiri dari setiap tanda panah.
 Satu persyaratan untuk ekspresi `match` adalah mereka harus bersifat 
 _exhaustive_ (menyeluruh/tuntas) yang berarti semua kemungkinan nilai buat 
 ekspresi `match` tersebut harus ditangani (accounted for). Salah satu cara 
-buat memastikan Anda udah mencakup semua kemungkinannya adalah dengan memakai 
+buat memastikan kita udah mencakup semua kemungkinannya adalah dengan memakai 
 _catch-all pattern_ (pola penangkap-semua) buat arm terakhirnya: misalnya, 
 memakai nama variabel yang bakal cocok dengan nilai apa pun itu tidak bakal 
 pernah gagal dan karena itu mencakup semua kasus yang tersisa.
@@ -48,7 +48,7 @@ pernah gagal dan karena itu mencakup semua kasus yang tersisa.
 _Pattern_ spesifik `_` bakal cocok dengan apa pun, tapi ia tidak pernah 
 mengikat (bind) nilainya ke dalam sebuah variabel, jadi ia sering kali 
 dipakai di match arm yang paling akhir. _Pattern_ `_` ini bisa berguna pas 
-Anda mau mengabaikan nilai apa pun yang tidak ditentukan (unspecified), 
+kita mau mengabaikan nilai apa pun yang tidak ditentukan (unspecified), 
 sebagai contoh. Kita bakal membahas _pattern_ `_` lebih detail di [“Mengabaikan 
 Nilai di dalam sebuah Pattern”][ignoring-values-in-a-pattern] nanti di bab ini.
 
@@ -63,8 +63,8 @@ pemberian nilai (variable assignment) langsung pakai `let` ini:
 let x = 5;
 ```
 
-Setiap kali Anda memakai statement `let` kayak gini, Anda sebenernya udah 
-memakai _patterns_, biarpun Anda mungkin tidak menyadarinya! Lebih 
+Setiap kali kita memakai statement `let` kayak gini, kita sebenernya udah 
+memakai _patterns_, biarpun kita mungkin tidak menyadarinya! Lebih 
 formalnya, sebuah statement `let` itu kelihatannya kayak gini:
 
 <!--
@@ -100,7 +100,7 @@ Di sini, kita mencocokkan sebuah _tuple_ terhadap sebuah _pattern_. Rust
 membandingkan nilai `(1, 2, 3)` dengan _pattern_ `(x, y, z)` dan melihat kalau 
 nilainya cocok dengan _pattern_ tersebut, dalam arti dia melihat kalau jumlah 
 elemennya sama di kedua sisinya, jadi Rust mengikat `1` ke `x`, `2` ke `y`, 
-dan `3` ke `z`. Anda bisa membayangkan _tuple pattern_ ini seolah-olah menyarangkan 
+dan `3` ke `z`. Kita bisa membayangkan _tuple pattern_ ini seolah-olah menyarangkan 
 (nesting) tiga _variable patterns_ individu di dalamnya.
 
 Kalau jumlah elemen di dalam _pattern_-nya tidak cocok dengan jumlah elemen 
@@ -124,7 +124,7 @@ Mencoba men-compile kode ini bakal menghasilkan _type error_ (error tipe) ini:
 ```
 
 Buat memperbaiki error-nya, kita bisa mengabaikan satu atau lebih nilai di 
-dalam _tuple_ tersebut memakai `_` atau `..`, kayak yang bakal Anda lihat 
+dalam _tuple_ tersebut memakai `_` atau `..`, kayak yang bakal kita lihat 
 di bagian [“Mengabaikan Nilai di dalam sebuah Pattern”][ignoring-values-in-a-pattern]. 
 Kalau masalahnya adalah kita punya terlalu banyak variabel di dalam _pattern_-nya, 
 solusinya adalah mencocokkan (match) tipe-tipenya dengan membuang variabel-variabel 
@@ -172,7 +172,7 @@ Struktur kondisional (bersyarat) ini membiarkan kita mendukung persyaratan yang
 kompleks. Dengan nilai-nilai _hardcoded_ yang kita punya di sini, contoh ini bakal 
 mencetak `Using purple as the background color`.
 
-Anda bisa melihat kalau `if let` juga bisa memperkenalkan variabel baru yang 
+Kita bisa melihat kalau `if let` juga bisa memperkenalkan variabel baru yang 
 menimpa (shadow) variabel yang sudah ada dengan cara yang sama kayak yang 
 dilakukan sama `match` arms: baris `if let Ok(age) = age` memperkenalkan 
 sebuah variabel `age` baru yang berisi nilai di dalam varian `Ok`-nya, menimpa 
@@ -278,7 +278,7 @@ Kita juga bisa memakai _patterns_ di dalam daftar parameter _closure_ dengan car
 yang sama seperti di dalam daftar parameter fungsi, karena _closures_ itu mirip 
 dengan fungsi, kayak yang udah dibahas di Bab 13.
 
-Pada titik ini, Anda udah melihat beberapa cara buat memakai _patterns_, tapi 
+Pada titik ini, kita udah melihat beberapa cara buat memakai _patterns_, tapi 
 _patterns_ tidak bekerja dengan cara yang sama persis di setiap tempat di mana 
 kita bisa memakai mereka. Di beberapa tempat, _patterns_ itu wajib bersifat 
 _irrefutable_ (tidak bisa dibantah/pasti sukses); di situasi lain, mereka 

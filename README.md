@@ -8,7 +8,7 @@ Repositori ini berisi kode sumber dari buku "The Rust Programming Language".
 
 [nostarch]: https://nostarch.com/rust-programming-language-2nd-edition
 
-Anda juga bisa membaca buku ini secara gratis online. Silakan lihat buku yang disertakan dengan rilis Rust [stable], [beta], atau [nightly] terbaru. Perlu diketahui bahwa masalah pada versi-versi tersebut mungkin sudah diperbaiki di repositori ini, karena rilis-rilis tersebut jarang diperbarui.
+kita juga bisa membaca buku ini secara gratis online. Silakan lihat buku yang disertakan dengan rilis Rust [stable], [beta], atau [nightly] terbaru. Perlu diketahui bahwa masalah pada versi-versi tersebut mungkin sudah diperbaiki di repositori ini, karena rilis-rilis tersebut jarang diperbarui.
 
 [stable]: https://doc.rust-lang.org/stable/book/
 [beta]: https://doc.rust-lang.org/beta/book/
@@ -43,7 +43,7 @@ Untuk membangun buku, ketik:
 $ mdbook build
 ```
 
-Outputnya akan berada di subdirektori `book`. Untuk melihatnya, buka di browser web Anda.
+Outputnya akan berada di subdirektori `book`. Untuk melihatnya, buka di browser web kita.
 
 _Firefox:_
 
@@ -72,13 +72,13 @@ $ mdbook test --library-path packages/trpl/target/debug/deps
 
 ## Berkontribusi
 
-Kami sangat senang menerima bantuan Anda! Silakan lihat [CONTRIBUTING.md][contrib] untuk mempelajari jenis kontribusi yang kami cari.
+Kami sangat senang menerima bantuan kita! Silakan lihat [CONTRIBUTING.md][contrib] untuk mempelajari jenis kontribusi yang kami cari.
 
 [contrib]: https://github.com/rust-lang/book/blob/main/CONTRIBUTING.md
 
 Karena buku ini [dicetak][nostarch], dan karena kami ingin menjaga versi online tetap dekat dengan versi cetak jika memungkinkan, proses penanganan masalah atau pull request mungkin memakan waktu lebih lama dari biasanya.
 
-Sejauh ini, kami melakukan revisi besar bersamaan dengan [Edisi Rust](https://doc.rust-lang.org/edition-guide/). Di antara revisi besar tersebut, kami hanya akan memperbaiki error. Jika masalah atau pull request Anda tidak secara khusus memperbaiki error, mungkin baru akan ditangani saat revisi besar berikutnya: harap bersabar karena bisa memakan waktu berbulan-bulan atau bertahun-tahun. Terima kasih atas kesabaran Anda!
+Sejauh ini, kami melakukan revisi besar bersamaan dengan [Edisi Rust](https://doc.rust-lang.org/edition-guide/). Di antara revisi besar tersebut, kami hanya akan memperbaiki error. Jika masalah atau pull request kita tidak secara khusus memperbaiki error, mungkin baru akan ditangani saat revisi besar berikutnya: harap bersabar karena bisa memakan waktu berbulan-bulan atau bertahun-tahun. Terima kasih atas kesabaran kita!
 
 ### Terjemahan
 
@@ -89,4 +89,4 @@ Kami sangat senang jika ada yang membantu menerjemahkan buku ini! Lihat label [T
 
 ## Pengecekan Ejaan
 
-Untuk memindai file sumber dari kesalahan ejaan, Anda bisa memakai skrip `spellcheck.sh` di direktori `ci`. Skrip ini butuh kamus kata valid di `ci/dictionary.txt`. Jika skripnya salah mendeteksi kata yang benar sebagai salah (false positive), tambahkan kata tersebut ke `ci/dictionary.txt` (tetap jaga urutan abjad untuk konsistensi).
+Untuk memindai file sumber dari kesalahan ejaan, kita bisa memakai skrip `spellcheck.sh` di direktori `ci`. Skrip ini butuh kamus kata valid di `ci/dictionary.txt`. Jika skripnya salah mendeteksi kata yang benar sebagai salah (false positive), tambahkan kata tersebut ke `ci/dictionary.txt` (tetap jaga urutan abjad untuk konsistensi).

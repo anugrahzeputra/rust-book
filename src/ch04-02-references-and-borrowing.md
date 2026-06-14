@@ -106,7 +106,7 @@ sebagai gantinya:
 Pertama kita ubah `s` jadi `mut`. Terus kita bikin sebuah mutable reference 
 pake `&mut s` pas kita manggil fungsi `change`, terus update signature fungsinya 
 biar nerima sebuah mutable reference pake `some_string: &mut String`. Ini 
-bikin keliatan jelas banget kalau fungsi `change` bakal ngerubah (_mutate_) 
+bikin keliatan jelas sekali kalau fungsi `change` bakal ngerubah (_mutate_) 
 nilai yang dia pinjem.
 
 Mutable references punya satu larangan gede: kalau kita punya sebuah mutable 
@@ -200,7 +200,7 @@ kita pikirkan.
 
 ### Dangling References
 
-Di bahasa yang punya _pointer_, gampang banget buat nggak sengaja bikin sebuah 
+Di bahasa yang punya _pointer_, gampang sekali buat nggak sengaja bikin sebuah 
 _dangling pointer_—sebuah _pointer_ yang ngerujuk ke sebuah lokasi di memori 
 yang mungkin udah dikasih ke orang lain—dengan cara ngebebasin sejumlah memori 
 tapi tetep nyimpen _pointer_ ke memori itu. Di Rust, sebaliknya, _compiler_ 
@@ -248,7 +248,7 @@ Yuk kita liat lebih deket apa sebenernya yang terjadi di tiap tahap kode
 Karena `s` dibuat di dalem `dangle`, pas kode `dangle` selesai, `s` bakal 
 di-dealokasi. Tapi kita nyoba buat balikin sebuah referensi kepadanya. Itu 
 artinya referensi ini bakal nunjuk ke sebuah `String` yang nggak valid. Itu 
-nggak oke banget! Rust nggak bakal ngebolehin kita ngelakuin ini.
+nggak oke sekali! Rust nggak bakal ngebolehin kita ngelakuin ini.
 
 Solusinya di sini adalah dengan balikin `String`-nya secara langsung:
 

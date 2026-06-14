@@ -4,8 +4,8 @@ Kita bakal mulai dengan ngebikin supaya sebuah web server *single-threaded*
 (satu utas/thread) bisa jalan. Sebelum kita mulai, mari kita lihat ikhtisar 
 (overview) kilat soal protokol-protokol yang dilibatin di dalam pembuatan 
 web servers. Detail-detail dari protokol ini emang ada di luar dari cakupan 
-buku ini, tapi ikhtisar singkat ini bakal ngasih Anda informasi yang 
-Anda butuhkan.
+buku ini, tapi ikhtisar singkat ini bakal ngasih kita informasi yang 
+kita butuhkan.
 
 Dua protokol utama yang dilibatin di dalam web servers adalah _Hypertext 
 Transfer Protocol_ _(HTTP)_ dan _Transmission Control Protocol_ _(TCP)_. Kedua 
@@ -52,12 +52,12 @@ yang masuk, dia bakal mencetak `Connection established!`.
 
 Memakai `TcpListener`, kita bisa ngedengerin nyari koneksi-koneksi TCP di 
 alamat `127.0.0.1:7878`. Di alamat tersebut, bagian sebelum titik dua itu 
-adalah alamat IP yang merepresentasikan komputer Anda (ini sama aja di setiap 
+adalah alamat IP yang merepresentasikan komputer kita (ini sama aja di setiap 
 komputer dan tidak merepresentasikan spesifik komputernya si penulis ya), 
 dan `7878` itu adalah *port*-nya. Kita udah milih port ini karena dua 
 alasan: HTTP itu umumnya tidak diterima di port ini, jadi server kita ini 
 punya kemungkinan kecil buat berkonflik sama web server lain yang mungkin 
-lagi jalan di mesin komputer Anda, dan 7878 itu adalah kata _rust_ yang diketik 
+lagi jalan di mesin komputer kita, dan 7878 itu adalah kata _rust_ yang diketik 
 di telepon jadul.
 
 Fungsi `bind` (ikat) di dalam skenario ini bekerja kayak fungsi `new` di mana 
@@ -105,7 +105,7 @@ udah kebuka tadi itu pada ditutupin dulu.
 Mari kita cobain buat ngejalanin kode ini! Panggil `cargo run` di terminal dan lalu 
 buka (_load_) _127.0.0.1:7878_ di sebuah web browser. Web browser-nya seharusnya 
 nampilin pesan error kayak “Connection reset” karena emang si server-nya saat ini 
-belum ngirim balik data apa pun. Tapi pas Anda ngelihat ke terminal Anda, Anda 
+belum ngirim balik data apa pun. Tapi pas kita ngelihat ke terminal kita, kita 
 harusnya bisa ngelihat beberapa pesan yang tadi dicetak pas si browser ini nyambung 
 ke servernya!
 
@@ -116,7 +116,7 @@ Connection established!
 Connection established!
 ```
 
-Kadang-kadang Anda bakal ngelihat banyak pesan yang dicetak cuma buat satu _request_ 
+Kadang-kadang kita bakal ngelihat banyak pesan yang dicetak cuma buat satu _request_ 
 dari browser; alasannya mungkin adalah karena si browser itu lagi ngebikin _request_ 
 buat halaman utamanya sekaligus ngebikin _request_ juga buat _resources_ (sumber daya) 
 lainnya, kayak misalnya *icon* _favicon.ico_ yang suka muncul di _tab_ browser itu.
@@ -133,16 +133,16 @@ ngirim permintaan apa-apa, jadi kalau nanti mereka *memang* ngirim _request_,
 _request_-nya itu bisa kejadian lebih cepet. Pas ini kejadian, server kita 
 bakal bisa ngelihat koneksi tersebut, terlepas dari apakah ada _request_ apa 
 enggak yang dikirim liwat koneksi itu. Versi-versi dari browser berbasis Chrome 
-misalnya banyak yang ngelakuin ini; Anda bisa menonaktifkan optimasi ini dengan cara 
+misalnya banyak yang ngelakuin ini; kita bisa menonaktifkan optimasi ini dengan cara 
 memakai mode _private browsing_ (samaran) atau dengan memakai web browser yang beda.
 
 Faktor yang penting adalah kita udah berhasil dapetin sebuah pegangan (_handle_) ke 
 sebuah koneksi TCP!
 
 Inget ya buat ngestop (stop) programnya dengan cara neken <kbd>ctrl</kbd>-<kbd>C</kbd> 
-pas Anda udah selesai ngejalanin suatu versi kode tertentu. Terus nyalain ulang programnya 
+pas kita udah selesai ngejalanin suatu versi kode tertentu. Terus nyalain ulang programnya 
 dengan cara manggil perintah `cargo run` setiap kali habis ngebikin rangkaian perubahan 
-kode (code changes) buat mastiin kalau Anda emang ngejalanin kodenya yang paling baru.
+kode (code changes) buat mastiin kalau kita emang ngejalanin kodenya yang paling baru.
 
 ### Membaca Request (Permintaan)
 
@@ -186,7 +186,7 @@ mau ngumpulin baris-baris tersebut ke dalam sebuah _vector_ dengan cara nambahin
 bisa dapat tiap `String`-nya, kita memakai `map` dan `unwrap` pada masing-masing 
 `Result`. Tipe `Result` ini mungkin aja berisi sebuah error kalau datanya ternyata 
 bukan UTF-8 yang valid atau kalau sekiranya ada masalah pas membaca dari _stream_ tersebut. 
-Sekali lagi, di program level _production_ Anda seharusnya nanganin error-error kayak 
+Sekali lagi, di program level _production_ kita seharusnya nanganin error-error kayak 
 gini dengan jauh lebih cakep (_gracefully_), tapi kita lebih milih buat ngestop aja 
 programnya di kasus error ini demi menyederhanakan contoh.
 
@@ -226,7 +226,7 @@ Request: [
 ]
 ```
 
-Tergantung dari browser apa yang Anda pake, Anda mungkin dapat *output* yang agak 
+Tergantung dari browser apa yang kita pake, kita mungkin dapat *output* yang agak 
 sedikit beda. Sekarang setelah kita udah nyetak isi dari _request_ datanya, kita 
 bisa paham kan alasan kenapa kita dapat koneksi berkali-kali dari satu _request_ web 
 browser kalau kita ngelihat _path_ (jalur) yang ada setelah kata `GET` di baris paling 
@@ -234,7 +234,7 @@ pertama dari _request_ tersebut. Kalau koneksi-koneksi yang berulang (repeated c
 itu semuanya lagi nge-_request_ _/_, kita jadi tahu kalau browser-nya itu lagi nyoba buat ngambil 
 (fetch) _/_ berkali-kali karena dia tidak dapat respons apa-apa dari program kita.
 
-Mari kita bedah dan perinci (break down) data _request_ ini supaya kita beneran ngerti 
+Mari kita bedah dan perinci (break down) data _request_ ini supaya kita benar-benar ngerti 
 apa yang lagi diminta (asking of) sama si browser dari program kita ini.
 
 ### Ngelihat Lebih Dekat pada Request HTTP
@@ -257,7 +257,7 @@ berarti dia itu lagi minta dikasihin suatu informasi.
 
 Bagian yang selanjutnya di _request line_ tersebut adalah _/_, yang mana mengindikasikan 
 _uniform resource identifier_ _(URI)_ yang lagi di-_request_ sama _client_ tersebut: 
-sebuah URI itu tuh hampir banget, tapi tidak sepenuhnya sama persis, dengan sebuah 
+sebuah URI itu tuh hampir sekali, tapi tidak sepenuhnya sama persis, dengan sebuah 
 _uniform resource locator_ _(URL)_. Perbedaan antara URI dan URL ini tidaklah penting buat 
 tujuan pembelajaran kita di bab ini, tapi spesifikasi HTTP (HTTP spec) memakai istilah 
 _URI_, jadi kita bisa dalam hati aja men-substitusikan (menggantikan) _URL_ jadi _URI_ di sini.
@@ -336,23 +336,23 @@ Method `write_all` pada variabel `stream` itu menerima nilai tipe `&[u8]` (array
 slice of bytes) dan dia bakal ngirim _bytes_ tersebut secara langsung nyusurin 
 (down) koneksi tersebut. Karena operasi `write_all` ini berpotensi gagal, kita 
 memakai `unwrap` pada segala _result_ error kayak sebelumnya. Sekali lagi ya, 
-di aplikasi yang rill (real application) Anda seharusnya nambahin error 
+di aplikasi yang rill (real application) kita seharusnya nambahin error 
 _handling_ (penanganan error) di sini.
 
 Dengan adanya perubahan-perubahan ini, mari kita jalanin kode kita lalu kita 
 bikin sebuah _request_ lewat browser. Kita udah tidak lagi mencetak data 
 apa pun ke terminal ya, jadi kita tidak bakal ngelihat *output* apa-apa selain 
-*output* dari Cargo. Pas Anda memuat (_load_) alamat _127.0.0.1:7878_ di 
-sebuah web browser, Anda seharusnya ngedapetin halaman putih (blank page) 
-ketimbang halaman error. Anda baru aja melakukan *hardcode* (kode manual) 
+*output* dari Cargo. Pas kita memuat (_load_) alamat _127.0.0.1:7878_ di 
+sebuah web browser, kita seharusnya ngedapetin halaman putih (blank page) 
+ketimbang halaman error. Kita baru aja melakukan *hardcode* (kode manual) 
 buat menerima _request_ HTTP lalu mengirimkan sebuah _response_ secara utuh!
 
 ### Mengembalikan HTML yang Asli (Real HTML)
 
 Mari kita implementasikan fungsionalitas buat ngembaliin lebih dari sekadar 
 halaman kosong (blank page). Silakan bikin sebuah file baru bernama _hello.html_ 
-di *directory* utama (_root_) dari _project_ Anda, inget ya **bukan** di dalem 
-folder _src_. Anda bisa naruh (_input_) kode HTML apa aja yang Anda mau kok; Listing 
+di *directory* utama (_root_) dari _project_ kita, inget ya **bukan** di dalem 
+folder _src_. Kita bisa naruh (_input_) kode HTML apa aja yang kita mau kok; Listing 
 21-4 nunjukin salah satu kemungkinan isinya.
 
 <Listing number="21-4" file-name="hello.html" caption="Sebuah contoh file HTML sampel buat di-return (dikembalikan) di dalam sebuah response">
@@ -385,20 +385,20 @@ sebuah file buat project I/O kita balik pas di Listing 12-4.
 
 Selanjutnya, kita memakai `format!` buat menambahkan konten file tersebut 
 sebagai _body_ dari _response_ sukses kita tadi. Supaya pasti kalau ini 
-adalah _response_ HTTP yang beneran valid, kita juga menambahkan *header* `Content-Length` 
+adalah _response_ HTTP yang benar-benar valid, kita juga menambahkan *header* `Content-Length` 
 yang mana diatur isinya supaya ngepas sama ukuran (size) dari _body_ dari 
 _response_ kita, di kasus ini berarti ukurannya sama dengan ukuran file `hello.html`.
 
 Coba jalanin kode ini pakai `cargo run` terus muat (load) _127.0.0.1:7878_ 
-di browser Anda; Anda harusnya bisa ngelihat HTML Anda dimuat (rendered)!
+di browser kita; kita harusnya bisa ngelihat HTML kita dimuat (rendered)!
 
 Saat ini, kita emang lagi mengabaikan data _request_ yang ada di `http_request` 
 dan kita cuma tanpa syarat (unconditionally) mengirimkan kembali isi (contents) 
-dari file HTML tersebut. Itu artinya kalau Anda mencoba nge-_request_ halaman 
-_127.0.0.1:7878/something-else_ (apa-aja-lainnya) di browser Anda, Anda 
+dari file HTML tersebut. Itu artinya kalau kita mencoba nge-_request_ halaman 
+_127.0.0.1:7878/something-else_ (apa-aja-lainnya) di browser kita, kita 
 bakal tetep dapet balasan _response_ HTML yang ini-ini juga. Saat ini, server 
 kita ini sifatnya sangat terbatas (_very limited_) dan masih belum berbuat apa yang 
-mayoritas web server beneran lakuin. Kita mau mengkustomisasi _responses_ kita 
+mayoritas web server benar-benar lakuin. Kita mau mengkustomisasi _responses_ kita 
 supaya bergantung pada si _request_ tersebut lalu cuma mengirimkan balik file HTML 
 itu untuk _request_ _/_ yang formasinya bener (_well-formed request_).
 
@@ -406,7 +406,7 @@ itu untuk _request_ _/_ yang formasinya bener (_well-formed request_).
 
 Sekarang ini, web server kita ini bakal selalu nge-return (ngembaliin) file HTML 
 kita ini tidak peduli apa pun yang diminta sama _client_-nya. Mari kita tambahin 
-fungsionalitas buat mengecek apakah browser ini beneran lagi nge-_request_ rute _/_ 
+fungsionalitas buat mengecek apakah browser ini benar-benar lagi nge-_request_ rute _/_ 
 sebelum nge-return si file HTML, dan terus dia bakal mengembalikan pesan error 
 kalau browser tersebut mencoba minta apa pun yang lainnya. Buat ngelakuin ini, 
 kita perlu memodifikasi fungsi `handle_connection`, kayak yang ditunjukin 
@@ -442,9 +442,9 @@ nambahin kode ke dalam blok `else` sebentar lagi buat membalas segala macam
 _requests_ lain yang masuk.
 
 Silakan jalankan kode ini sekarang dan terus coba _request_ alamat _127.0.0.1:7878_; 
-Anda seharusnya dapetin si HTML di dalam `hello.html` tersebut. Kalau Anda bikin 
+kita seharusnya dapetin si HTML di dalam `hello.html` tersebut. Kalau kita bikin 
 _request_ apa pun yang lainnya, kayak misalnya _127.0.0.1:7878/something-else_, 
-Anda bakal dapet error koneksi kayak yang Anda temui pas ngejalanin kode di Listing 
+kita bakal dapet error koneksi kayak yang kita temui pas ngejalanin kode di Listing 
 21-1 dan Listing 21-2.
 
 Sekarang mari kita tambahin kode yang ada di Listing 21-7 ke dalam blok `else` 
@@ -465,10 +465,10 @@ _response_-nya.
 
 Di sini, _response_ kita punya _status line_ (baris status) dengan status kode 
 404 dan _reason phrase_ `NOT FOUND`. Isi (_body_) dari _response_ ini bakal 
-menjadi konten HTML dari sebuah file bernama _404.html_. Anda perlu ngebikin file 
-_404.html_ ini di sebelah (next to) file _hello.html_ Anda tadi buat halaman 
-error ini; sekali lagi ya, silakan pake HTML apa aja yang Anda mau secara 
-bebas (feel free to use), atau Anda juga bisa pakai HTML contoh (example HTML) yang ada 
+menjadi konten HTML dari sebuah file bernama _404.html_. Kita perlu ngebikin file 
+_404.html_ ini di sebelah (next to) file _hello.html_ kita tadi buat halaman 
+error ini; sekali lagi ya, silakan pake HTML apa aja yang kita mau secara 
+bebas (feel free to use), atau kita juga bisa pakai HTML contoh (example HTML) yang ada 
 di Listing 21-8.
 
 <Listing number="21-8" file-name="404.html" caption="Isi sampel konten buat halaman yang bakal dikirim balik buat semua response 404">
@@ -479,14 +479,14 @@ di Listing 21-8.
 
 </Listing>
 
-Dengan perubahan-perubahan ini, jalanin server Anda lagi. Nge-_request_ _127.0.0.1:7878_ 
+Dengan perubahan-perubahan ini, jalanin server kita lagi. Nge-_request_ _127.0.0.1:7878_ 
 seharusnya mengembalikan isi konten dari _hello.html_, dan nyoba _request_ apa pun 
 yang lainnya, kayak _127.0.0.1:7878/foo_, seharusnya nge-return halaman HTML error 
 dari _404.html_.
 
 ### Sentuhan Kecil Refactoring (Merombak Kode)
 
-Saat ini, di blok `if` dan `else` ada banyak banget kode yang ngulang 
+Saat ini, di blok `if` dan `else` ada sangat banyak kode yang ngulang 
 (repetition): mereka berdua sama-sama lagi ngebaca file (_reading files_) lalu 
 sama-sama nulis (writing) isi konten file tersebut ke dalam _stream_. Satu-
 satunya perbedaan ada di bagian _status line_ dan nama filenya (filename). 
@@ -496,7 +496,7 @@ yang mana bakal nge-*assign* (ngasih) nilai-nilai dari status line dan nama file
 ke dalam variabel; kita lalu bisa memakai variabel-variabel tersebut secara mutlak 
 (unconditionally) di dalam kodenya buat membaca file dan nulis (write) balasannya. 
 Listing 21-9 nunjukin kode hasil (resultant code) sesudah kita nggantiin (replacing) 
-blok `if` dan `else` yang gede banget (large) tadi.
+blok `if` dan `else` yang sangat besar (large) tadi.
 
 <Listing number="21-9" file-name="src/main.rs" caption="Merombak ulang (refactoring) blok `if` dan `else` supaya cuma berisi kode yang emang beda di antara kedua kasus tersebut">
 
@@ -521,7 +521,7 @@ gimana si proses baca file (file reading) dan proses tulis balasan (response wri
 berjalan. Perilaku kode (behavior) di Listing 21-9 ini bakal tetap persis 
 sama kayak yang ada di Listing 21-7.
 
-Keren banget! (Awesome!) Nah sekarang kita udah punya sebuah web server sederhana cuma dalam 
+Keren sekali! (Awesome!) Nah sekarang kita udah punya sebuah web server sederhana cuma dalam 
 waktu lebih kurang (approximately) 40 baris kode Rust yang mana merespons sebuah _request_ 
 tertentu dengan halaman berisi konten (page of content) dan membalas (responds to) semua _requests_ lainnya 
 pakai _response_ 404.

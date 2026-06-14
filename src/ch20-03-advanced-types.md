@@ -1,7 +1,7 @@
 ## Advanced Types (Tipe Tingkat Lanjut)
 
 Sistem tipe Rust punya beberapa fitur yang sejauh ini cuma kita sebut aja 
-tapi belum beneran kita bahas. Kita bakal mulai dengan membahas _newtypes_ 
+tapi belum benar-benar kita bahas. Kita bakal mulai dengan membahas _newtypes_ 
 secara umum sembari kita menyelidiki kenapa _newtypes_ itu berguna sebagai tipe. 
 Terus kita bakal lanjut ke _type aliases_ (alias tipe), sebuah fitur yang mirip sama 
 _newtypes_ tapi punya semantik yang agak beda. Kita juga bakal ngebahas 
@@ -9,12 +9,12 @@ tipe `!` dan _dynamically sized types_ (tipe-tipe yang berukuran dinamis).
 
 ### Memakai Newtype Pattern Buat Keamanan Tipe dan Abstraksi
 
-Bagian ini berasumsi kalau Anda udah ngebaca bagian sebelumnya [“Memakai 
+Bagian ini berasumsi kalau kita udah ngebaca bagian sebelumnya [“Memakai 
 Newtype Pattern Buat Mengimplementasikan External Traits”][using-the-newtype-pattern]. 
 _Newtype pattern_ (pola tipe baru) ini juga berguna buat hal-hal di luar dari 
 apa yang udah kita bahas sejauh ini, termasuk secara statis menegakkan 
 aturan supaya nilai-nilai tidak pernah tertukar (confused) dan buat 
-mengindikasikan satuan (units) dari sebuah nilai. Anda udah lihat contoh 
+mengindikasikan satuan (units) dari sebuah nilai. Kita udah lihat contoh 
 pemakaian _newtypes_ buat mengindikasikan satuan di Listing 20-16: ingat 
 kembali kalau struct `Millimeters` dan `Meters` itu membungkus nilai `u32` 
 di dalam sebuah _newtype_. Kalau kita nulis sebuah fungsi dengan parameter 
@@ -65,7 +65,7 @@ nyampur aduk (mix up) nilai `Kilometers` dan `i32` di suatu tempat, _compiler_
 tidak bakal ngasih kita error.
 
 Kegunaan utama (_main use case_) dari sinonim tipe adalah buat ngurangin 
-pengulangan (repetition). Misalnya, kita mungkin punya tipe yang panjang banget 
+pengulangan (repetition). Misalnya, kita mungkin punya tipe yang panjang sekali 
 kayak gini:
 
 ```rust,ignore
@@ -100,12 +100,12 @@ semua penggunaan dari tipe tersebut dengan si alias `Thunk` yang lebih pendek.
 
 Kode ini jadinya jauh lebih gampang buat dibaca dan ditulis! Milih nama yang punya 
 makna (_meaningful_) buat _type alias_ juga bisa ngebantu ngomunikasiin niat (intent) 
-Anda (_thunk_ adalah kata yang artinya kode yang bakal dievaluasi nanti, jadi ini 
+kita (_thunk_ adalah kata yang artinya kode yang bakal dievaluasi nanti, jadi ini 
 adalah nama yang tepat buat sebuah _closure_ yang lagi disimpen).
 
 _Type aliases_ juga umumnya dipakai bareng sama tipe `Result<T, E>` buat ngurangin 
 pengulangan. Coba perhatikan modul `std::io` di _standard library_. Operasi 
-I/O (input/output) itu sering banget mengembalikan `Result<T, E>` buat menangani 
+I/O (input/output) itu sering sekali mengembalikan `Result<T, E>` buat menangani 
 situasi-situasi pas operasinya gagal jalan. Library ini punya struct 
 `std::io::Error` yang merepresentasikan semua kemungkinan error I/O. Banyak 
 dari fungsi-fungsi di `std::io` bakal mengembalikan `Result<T, E>` di mana si 
@@ -156,7 +156,7 @@ mengembalikan `never` disebut _diverging functions_ (fungsi divergen). Kita
 tidak bisa membikin nilai dari tipe `!`, jadi si `bar` itu emang tidak mungkin bisa 
 mengembalikan apa-apa.
 
-Tapi apa gunanya coba sebuah tipe yang Anda tidak bisa bikin nilai buatnya sama sekali? 
+Tapi apa gunanya coba sebuah tipe yang kita tidak bisa bikin nilai buatnya sama sekali? 
 Ingat kembali kode dari Listing 2-5, bagian dari game tebak angka; kita udah 
 menaruh sedikit dari bagian kode itu di sini di Listing 20-27.
 
@@ -183,7 +183,7 @@ ngembaliin apa dong? Gimana ceritanya kita dibolehin buat mengembalikan nilai
 `u32` dari satu arm padahal punya arm lain yang berakhir dengan `continue` di 
 Listing 20-27?
 
-Seperti yang mungkin udah Anda tebak, `continue` itu punya nilai `!`. Yaitu, saat 
+Seperti yang mungkin udah kita tebak, `continue` itu punya nilai `!`. Yaitu, saat 
 Rust menghitung tipe dari `guess`, dia ngelihat ke kedua _match arms_ tersebut, 
 yang pertama bernilai `u32` dan yang terakhir (latter) bernilai `!`. Karena `!` 
 itu tidak bakal pernah bisa punya nilai, Rust memutuskan kalau tipe dari `guess` 
@@ -252,7 +252,7 @@ yang sama besarnya. Tapi kenyataannya panjang mereka itu berbeda: `s1` butuh
 penyimpanan memori 12 *bytes* dan `s2` butuh 15 *bytes*. Inilah alasan kenapa mustahil 
 buat ngebikin variabel yang menampung sebuah tipe berukuran dinamis secara langsung.
 
-Terus apa yang harus kita lakuin? Di kasus ini, Anda sebenarnya udah tahu jawabannya: 
+Terus apa yang harus kita lakuin? Di kasus ini, kita sebenarnya udah tahu jawabannya: 
 kita harus membikin tipe dari `s1` dan `s2` menjadi `&str` ketimbang `str`. 
 Ingat kembali dari [“String Slices”][string-slices] di Bab 4 kalau struktur data _slice_ 
 itu cuma sekadar menyimpan posisi awal (_starting position_) dan panjang (_length_) 
@@ -268,7 +268,7 @@ emas (_golden rule_) dari tipe yang berukuran dinamis adalah kita harus selalu m
 nilai-nilai dari tipe berukuran dinamis tersebut di balik (_behind_) semacam _pointer_.
 
 Kita bisa menggabungkan `str` dengan berbagai macam pointer lainnya: misalnya, 
-`Box<str>` atau `Rc<str>`. Faktanya, Anda udah ngelihat hal ini sebelumnya tapi dengan 
+`Box<str>` atau `Rc<str>`. Faktanya, kita udah ngelihat hal ini sebelumnya tapi dengan 
 tipe berukuran dinamis yang berbeda: yakni, traits. Setiap trait itu adalah sebuah 
 tipe berukuran dinamis yang bisa kita rujuk (refer to) dengan memakai nama dari 
 trait tersebut. Di [“Memakai Trait Objects Buat Mengabstraksi Perilaku Bersama”][using-trait-objects-to-abstract-over-shared-behavior] 
@@ -294,7 +294,7 @@ itu sebenernya bakal diperlakukan seolah-olah kita udah nulis kayak gini:
 ```
 
 Secara bawaan (_by default_), fungsi-fungsi generik cuma bakal bekerja buat tipe-tipe 
-yang ukurannya itu diketahui pas _compile time_. Namun, Anda bisa memakai sintaks 
+yang ukurannya itu diketahui pas _compile time_. Namun, kita bisa memakai sintaks 
 spesial berikut ini buat mengendurkan (_relax_) pembatasan tersebut:
 
 ```rust,ignore

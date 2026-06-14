@@ -265,7 +265,7 @@ Perhatikan bahwa fungsi pencarian bakal mengumpulkan semua hasil ke dalam sebuah
 
 Huft! Kerjaan yang lumayan banyak ya, tapi kita udah nyiapin diri buat kesuksesan di masa depan. Sekarang jauh lebih gampang buat menangani error, dan kita sudah membuat kodenya jadi lebih modular. Mulai dari sini, hampir semua pekerjaan kita bakal dilakukan di _src/lib.rs_.
 
-Mari kita manfaatkan modularitas yang baru kita dapatkan ini dengan melakukan sesuatu yang bakal susah banget dilakuin sama kode kita yang lama tapi sangat gampang dengan kode yang baru: kita bakal nulis beberapa *tests* (pengujian)!
+Mari kita manfaatkan modularitas yang baru kita dapatkan ini dengan melakukan sesuatu yang bakal susah sekali dilakuin sama kode kita yang lama tapi sangat gampang dengan kode yang baru: kita bakal nulis beberapa *tests* (pengujian)!
 
 [ch13]: ch13-00-functional-features.html
 [ch9-custom-types]: ch09-03-to-panic-or-not-to-panic.html#creating-custom-types-for-validation

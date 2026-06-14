@@ -29,7 +29,7 @@ di dalam _crate_ saat ini. Perintah ini murni cuma bakal mengubah gaya kodenya s
 bukan mengubah semantik dari kodenya. Buat dapat info lebih lanjut soal `rustfmt`, 
 silakan baca [dokumentasinya di sini][rustfmt].
 
-### Perbaiki Kode Anda dengan `rustfix`
+### Perbaiki Kode kita dengan `rustfix`
 
 Alat bantu `rustfix` sudah disertakan bareng instalasi Rust dan bisa secara otomatis membetulkan pesan peringatan _compiler_ yang punya rute perbaikan yang jelas untuk masalah tersebut, yang kemungkinan besar merupakan apa yang kita inginkan. Kita kemungkinan besar sudah pernah melihat pesan peringatan dari _compiler_ sebelumnya. Sebagai contoh, perhatikan kode berikut ini:
 
@@ -103,7 +103,7 @@ berikut:
 $ cargo clippy
 ```
 
-Misalnya, katakanlah Anda sedang menulis sebuah program yang memakai estimasi nilai 
+Misalnya, katakanlah kita sedang menulis sebuah program yang memakai estimasi nilai 
 aproksimasi buat sebuah konstanta matematika, seperti pi, seperti yang dilakukan 
 program ini:
 
@@ -133,9 +133,9 @@ error: approximate value of `f{32, 64}::consts::PI` found
   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#approx_constant
 ```
 
-Pesan error ini memberi tahu Anda kalau Rust sudah punya konstanta `PI` yang jauh 
-lebih presisi, dan program Anda bakal jadi lebih benar kalau Anda memakai konstanta 
-tersebut. Jadinya Anda bisa mengubah kode tersebut supaya memakai konstanta `PI`.
+Pesan error ini memberi tahu kita kalau Rust sudah punya konstanta `PI` yang jauh 
+lebih presisi, dan program kita bakal jadi lebih benar kalau kita memakai konstanta 
+tersebut. Jadinya kita bisa mengubah kode tersebut supaya memakai konstanta `PI`.
 
 Kode berikut ini tidak bakal memicu munculnya error atau peringatan apa pun dari Clippy:
 
@@ -164,7 +164,7 @@ di antaranya [plug-in Rust analyzer untuk Visual Studio Code][vscode].
 
 Silakan kunjungi [*home page* dari project `rust-analyzer`][rust-analyzer] untuk 
 mendapatkan petunjuk instalasinya, lalu pasang dukungan *language server* tersebut 
-ke dalam IDE spesifik Anda. IDE Anda bakal mendapatkan tambahan kapabilitas istimewa 
+ke dalam IDE spesifik kita. IDE kita bakal mendapatkan tambahan kapabilitas istimewa 
 seperti _autocompletion_ (penyelesaian otomatis), _jump to definition_ (loncat ke definisi), 
 dan _inline errors_ (pesan error yang muncul sebaris dengan kode).
 

@@ -89,7 +89,7 @@ bisa pake `_` sebagai pemisah visual biar angkanya lebih gampang dibaca, kayak
 | Byte (`u8` doang)| `b'A'`        |
 
 Terus gimana kita tau tipe integer mana yang harus dipake? Kalau bingung, 
-default-nya Rust biasanya udah oke banget: tipe integer default ke `i32`. 
+default-nya Rust biasanya udah oke sekali: tipe integer default ke `i32`. 
 Situasi utama di mana kita bakal pake `isize` atau `usize` itu pas lagi 
 ngindeks sekumpulan koleksi (collection).
 

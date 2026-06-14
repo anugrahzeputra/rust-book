@@ -1,7 +1,7 @@
 # Dasar-dasar Pemrograman Asinkron: Async, Await, Futures, dan Streams
 
 Banyak operasi yang kita suruh komputer buat lakukan bisa memakan waktu agak lama
-buat selesai. Bakal menyenangkan banget kalau kita bisa melakukan hal lain selagi
+buat selesai. Bakal menyenangkan sekali kalau kita bisa melakukan hal lain selagi
 kita nungguin proses-proses yang panjang itu buat kelar. Komputer modern menawarkan
 dua teknik buat mengerjakan lebih dari satu operasi pada satu waktu: paralelisme 
 (parallelism) dan konkurensi (concurrency). Namun, logika program kita biasanya 
@@ -21,28 +21,28 @@ mengekspresikan gimana operasi-operasi tersebut bisa bersifat asinkron, serta
 _crates_ pihak ketiga yang mengimplementasikan _asynchronous runtimes_: kode yang 
 mengelola dan mengoordinasi eksekusi dari operasi-operasi asinkron tersebut.
 
-Mari kita pertimbangkan sebuah contoh. Katakanlah Anda lagi ngekspor video perayaan 
-keluarga yang sudah Anda bikin, sebuah operasi yang bisa memakan waktu mulai 
+Mari kita pertimbangkan sebuah contoh. Katakanlah kita lagi ngekspor video perayaan 
+keluarga yang sudah kita bikin, sebuah operasi yang bisa memakan waktu mulai 
 dari beberapa menit sampai berjam-jam. Ekspor video bakal memakai sebanyak 
-mungkin tenaga CPU dan GPU yang bisa dia dapatkan. Kalau Anda cuma punya satu 
-_core_ (inti) CPU dan sistem operasi Anda tidak nge-_pause_ ekspor itu sampai ia 
-selesai—yaitu, kalau ia mengeksekusi ekspornya secara _sinkron_ (synchronously)—Anda 
-tidak bakal bisa ngelakuin hal lain di komputer Anda saat tugas itu berjalan. Itu 
+mungkin tenaga CPU dan GPU yang bisa dia dapatkan. Kalau kita cuma punya satu 
+_core_ (inti) CPU dan sistem operasi kita tidak nge-_pause_ ekspor itu sampai ia 
+selesai—yaitu, kalau ia mengeksekusi ekspornya secara _sinkron_ (synchronously)—kita 
+tidak bakal bisa ngelakuin hal lain di komputer kita saat tugas itu berjalan. Itu 
 bakal jadi pengalaman yang cukup bikin frustrasi. Untungnya, sistem operasi di 
-komputer Anda bisa, dan emang ngelakuin itu, menginterupsi proses ekspor secara 
-kasatmata cukup sering biar Anda bisa mengerjakan tugas lain di saat yang 
+komputer kita bisa, dan emang ngelakuin itu, menginterupsi proses ekspor secara 
+kasatmata cukup sering biar kita bisa mengerjakan tugas lain di saat yang 
 bersamaan.
 
-Sekarang katakanlah Anda lagi men-download video yang di-_share_ sama orang lain, 
+Sekarang katakanlah kita lagi men-download video yang di-_share_ sama orang lain, 
 yang juga bisa memakan waktu lumayan lama tapi tidak terlalu menyita banyak waktu 
-CPU. Di kasus ini, CPU harus menunggu data dari jaringan buat tiba. Meskipun Anda 
+CPU. Di kasus ini, CPU harus menunggu data dari jaringan buat tiba. Meskipun kita 
 bisa mulai membaca data tersebut begitu dia mulai berdatangan, itu bisa memakan 
 waktu beberapa saat sampai semuanya muncul. Bahkan setelah semua datanya ada, 
-kalau videonya gede banget, itu bisa memakan waktu setidaknya satu atau dua detik 
+kalau videonya sangat besar, itu bisa memakan waktu setidaknya satu atau dua detik 
 buat nge-_load_ semuanya. Itu mungkin tidak kedengeran terlalu lama, tapi itu 
 adalah waktu yang sangat lama buat prosesor modern, yang mana bisa melakukan 
-miliaran operasi setiap detik. Sekali lagi, sistem operasi Anda bakal 
-menginterupsi program Anda secara kasatmata buat membiarkan CPU mengerjakan 
+miliaran operasi setiap detik. Sekali lagi, sistem operasi kita bakal 
+menginterupsi program kita secara kasatmata buat membiarkan CPU mengerjakan 
 tugas lain sembari nunggu pemanggilan jaringan selesai.
 
 Ekspor video adalah contoh dari operasi _CPU-bound_ atau _compute-bound_ 
@@ -81,7 +81,7 @@ bisa menentukan sejumlah tugas yang pengen diselesaikan program kita lalu
 membiarkan _runtime_ memilih urutan dan cara terbaik buat menjalankannya.
 
 Nah, itulah persisnya yang dikasih sama abstraksi _asinkron_ (singkatan dari 
-_async_) di Rust buat kita. Di bab ini, Anda bakal belajar semua hal tentang 
+_async_) di Rust buat kita. Di bab ini, kita bakal belajar semua hal tentang 
 asinkron selagi kita membahas topik-topik berikut:
 
 - Gimana cara memakai sintaks `async` dan `await` di Rust dan mengeksekusi 
@@ -89,7 +89,7 @@ asinkron selagi kita membahas topik-topik berikut:
 - Gimana cara memakai model asinkron buat nyelesein beberapa tantangan yang sama 
   seperti yang udah kita lihat di Bab 16
 - Gimana _multithreading_ dan asinkron menyediakan solusi yang saling melengkapi, 
-  yang bisa Anda gabungkan di banyak kasus
+  yang bisa kita gabungkan di banyak kasus
 
 Tapi, sebelum kita lihat gimana cara kerja asinkron di praktiknya, kita perlu 
 sedikit belok sebentar buat ngebahas perbedaan antara paralelisme dan konkurensi.
@@ -101,16 +101,16 @@ ditukar-tukar. Sekarang kita harus bisa membedakannya dengan lebih presisi,
 karena perbedaannya bakal kerasa pas kita udah mulai bekerja.
 
 Bayangin aja cara-cara beda yang bisa dipakai sebuah tim buat ngebagi kerjaan 
-di suatu proyek _software_. Anda bisa menugaskan satu orang beberapa tugas, 
+di suatu proyek _software_. Kita bisa menugaskan satu orang beberapa tugas, 
 menugaskan tiap anggota satu tugas, atau memakai campuran dari kedua pendekatan 
 tersebut.
 
 Saat satu orang individu mengerjakan beberapa tugas yang berbeda sebelum satupun 
 dari tugas-tugas itu selesai, ini dinamakan _konkurensi_. Salah satu cara buat 
 mengimplementasikan konkurensi adalah mirip kayak punya dua project berbeda yang 
-lagi dibuka di komputer Anda, dan pas Anda bosan atau mentok di satu project, 
-Anda beralih ke project yang satu lagi. Anda cuma satu orang, jadi Anda tidak 
-bisa bikin progress di kedua tugas pada waktu yang sama persis, tapi Anda bisa 
+lagi dibuka di komputer kita, dan pas kita bosan atau mentok di satu project, 
+kita beralih ke project yang satu lagi. Kita cuma satu orang, jadi kita tidak 
+bisa bikin progress di kedua tugas pada waktu yang sama persis, tapi kita bisa 
 *multitask*, bikin progress pada satu tugas secara bergantian dengan beralih 
 di antara mereka (lihat Gambar 17-1).
 
@@ -134,8 +134,8 @@ tim tersebut bisa membikin progress pada waktu yang sama persis (lihat Gambar 17
 
 </figure>
 
-Di kedua alur kerja (workflows) ini, Anda mungkin harus mengoordinasikan antara 
-tugas-tugas yang berbeda. Mungkin Anda pikir tugas yang diberikan ke satu orang 
+Di kedua alur kerja (workflows) ini, kita mungkin harus mengoordinasikan antara 
+tugas-tugas yang berbeda. Mungkin kita pikir tugas yang diberikan ke satu orang 
 itu benar-benar independen dari pekerjaan orang lain, tapi ternyata dia butuh 
 orang lain di tim itu buat nyelesein tugas mereka lebih dulu. Beberapa pekerjaan 
 bisa dilakukan secara paralel, tapi sebagian darinya itu sebenarnya _serial_: 
@@ -150,16 +150,16 @@ kayak di Gambar 17-3.
 
 </figure>
 
-Sama halnya, Anda mungkin sadar kalau salah satu tugas Anda sendiri itu bergantung 
-sama tugas Anda yang lainnya. Sekarang pekerjaan konkuren Anda juga udah jadi 
+Sama halnya, kita mungkin sadar kalau salah satu tugas kita sendiri itu bergantung 
+sama tugas kita yang lainnya. Sekarang pekerjaan konkuren kita juga udah jadi 
 serial.
 
-Paralelisme dan konkurensi juga bisa bersinggungan satu sama lain. Kalau Anda 
-tahu kalau rekan kerja Anda lagi mentok sampai Anda nyelesein salah satu tugas 
-Anda, Anda mungkin bakal memusatkan seluruh usaha Anda pada tugas itu buat 
-"membuka jalan" (unblock) rekan kerja Anda tersebut. Anda dan rekan kerja Anda 
-tidak lagi bisa bekerja secara paralel, dan Anda juga tidak lagi bisa bekerja 
-secara konkuren di tugas Anda masing-masing.
+Paralelisme dan konkurensi juga bisa bersinggungan satu sama lain. Kalau kita 
+tahu kalau rekan kerja kita lagi mentok sampai kita nyelesein salah satu tugas 
+kita, kita mungkin bakal memusatkan seluruh usaha kita pada tugas itu buat 
+"membuka jalan" (unblock) rekan kerja kita tersebut. Kita dan rekan kerja kita 
+tidak lagi bisa bekerja secara paralel, dan kita juga tidak lagi bisa bekerja 
+secara konkuren di tugas kita masing-masing.
 
 Dinamika dasar yang sama mulai berlaku pada perangkat lunak dan perangkat keras. 
 Di mesin yang punya satu _core_ CPU, CPU cuma bisa melakukan satu operasi pada 

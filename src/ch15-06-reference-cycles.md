@@ -84,7 +84,7 @@ kita sudah membikin diagram di Gambar 15-4.
 <span class="caption">Gambar 15-4: Sebuah _reference cycle_ dari list `a` dan 
 `b` yang saling menunjuk satu sama lain</span>
 
-Kalau Anda menghilangkan komentar (_uncomment_) pada `println!` yang terakhir lalu 
+Kalau kita menghilangkan komentar (_uncomment_) pada `println!` yang terakhir lalu 
 menjalankan programnya, Rust bakal mencoba mencetak _cycle_ ini dengan `a` 
 menunjuk ke `b` menunjuk ke `a` dan seterusnya sampai dia mengalami _stack overflow_.
 
@@ -97,18 +97,18 @@ banyak memori daripada yang dia butuhkan dan bisa bikin sistem kewalahan,
 yang berujung pada kehabisan memori (_out of memory_).
 
 Membikin _reference cycles_ itu memang tidak mudah dilakukan, tapi itu juga 
-bukanlah hal yang mustahil. Kalau Anda punya nilai `RefCell<T>` yang 
+bukanlah hal yang mustahil. Kalau kita punya nilai `RefCell<T>` yang 
 mengandung nilai `Rc<T>` atau kombinasi bersarang yang mirip dari tipe-tipe yang 
-punya _interior mutability_ dan _reference counting_, Anda harus memastikan 
-kalau Anda tidak membikin _cycles_; Anda tidak bisa ngandelin Rust buat 
+punya _interior mutability_ dan _reference counting_, kita harus memastikan 
+kalau kita tidak membikin _cycles_; kita tidak bisa ngandelin Rust buat 
 menangkap hal tersebut. Membikin sebuah _reference cycle_ adalah sebuah *logic 
-bug* (kutu logika) di program Anda yang harusnya diminimalisir dengan memakai 
+bug* (kutu logika) di program kita yang harusnya diminimalisir dengan memakai 
 _automated tests_ (pengujian otomatis), _code reviews_ (tinjauan kode), dan 
 praktik pengembangan *software* lainnya.
 
 Solusi lain buat menghindari _reference cycles_ adalah dengan mengatur ulang 
-struktur data Anda sedemikian rupa sehingga beberapa referensi mengekspresikan 
-kepemilikan (ownership) dan referensi lainnya tidak. Sebagai hasilnya, Anda 
+struktur data kita sedemikian rupa sehingga beberapa referensi mengekspresikan 
+kepemilikan (ownership) dan referensi lainnya tidak. Sebagai hasilnya, kita 
 bisa punya _cycles_ yang dibikin dari beberapa hubungan kepemilikan dan beberapa 
 hubungan non-kepemilikan, dan cuma hubungan kepemilikan lah yang memengaruhi 
 apakah suatu nilai bisa di-_drop_ atau tidak. Di Listing 15-25, kita selalu mau 
@@ -126,18 +126,18 @@ mencegah _reference cycles_.
 
 Sejauh ini, kita sudah mendemonstrasikan kalau memanggil `Rc::clone` bakal 
 menaikkan nilai `strong_count` dari sebuah instance `Rc<T>`, dan sebuah instance 
-`Rc<T>` cuma bakal dibersihkan kalau nilai `strong_count`-nya 0. Anda juga bisa 
+`Rc<T>` cuma bakal dibersihkan kalau nilai `strong_count`-nya 0. Kita juga bisa 
 membikin sebuah _weak reference_ (referensi lemah) ke sebuah nilai yang ada 
 di dalam instance `Rc<T>` dengan memanggil `Rc::downgrade` dan meneruskan sebuah 
 referensi ke `Rc<T>` tersebut. _Strong references_ (referensi kuat) adalah cara 
-gimana Anda bisa berbagi kepemilikan dari sebuah instance `Rc<T>`. _Weak references_ 
+gimana kita bisa berbagi kepemilikan dari sebuah instance `Rc<T>`. _Weak references_ 
 tidak mengekspresikan hubungan kepemilikan, dan jumlah mereka (count) tidak 
 memengaruhi kapan sebuah instance `Rc<T>` dibersihkan. Mereka tidak bakal bikin 
 sebuah _reference cycle_ karena _cycle_ apa pun yang melibatkan beberapa _weak 
 references_ bakal terputus begitu jumlah _strong reference_ dari nilai-nilai yang 
 terlibat mencapai 0.
 
-Pas Anda memanggil `Rc::downgrade`, Anda bakal dapat sebuah _smart pointer_ 
+Pas kita memanggil `Rc::downgrade`, kita bakal dapat sebuah _smart pointer_ 
 bertipe `Weak<T>`. Alih-alih menaikkan `strong_count` di instance `Rc<T>` sebanyak 
 1, memanggil `Rc::downgrade` menaikkan `weak_count` sebanyak 1. Tipe `Rc<T>` memakai 
 `weak_count` buat melacak berapa banyak referensi `Weak<T>` yang ada, mirip 
@@ -145,9 +145,9 @@ kayak `strong_count`. Bedanya adalah `weak_count` tidak harus 0 supaya instance
 `Rc<T>`-nya bisa dibersihkan.
 
 Karena nilai yang ditunjuk sama `Weak<T>` mungkin sudah di-_drop_, untuk melakukan 
-apa pun dengan nilai yang ditunjuk sama `Weak<T>` Anda harus memastikan kalau 
+apa pun dengan nilai yang ditunjuk sama `Weak<T>` kita harus memastikan kalau 
 nilainya masih eksis. Lakukan ini dengan memanggil method `upgrade` pada sebuah 
-instance `Weak<T>`, yang mana bakal mengembalikan sebuah `Option<Rc<T>>`. Anda 
+instance `Weak<T>`, yang mana bakal mengembalikan sebuah `Option<Rc<T>>`. Kita 
 bakal dapat hasil `Some` kalau nilai `Rc<T>` tersebut belum di-_drop_ dan hasil 
 `None` kalau nilai `Rc<T>` tersebut sudah di-_drop_. Karena `upgrade` mengembalikan 
 sebuah `Option<Rc<T>>`, Rust bakal memastikan kalau kasus `Some` maupun kasus `None` 
@@ -214,7 +214,7 @@ Membayangkan hubungan ini dengan cara lain, sebuah *parent node* seharusnya
 memiliki *children*-nya: kalau sebuah *parent node* di-_drop_, *child nodes*-nya 
 seharusnya ikut di-_drop_ juga. Namun, sebuah *child* tidak seharusnya memiliki 
 *parent*-nya: kalau kita men-_drop_ sebuah *child node*, sang *parent* seharusnya 
-tetap eksis. Ini adalah kasus yang tepat banget buat memakai _weak references_!
+tetap eksis. Ini adalah kasus yang tepat sekali buat memakai _weak references_!
 
 Jadi ketimbang memakai `Rc<T>`, kita bakal membikin tipe dari `parent` tersebut 
 agar memakai `Weak<T>`, spesifiknya adalah `RefCell<Weak<Node>>`. Sekarang 
@@ -318,7 +318,7 @@ Semua logika yang mengelola jumlah referensi (_counts_) dan pen-_drop_-an nilai 
 dibangun langsung di dalam `Rc<T>` dan `Weak<T>` beserta implementasi mereka 
 pada trait `Drop`. Dengan secara spesifik menentukan kalau hubungan dari seorang 
 *child* ke *parent*-nya haruslah memakai referensi `Weak<T>` di dalam definisi 
-dari `Node`, Anda bisa membikin *parent nodes* menunjuk ke *child nodes* dan 
+dari `Node`, kita bisa membikin *parent nodes* menunjuk ke *child nodes* dan 
 begitu juga sebaliknya tanpa membikin sebuah _reference cycle_ dan _memory leaks_.
 
 ## Ringkasan
@@ -338,11 +338,11 @@ banyak dari fungsionalitas _smart pointers_ ini. Kita mengeksplorasi _reference
 cycles_ yang bisa menyebabkan _memory leaks_ dan gimana cara mencegah mereka 
 memakai `Weak<T>`.
 
-Kalau bab ini sudah membangkitkan rasa penasaran Anda dan Anda pengen 
-mengimplementasikan _smart pointers_ Anda sendiri, silakan cek 
+Kalau bab ini sudah membangkitkan rasa penasaran kita dan kita pengen 
+mengimplementasikan _smart pointers_ kita sendiri, silakan cek 
 [“The Rustonomicon”][nomicon] buat dapetin lebih banyak informasi yang berguna.
 
-Berikutnya, kita bakal ngomongin soal konkurensi (concurrency) di Rust. Anda 
+Berikutnya, kita bakal ngomongin soal konkurensi (concurrency) di Rust. Kita 
 bahkan bakal mempelajari beberapa _smart pointers_ baru lagi lho!
 
 [nomicon]: ../nomicon/index.html

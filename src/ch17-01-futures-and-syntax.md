@@ -12,18 +12,18 @@ antarmuka (interface) yang sama. Di Rust, _futures_ adalah tipe-tipe yang
 mengimplementasikan trait `Future`. Tiap _future_ menyimpan informasinya sendiri 
 soal sejauh mana kemajuan yang sudah dibuat dan apa makna dari "siap" ("ready").
 
-Anda bisa menerapkan keyword `async` ke blok dan fungsi buat menentukan kalau 
+Kita bisa menerapkan keyword `async` ke blok dan fungsi buat menentukan kalau 
 mereka bisa diinterupsi dan dilanjutkan lagi. Di dalam sebuah blok asinkron atau 
-fungsi asinkron, Anda bisa memakai keyword `await` buat _menunggu sebuah future_ 
-(yaitu, nunggu dia sampai jadi siap). Titik mana pun di mana Anda me-_await_ 
+fungsi asinkron, kita bisa memakai keyword `await` buat _menunggu sebuah future_ 
+(yaitu, nunggu dia sampai jadi siap). Titik mana pun di mana kita me-_await_ 
 sebuah _future_ di dalam sebuah blok atau fungsi asinkron adalah titik potensial 
 buat blok atau fungsi asinkron itu buat berhenti sejenak (pause) dan dilanjutkan 
 lagi (resume). Proses pengecekan ke sebuah _future_ buat melihat apakah nilainya 
 sudah tersedia atau belum ini disebut _polling_.
 
 Beberapa bahasa pemrograman lain, kayak C# dan JavaScript, juga memakai keyword 
-`async` dan `await` buat pemrograman asinkron. Kalau Anda sudah familier sama 
-bahasa-bahasa itu, Anda mungkin bakal sadar ada beberapa perbedaan signifikan 
+`async` dan `await` buat pemrograman asinkron. Kalau kita sudah familier sama 
+bahasa-bahasa itu, kita mungkin bakal sadar ada beberapa perbedaan signifikan 
 dari cara Rust melakukan hal tersebut, termasuk cara nanganin sintaksnya. Itu ada 
 alasan bagusnya lho, kayak yang bakal kita lihat nanti!
 
@@ -31,8 +31,8 @@ Pas lagi nulis Rust asinkron, kita bakal memakai keyword `async` dan `await`
 sebagian besar waktunya. Rust mengompilasi mereka jadi kode yang ekuivalen 
 menggunakan trait `Future`, mirip kayak gimana dia mengompilasi `for` _loops_ jadi 
 kode yang ekuivalen memakai trait `Iterator`. Tapi karena Rust menyediakan trait 
-`Future`, Anda juga bisa mengimplementasikannya buat tipe data Anda sendiri 
-kalau Anda butuh. Banyak fungsi yang bakal kita lihat di sepanjang bab ini 
+`Future`, kita juga bisa mengimplementasikannya buat tipe data kita sendiri 
+kalau kita butuh. Banyak fungsi yang bakal kita lihat di sepanjang bab ini 
 mengembalikan tipe yang punya implementasi `Future`-nya masing-masing. Kita bakal 
 balik lagi ke definisi trait-nya di akhir bab ini dan gali lebih dalam soal 
 gimana cara kerjanya, tapi detail segini sudah cukup buat kita lanjut jalan dulu.
@@ -42,26 +42,26 @@ pertama kita: sebuah _web scraper_ mini. Kita bakal memasukkan dua URL dari
 _command line_, mengambil (_fetch_) kedua URL itu secara konkuren, terus 
 mengembalikan hasil dari URL mana pun yang selesai duluan. Contoh ini bakal 
 punya lumayan banyak sintaks baru, tapi jangan khawatir—kita bakal jelasin 
-semua yang perlu Anda tahu seiring kita berjalan.
+semua yang perlu kita tahu seiring kita berjalan.
 
 ## Program Asinkron Pertama Kita
 
 Biar fokus bab ini tetap pada belajar asinkron ketimbang sibuk ngerjain bagian-
 bagian ekosistem, kita sudah ngebikin _crate_ `trpl` (`trpl` itu singkatan dari 
 "The Rust Programming Language"). _Crate_ ini mengekspor ulang (re-exports) semua 
-tipe, trait, dan fungsi yang bakal Anda butuhkan, utamanya dari _crate_ 
+tipe, trait, dan fungsi yang bakal kita butuhkan, utamanya dari _crate_ 
 [`futures`][futures-crate]<!-- ignore --> dan [`tokio`][tokio]<!-- ignore -->. 
 _Crate_ `futures` adalah tempat resmi buat bereksperimen dengan kode asinkron di 
 Rust, dan sebenarnya di sanalah trait `Future` asal-muasalnya didesain. Tokio 
 adalah _async runtime_ yang paling banyak dipakai di Rust saat ini, apalagi buat 
 aplikasi web. Ada banyak _runtimes_ keren lainnya di luar sana, dan mereka 
-mungkin lebih cocok buat kebutuhan Anda. Kita memakai _crate_ `tokio` di balik 
+mungkin lebih cocok buat kebutuhan kita. Kita memakai _crate_ `tokio` di balik 
 layarnya `trpl` karena dia sudah teruji dengan baik dan banyak dipakai.
 
 Di beberapa kasus, `trpl` juga mengganti nama atau membungkus (wraps) API aslinya 
-biar Anda tetap fokus sama detail-detail yang relevan buat bab ini. Kalau Anda 
-mau paham apa yang dilakukan sama _crate_ ini, kita menyarankan Anda buat cek 
-[_source code_-nya][crate-source]. Anda bakal bisa lihat dari _crate_ mana asal 
+biar kita tetap fokus sama detail-detail yang relevan buat bab ini. Kalau kita 
+mau paham apa yang dilakukan sama _crate_ ini, kita menyarankan kita buat cek 
+[_source code_-nya][crate-source]. Kita bakal bisa lihat dari _crate_ mana asal 
 dari tiap fitur yang di-_re-export_, dan kita sudah ninggalin komentar yang 
 ekstensif yang menjelaskan apa aja yang dilakukan sama _crate_ tersebut.
 
@@ -102,20 +102,20 @@ nya, dan sekali lagi menunggunya dengan keyword `await`. Kedua langkah ini
 sifatnya asinkron. Buat fungsi `get`, kita harus nunggu server buat mengirim 
 balik bagian pertama dari responsnya, yang mana bakal berisi HTTP _headers_, 
 _cookies_, dan lain-lain, dan bisa saja dikirim secara terpisah dari _body_ 
-(isi utama) responsnya. Apalagi kalau _body_-nya itu besar banget, itu bisa 
+(isi utama) responsnya. Apalagi kalau _body_-nya itu besar sekali, itu bisa 
 memakan waktu yang lumayan lama buat semuanya sampai. Karena kita harus nunggu 
 buat _keseluruhan_ responsnya sampai, method `text` itu juga asinkron.
 
 Kita harus secara eksplisit menunggu kedua _futures_ ini, karena _futures_ di 
-Rust itu _lazy_ (malas): mereka tidak bakal melakukan apa-apa sampai Anda 
+Rust itu _lazy_ (malas): mereka tidak bakal melakukan apa-apa sampai kita 
 menyuruh mereka dengan keyword `await`. (Faktanya, Rust bakal mengeluarkan 
-peringatan _compiler_ kalau Anda tidak menunggu sebuah _future_.) Ini mungkin 
-mengingatkan Anda soal pembahasan iterator di Bab 13 di bagian [“Memproses 
+peringatan _compiler_ kalau kita tidak menunggu sebuah _future_.) Ini mungkin 
+mengingatkan kita soal pembahasan iterator di Bab 13 di bagian [“Memproses 
 Serangkaian Item dengan Iterator”][iterators-lazy]<!-- ignore -->. Iterator 
-tidak bakal melakukan apa-apa kecuali kalau Anda memanggil method `next`-nya—baik 
+tidak bakal melakukan apa-apa kecuali kalau kita memanggil method `next`-nya—baik 
 itu secara langsung atau dengan memakai `for` _loops_ atau method-method kayak 
 `map` yang memakai `next` di balik layarnya. Demikian juga, _futures_ tidak 
-bakal melakukan apa-apa kecuali Anda menyuruh mereka secara eksplisit. Sifat 
+bakal melakukan apa-apa kecuali kita menyuruh mereka secara eksplisit. Sifat 
 malas ini membolehkan Rust menghindari menjalankan kode asinkron sampai dia 
 bener-bener dibutuhkan.
 
@@ -142,8 +142,8 @@ kita memanggil `inner_html` pada `title` buat mendapatkan kontennya, yang mana
 adalah sebuah `String`. Pada akhirnya, kita punya sebuah `Option<String>`.
 
 Perhatikan bahwa keyword `await` di Rust ditaruh _setelah_ ekspresi yang lagi 
-Anda tungguin, bukan di sebelumnya. Yakni, ia adalah sebuah keyword _postfix_ 
-(akhiran). Ini mungkin beda dari apa yang biasa Anda jumpai kalau Anda pernah 
+kita tungguin, bukan di sebelumnya. Yakni, ia adalah sebuah keyword _postfix_ 
+(akhiran). Ini mungkin beda dari apa yang biasa kita jumpai kalau kita pernah 
 memakai `async` di bahasa lain, tapi di Rust ini bikin _chaining_ (rentetan) 
 pemanggilan method jadi jauh lebih enak buat dibuat. Hasilnya, kita bisa 
 mengubah isi dari `page_title` buat menyambung (_chain_) pemanggilan fungsi 
@@ -202,7 +202,7 @@ Mari kita telusuri bagian demi bagian dari versi yang sudah diubah ini:
   Keseluruhan blok ini adalah ekspresi yang dikembalikan dari fungsinya.
 - Blok asinkron ini menghasilkan nilai bertipe `Option<String>`, seperti yang 
   baru saja dijelaskan. Nilai tersebut cocok sama tipe `Output` di tipe 
-  kembaliannya. Ini sama persis kayak blok-blok lain yang pernah Anda lihat.
+  kembaliannya. Ini sama persis kayak blok-blok lain yang pernah kita lihat.
 - Isi fungsi baru tersebut adalah sebuah blok `async move` gara-gara gimana 
   dia memakai parameter `url`. (Kita bakal ngebahas lebih banyak lagi soal 
   `async` versus `async move` nanti di bab ini.)
@@ -324,7 +324,7 @@ dikembalikan ke _runtime_. Biar itu bisa terjadi, Rust perlu melacak (_keep
 track of_) _state_ (keadaan) yang terlibat di dalam blok asinkron tersebut 
 sehingga _runtime_ bisa memulai beberapa pekerjaan lain lalu balik lagi nanti 
 kalau dia sudah siap buat mencoba melanjutkan pekerjaan pertama tadi. Ini 
-adalah sebuah _state machine_ (mesin keadaan) kasatmata, seolah-olah Anda 
+adalah sebuah _state machine_ (mesin keadaan) kasatmata, seolah-olah kita 
 menulis sebuah enum kayak gini buat menyimpan _state_ saat ini di tiap titik 
 _await_:
 
@@ -333,7 +333,7 @@ _await_:
 ```
 
 Menulis kode buat bertransisi di antara setiap _state_ ini secara manual bakal 
-melelahkan dan gampang rawan error, apalagi kalau nanti Anda harus menambahkan 
+melelahkan dan gampang rawan error, apalagi kalau nanti kita harus menambahkan 
 fungsionalitas dan lebih banyak _states_ lagi ke kode tersebut. Untungnya, 
 _compiler_ Rust otomatis membikin dan mengelola struktur data _state machine_ 
 buat kode asinkron. Aturan-aturan _borrowing_ dan _ownership_ normal seputar 
@@ -342,12 +342,12 @@ pengecekan itu buat kita dan menyediakan pesan error yang berguna. Kita bakal
 membedah beberapa kasus kayak gitu nanti di bab ini.
 
 Pada akhirnya, sesuatu harus mengeksekusi _state machine_ ini, dan "sesuatu" 
-itu adalah sebuah _runtime_. (Inilah kenapa Anda mungkin pernah ketemu istilah 
+itu adalah sebuah _runtime_. (Inilah kenapa kita mungkin pernah ketemu istilah 
 _executors_ (pengeksekusi) pas lagi nyari tahu soal _runtimes_: sebuah 
 _executor_ adalah bagian dari sebuah _runtime_ yang bertugas mengeksekusi kode 
 asinkron tersebut.)
 
-Sekarang Anda bisa tahu kenapa _compiler_ melarang kita membikin `main` itu 
+Sekarang kita bisa tahu kenapa _compiler_ melarang kita membikin `main` itu 
 sendiri jadi fungsi asinkron balik di Listing 17-3 tadi. Kalau `main` itu fungsi 
 asinkron, sesuatu yang lain bakal harus mengelola _state machine_ buat _future_ 
 apa pun yang dikembalikan sama `main`, tapi padahal `main` adalah titik awal 
@@ -355,7 +355,7 @@ buat programnya! Sebaliknya, kita memanggil fungsi `trpl::block_on` di `main`
 buat menyiapkan sebuah _runtime_ dan menjalankan _future_ yang dikembalikan 
 sama blok `async` sampai dia selesai.
 
-> Catatan: Beberapa _runtimes_ menyediakan macros sehingga Anda _bisa_ menulis 
+> Catatan: Beberapa _runtimes_ menyediakan macros sehingga kita _bisa_ menulis 
 > fungsi `main` yang asinkron. Macros itu menulis ulang `async fn main() { ... }` 
 > jadi `fn main` normal, yang melakukan persis hal yang sama kayak yang kita 
 > lakukan secara manual di Listing 17-4: memanggil fungsi yang mengeksekusi 
@@ -424,11 +424,11 @@ Dengan informasi yang sudah tersedia itu, kita selesaikan ini semua dengan
 mengubah output `println!` kita buat mengindikasikan baik URL mana yang selesai 
 duluan, dan apa, kalau memang ada, `<title>` buat halaman web di URL tersebut.
 
-Anda sudah ngebikin _web scraper_ mini yang bisa jalan sekarang! Silakan pilih 
-beberapa URL lalu jalankan alat _command line_ Anda. Anda mungkin mendapati 
+Kita sudah ngebikin _web scraper_ mini yang bisa jalan sekarang! Silakan pilih 
+beberapa URL lalu jalankan alat _command line_ kita. Kita mungkin mendapati 
 kalau beberapa situs secara konsisten memang lebih kencang dibanding yang lain, 
 sementara di kasus lain situs yang kencang itu berubah-ubah di tiap jalan. Yang 
-lebih penting, Anda sudah belajar dasar-dasar dari bekerja dengan _futures_, 
+lebih penting, kita sudah belajar dasar-dasar dari bekerja dengan _futures_, 
 jadi sekarang kita bisa gali lebih dalam soal apa yang bisa kita lakukan 
 dengan asinkron.
 

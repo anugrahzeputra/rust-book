@@ -2,7 +2,7 @@
 
 _oleh Steve Klabnik, Carol Nichols, dan Chris Krycho, beserta kontribusi dari Komunitas Rust_
 
-Versi teks ini mengasumsikan Anda menggunakan Rust 1.90.0 (rilis 18-09-2025) 
+Versi teks ini mengasumsikan kita menggunakan Rust 1.90.0 (rilis 18-09-2025) 
 atau yang lebih baru dengan `edition = "2024"` di dalam file *Cargo.toml* pada 
 semua proyek untuk mengonfigurasi mereka agar menggunakan idiom Edisi Rust 2024. 
 Lihat [bagian “Instalasi” di Bab 1][install]<!-- ignore --> untuk instruksi 

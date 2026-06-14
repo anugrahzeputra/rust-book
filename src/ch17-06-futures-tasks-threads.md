@@ -3,7 +3,7 @@
 Seperti yang sudah kita lihat di [Bab 16][ch16]<!-- ignore -->, _threads_ 
 menyediakan salah satu pendekatan buat konkurensi. Kita juga sudah melihat 
 pendekatan lainnya di bab ini: memakai asinkron dengan _futures_ dan _streams_. 
-Kalau Anda bertanya-tanya kapan harus memilih salah satu metode di atas metode 
+Kalau kita bertanya-tanya kapan harus memilih salah satu metode di atas metode 
 lainnya, jawabannya adalah: tergantung! Dan di banyak kasus, pilihannya bukan 
 antara _threads_ *atau* asinkron, melainkan _threads_ *dan* asinkron.
 
@@ -11,7 +11,7 @@ Banyak sistem operasi sudah menyuplai model konkurensi berbasis _threading_
 selama puluhan tahun, dan banyak bahasa pemrograman yang jadi menyokongnya 
 sebagai hasilnya. Namun, model-model ini bukannya tanpa pertukaran (*tradeoffs*). 
 Di banyak sistem operasi, tiap _thread_ memakan memori dalam jumlah yang cukup 
-besar. _Threads_ juga cuma jadi opsi pas sistem operasi dan perangkat keras Anda 
+besar. _Threads_ juga cuma jadi opsi pas sistem operasi dan perangkat keras kita 
 memang menyokongnya. Beda sama komputer desktop dan ponsel arus utama, beberapa 
 sistem _embedded_ bahkan tidak punya sistem operasi sama sekali, jadinya mereka 
 juga tidak punya _threads_.
@@ -65,8 +65,8 @@ praktis (_rules of thumb_) berikut:
   pesan-pesan dari sekumpulan sumber berbeda yang mungkin datang di interval 
   atau kecepatan yang berbeda-beda, asinkron adalah pilihan yang lebih oke.
 
-Dan kalau Anda butuh baik paralelisme maupun konkurensi, Anda tidak harus 
-memilih antara _threads_ dan asinkron. Anda bisa memakai keduanya bersamaan 
+Dan kalau kita butuh baik paralelisme maupun konkurensi, kita tidak harus 
+memilih antara _threads_ dan asinkron. Kita bisa memakai keduanya bersamaan 
 dengan bebas, membiarkan masing-masing memainkan peran yang paling dikuasainya. 
 Misalnya, Listing 17-25 menunjukkan contoh yang lumayan umum dari campuran kayak 
 gini di kode Rust dunia nyata.
@@ -96,20 +96,20 @@ contoh dari jenis kombinasi kayak gini di kasus penggunaan dunia nyata.
 
 ## Ringkasan
 
-Ini bukan kali terakhir Anda melihat soal konkurensi di buku ini. Proyek di [Bab 
+Ini bukan kali terakhir kita melihat soal konkurensi di buku ini. Proyek di [Bab 
 21][ch21]<!-- ignore --> bakal menerapkan konsep-konsep ini di situasi yang 
 lebih realistis dibanding contoh-contoh simpel yang dibahas di sini dan 
 membandingkan penyelesaian masalah memakai _threading_ versus _tasks_ dan 
 _futures_ secara lebih langsung.
 
-Metode mana pun yang Anda pilih, Rust memberi Anda alat-alat yang Anda butuhkan 
+Metode mana pun yang kita pilih, Rust memberi kita alat-alat yang kita butuhkan 
 buat menulis kode konkuren yang aman dan kencang—baik itu buat *web server* yang 
 *high-throughput* maupun buat sistem operasi *embedded*.
 
 Berikutnya, kita bakal ngomongin soal cara yang idiomatik buat memodelkan masalah 
-dan menstrukturkan solusi seiring dengan semakin besarnya program Rust Anda. 
+dan menstrukturkan solusi seiring dengan semakin besarnya program Rust kita. 
 Selain itu, kita bakal membahas gimana kaitan antara idiom milik Rust dengan 
-idiom yang mungkin Anda sudah familier di pemrograman berorientasi objek 
+idiom yang mungkin kita sudah familier di pemrograman berorientasi objek 
 (_object-oriented programming_).
 
 [ch16]: http://localhost:3000/ch16-00-concurrency.html

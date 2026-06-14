@@ -30,8 +30,8 @@ tipenya di dalem kurung siku. Di Listing 8-1, kita ngasih tau Rust kalau
 `Vec<T>` di variabel `v` bakal nampung elemen dengan tipe `i32`.
 
 Biasanya, kita bakal bikin `Vec<T>` dengan nilai awal dan Rust bakal nebak (infer) 
-tipe nilai yang mau kita simpen, jadi kita jarang banget butuh anotasi tipe 
-kayak gini. Rust nyediain macro yang praktis banget, `vec!`, yang bakal bikin 
+tipe nilai yang mau kita simpen, jadi kita jarang sekali butuh anotasi tipe 
+kayak gini. Rust nyediain macro yang praktis sekali, `vec!`, yang bakal bikin 
 vector baru yang isinya nilai-nilai yang kita kasih. Listing 8-2 bikin 
 `Vec<i32>` baru yang isinya nilai `1`, `2`, dan `3`. Tipe integer-nya adalah 
 `i32` karena itu adalah tipe integer default, kayak yang kita bahas di bagian 

@@ -6,11 +6,11 @@ sekali-sekali diperlukan.
 
 ## Memperbarui (Update) versi `rustc`
 
-- Hapus *directory* `target` Anda, toh Anda juga bakal mengkompilasi ulang 
+- Hapus *directory* `target` kita, toh kita juga bakal mengkompilasi ulang 
   (recompile) semuanya
 - Ubah nomor versi di `.github/workflows/main.yml`
 - Ubah nomor versi di `rust-toolchain`, yang mana seharusnya bakal ngubah 
-  versi yang Anda pakai secara lokal lewat `rustup`
+  versi yang kita pakai secara lokal lewat `rustup`
 - Ubah nomor versi di `src/title-page.md`
 - Jalankan `./tools/update-rustc.sh` (silakan lihat kode yang dikomentari di 
   dalamnya buat detail seputar apa aja yang dilakukannya)
@@ -79,33 +79,33 @@ Buat melakukannya:
   `cargo new` atau men-copy listing lain buat dijadiin titik pijak (starting point).
 - Masukkan kode dan juga kode sekitarnya yang dibutuhkan buat ngebikin sebuah contoh 
   program yang komplit dan bisa jalan.
-- Kalau Anda cuma mau menampilkan sebagian dari kode di dalam file tersebut, pakailah 
+- Kalau kita cuma mau menampilkan sebagian dari kode di dalam file tersebut, pakailah 
   _anchor comments_ (komentar jangkar, misal `// ANCHOR: some_tag` dan 
   `// ANCHOR_END: some_tag`) buat nandain bagian mana dari file tersebut yang pengen 
-  Anda tampilin.
+  kita tampilin.
 - Untuk kode Rust, pakailah direktif `{{#rustdoc_include [filename:some_tag]}}` di 
   dalam blok kode di teksnya. Direktif `rustdoc_include` ini ngasih tahu kode mana 
   yang tidak perlu ditampilkan ke `rustdoc` untuk tujuan pengujian `mdbook test`.
 - Buat hal-hal lainnya, gunakan direktif `{{#include [filename:some_tag]}}`.
-- Kalau Anda juga mau menampilkan _output_ dari sebuah perintah (command) di dalam 
+- Kalau kita juga mau menampilkan _output_ dari sebuah perintah (command) di dalam 
   teksnya, bikin sebuah file `output.txt` di direktori listing tersebut pakai 
   cara ini:
   - Jalankan perintahnya, semisal `cargo run` atau `cargo test`, lalu copy semua 
     _output_ yang keluar.
   - Bikin sebuah file `output.txt` baru di mana baris pertamanya adalah `$ [perintah 
-    yang tadi Anda jalankan]`.
-  - _Paste_ output yang barusan Anda *copy*.
+    yang tadi kita jalankan]`.
+  - _Paste_ output yang barusan kita *copy*.
   - Jalankan `./tools/update-rustc.sh`, yang mana seharusnya bakal nerapin beberapa 
     tindakan normalisasi (_normalization_) pada output _compiler_ tersebut.
   - Cantumkan output tersebut ke dalam teks dengan memakai direktif `{{#include [filename]}}`.
   - Lakukan `add` dan `commit` untuk file output.txt.
-- Kalau Anda mau menampilin _output_ tapi entah gara-gara suatu hal _output_ 
+- Kalau kita mau menampilin _output_ tapi entah gara-gara suatu hal _output_ 
   tersebut tidak bisa dihasilkan oleh sebuah _script_ (misalnya karena dia butuh 
   *input* dari _user_ atau ngelibatin aktivitas dari luar kayak *request* jaringan 
   web), biarkan outputnya tetap menyatu sejajar (inline) tapi bikin sebuah 
   komentar yang ngandung tulisan `manual-regeneration` lengkap beserta panduan 
   buat memperbarui _output_ *inline* tersebut secara manual.
-- Kalau Anda sama sekali tidak mau contoh kode ini dipaksa diformat sama `rustfmt` 
+- Kalau kita sama sekali tidak mau contoh kode ini dipaksa diformat sama `rustfmt` 
   (contohnya karena contoh kode tersebut emang sengaja dibikin supaya tidak bisa di-_parse_), 
   silakan tambahkan sebuah file `rustfmt-ignore` di direktori listing tersebut dan 
   tulisin alasan kenapa dia tidak diformat sebagai isi dari file tersebut (jaga-jaga 
@@ -117,20 +117,20 @@ Buat melakukannya:
 Buat sekadar ngecek, misal, _update_ `mdbook` atau ngubah cara-cara file 
 disematkan (included):
 
-- Hasilkan _build_ buku sebelum Anda menerapkan perubahan yang mau dites dengan 
+- Hasilkan _build_ buku sebelum kita menerapkan perubahan yang mau dites dengan 
   menjalankan `mdbook build -d tmp/book-before`
-- Terapkan perubahan-perubahan yang mau Anda tes lalu jalankan `mdbook build -d tmp/book-after`
+- Terapkan perubahan-perubahan yang mau kita tes lalu jalankan `mdbook build -d tmp/book-after`
 - Jalankan `./tools/megadiff.sh`
 - File-file yang tersisa di dalam `tmp/book-before` dan `tmp/book-after` punya 
-  perbedaan (differences) yang bisa Anda inspeksi secara manual memakai alat 
-  pelihat _diff_ andalan Anda
+  perbedaan (differences) yang bisa kita inspeksi secara manual memakai alat 
+  pelihat _diff_ andalan kita
 
 ## Memproduksi file markdown baru untuk No Starch (penerbit)
 
 - Jalankan `./tools/nostarch.sh`
 - Lakukan cek acak (spot check) pada file-file yang dihasilkan _script_ tersebut 
   di dalam direktori `nostarch`
-- Masukkan mereka ke _git_ (check them in) kalau Anda lagi mulai melakukan ronde perombakan (edits)
+- Masukkan mereka ke _git_ (check them in) kalau kita lagi mulai melakukan ronde perombakan (edits)
 
 ## Memproduksi markdown dari format docx untuk diffing (perbandingan)
 

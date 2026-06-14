@@ -1,6 +1,6 @@
 ## Membaca File
 
-Sekarang kita bakal menambahkan fungsionalitas untuk membaca file yang ditentukan di argumen `file_path`. Pertama kita butuh sebuah file contoh buat mengujinya: kita bakal memakai file dengan sedikit teks yang membentang di beberapa baris dan punya beberapa kata yang diulang. Listing 12-3 punya puisi Emily Dickinson yang bakal pas banget! Buat sebuah file bernama _poem.txt_ di tingkat *root* project kita, lalu masukkan puisi “I’m Nobody! Who are you?”
+Sekarang kita bakal menambahkan fungsionalitas untuk membaca file yang ditentukan di argumen `file_path`. Pertama kita butuh sebuah file contoh buat mengujinya: kita bakal memakai file dengan sedikit teks yang membentang di beberapa baris dan punya beberapa kata yang diulang. Listing 12-3 punya puisi Emily Dickinson yang bakal pas sekali! Buat sebuah file bernama _poem.txt_ di tingkat *root* project kita, lalu masukkan puisi “I’m Nobody! Who are you?”
 
 <Listing number="12-3" file-name="poem.txt" caption="Sebuah puisi dari Emily Dickinson jadi *test case* yang bagus.">
 

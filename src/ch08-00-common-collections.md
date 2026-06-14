@@ -1,6 +1,6 @@
 # Koleksi Umum (Common Collections)
 
-Standard library Rust nyediain sejumlah struktur data yang berguna banget yang 
+Standard library Rust nyediain sejumlah struktur data yang sangat berguna yang 
 disebut _collections_ (koleksi). Kebanyakan tipe data lain merepresentasikan 
 satu nilai spesifik, tapi koleksi bisa nampung banyak nilai. Beda sama tipe 
 array sama tuple bawaan, data yang ditunjuk sama koleksi ini disimpan di _heap_, 
@@ -8,7 +8,7 @@ yang artinya jumlah datanya nggak perlu diketahuin pas _compile time_ dan bisa
 nambah atau berkurang seiring programnya jalan. Tiap jenis koleksi punya 
 kemampuan dan biaya (cost) yang beda-beda, dan milih yang paling pas buat 
 situasi kita saat itu adalah _skill_ yang bakal kita kembangin seiring berjalannya 
-waktu. Di bab ini, kita bakal ngebahas tiga koleksi yang sering banget dipake di 
+waktu. Di bab ini, kita bakal ngebahas tiga koleksi yang sering sekali dipake di 
 program Rust:
 
 - Sebuah _vector_ ngebolehin kita nyimpen sejumlah nilai yang jumlahnya bisa 

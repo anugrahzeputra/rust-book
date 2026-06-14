@@ -33,7 +33,7 @@ langsung ke bahasa intinya, adalah tipe _string_ berkode UTF-8 yang bisa nambah
 ukurannya (growable), _mutable_, dan dimiliki (_owned_). Pas _Rustaceans_ nyebut 
 “strings” di Rust, mereka mungkin maksudnya tipe `String` atau tipe _string 
 slice_ `&str`, bukan cuma salah satunya doang. Walaupun bagian ini sebagian 
-besar bahas soal `String`, kedua tipe ini sering banget dipake di _standard 
+besar bahas soal `String`, kedua tipe ini sering sekali dipake di _standard 
 library_ Rust, dan baik `String` maupun _string slices_ itu sama-sama berkode 
 UTF-8.
 
@@ -83,7 +83,7 @@ yang pake `to_string`.
 </Listing>
 
 Karena _strings_ dipake buat macem-macem hal, kita bisa pake banyak API generik 
-yang beda-beda buat _strings_, ngasih kita banyak banget opsi. Beberapa mungkin 
+yang beda-beda buat _strings_, ngasih kita sangat banyak opsi. Beberapa mungkin 
 keliatannya berlebihan (redundant), tapi semuanya punya tempatnya masing-masing! 
 Di kasus ini, `String::from` sama `to_string` ngelakuin hal yang persis sama, 
 jadi milih yang mana itu cuma masalah gaya (style) dan _readability_ (keterbacaan) 
@@ -204,7 +204,7 @@ _ownership_ dari hasilnya. Dengan kata lain, keliatannya dia bikin banyak
 salinan, tapi sebenernya nggak; implementasinya jauh lebih efisien daripada ngopi.
 
 Kalau kita butuh ngegabungin banyak _strings_, perilaku dari operator `+` bakal 
-jadi ribet banget:
+jadi ribet sekali:
 
 ```rust
 {{#rustdoc_include ../listings/ch08-common-collections/no-listing-01-concat-multiple-strings/src/main.rs:here}}
@@ -228,7 +228,7 @@ pemanggilan ini nggak bakal ngambil _ownership_ dari parameter mana pun.
 ### Indexing ke dalem Strings
 
 Di banyak bahasa pemrograman lain, akses tiap karakter individu di dalem _string_ 
-dengan ngerujuk ke indeks mereka itu adalah operasi yang valid dan umum banget. 
+dengan ngerujuk ke indeks mereka itu adalah operasi yang valid dan umum sekali. 
 Tapi, kalau kita nyoba akses bagian dari `String` pake sintaks _indexing_ di 
 Rust, kita bakal dapet error. Coba liat kode yang nggak valid di Listing 8-19.
 
@@ -431,7 +431,7 @@ pemrograman lain, tapi ini nyegah kita dari harus nanganin error yang
 ngelibatin karakter non-ASCII di masa depan pas siklus pengembangan (development 
 life cycle).
 
-Kabar baiknya adalah _standard library_ nawarin banyak banget fungsionalitas 
+Kabar baiknya adalah _standard library_ nawarin sangat banyak fungsionalitas 
 yang dibangun di atas tipe `String` sama `&str` buat ngebantu kita nanganin 
 situasi kompleks ini dengan bener. Pastiin buat cek dokumentasi buat method-method 
 berguna kayak `contains` buat nyari sesuatu di dalem _string_ dan `replace` buat 

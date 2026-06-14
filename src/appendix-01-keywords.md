@@ -87,11 +87,11 @@ oleh Rust buat potensi pemakaian di masa depan:
 
 ### Raw Identifiers
 
-_Raw identifiers_ adalah sintaks yang memungkinkan Anda memakai keywords di tempat-tempat 
-di mana mereka biasanya tidak diperbolehkan. Anda bisa memakai _raw identifier_ dengan 
+_Raw identifiers_ adalah sintaks yang memungkinkan kita memakai keywords di tempat-tempat 
+di mana mereka biasanya tidak diperbolehkan. Kita bisa memakai _raw identifier_ dengan 
 menambahkan awalan `r#` pada sebuah keyword.
 
-Misalnya, `match` itu adalah sebuah keyword. Kalau Anda mencoba men-compile 
+Misalnya, `match` itu adalah sebuah keyword. Kalau kita mencoba men-compile 
 fungsi berikut yang memakai `match` sebagai namanya:
 
 <span class="filename">Nama File: src/main.rs</span>
@@ -102,7 +102,7 @@ fn match(needle: &str, haystack: &str) -> bool {
 }
 ```
 
-Anda bakal mendapat error ini:
+kita bakal mendapat error ini:
 
 ```text
 error: expected identifier, found keyword `match`
@@ -112,8 +112,8 @@ error: expected identifier, found keyword `match`
   |    ^^^^^ expected identifier, found keyword
 ```
 
-Error tersebut menunjukkan kalau Anda tidak bisa memakai keyword `match` sebagai 
-identifikasi fungsi. Supaya bisa memakai `match` sebagai nama fungsi, Anda perlu 
+Error tersebut menunjukkan kalau kita tidak bisa memakai keyword `match` sebagai 
+identifikasi fungsi. Supaya bisa memakai `match` sebagai nama fungsi, kita perlu 
 memakai sintaks _raw identifier_, kayak gini:
 
 <span class="filename">Nama File: src/main.rs</span>
@@ -132,17 +132,17 @@ Kode ini bakal berhasil di-compile tanpa error. Perhatikan awalan `r#` pada
 nama fungsi di bagian definisinya sekaligus di tempat fungsi tersebut dipanggil 
 di dalam `main`.
 
-_Raw identifiers_ membiarkan Anda memakai kata apa pun sebagai identifier, bahkan 
+_Raw identifiers_ membiarkan kita memakai kata apa pun sebagai identifier, bahkan 
 jika kata tersebut kebetulan adalah keyword yang direservasi. Hal ini ngasih 
 kita kebebasan lebih dalam memilih nama identifier, sekaligus memungkinkan kita 
 berintegrasi dengan program yang ditulis di bahasa lain di mana kata-kata 
 tersebut bukanlah keywords. Selain itu, _raw identifiers_ juga memungkinkan 
-Anda memakai *libraries* yang ditulis dalam edisi (_edition_) Rust yang berbeda 
-dari yang dipakai oleh _crate_ Anda. Misalnya, `try` bukanlah keyword di edisi 2015, 
-tapi dia menjadi keyword di edisi 2018, 2021, dan 2024. Kalau Anda bergantung 
-pada sebuah *library* yang ditulis pakai edisi 2015 dan punya fungsi `try`, Anda 
+kita memakai *libraries* yang ditulis dalam edisi (_edition_) Rust yang berbeda 
+dari yang dipakai oleh _crate_ kita. Misalnya, `try` bukanlah keyword di edisi 2015, 
+tapi dia menjadi keyword di edisi 2018, 2021, dan 2024. Kalau kita bergantung 
+pada sebuah *library* yang ditulis pakai edisi 2015 dan punya fungsi `try`, kita 
 harus memakai sintaks _raw identifier_, yaitu `r#try` di kasus ini, buat memanggil 
-fungsi tersebut dari kode Anda di edisi-edisi yang lebih baru. Lihat [Lampiran E][appendix-e] 
+fungsi tersebut dari kode kita di edisi-edisi yang lebih baru. Lihat [Lampiran E][appendix-e] 
 untuk informasi lebih lanjut tentang *editions*.
 
 [appendix-e]: appendix-05-editions.html

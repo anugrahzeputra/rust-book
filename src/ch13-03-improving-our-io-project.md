@@ -165,8 +165,8 @@ buat memakai method iterator di fungsi `search_case_insensitive` juga.
 Sebagai peningkatan lanjutan, coba kembalikan sebuah iterator dari fungsi 
 `search` dengan menghapus panggilan ke `collect` dan mengubah tipe kembaliannya 
 jadi `impl Iterator<Item = &'a str>` supaya fungsi ini menjadi sebuah _iterator 
-adapter_. Perhatikan bahwa Anda juga bakal harus meng-update pengujiannya! Coba 
-cari di dalam sebuah file berukuran besar menggunakan alat `minigrep` Anda sebelum 
+adapter_. Perhatikan bahwa kita juga bakal harus meng-update pengujiannya! Coba 
+cari di dalam sebuah file berukuran besar menggunakan alat `minigrep` kita sebelum 
 dan sesudah membikin perubahan ini untuk melihat perbedaan perilakunya. Sebelum 
 perubahan ini, program tidak bakal mencetak hasil apa pun sampai ia selesai 
 mengumpulkan semua hasilnya, tapi setelah perubahan itu, hasil bakal dicetak 

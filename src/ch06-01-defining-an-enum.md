@@ -192,7 +192,7 @@ method itu. Di contoh ini, kita bikin variabel `m` yang punya nilai
 `Message::Write(String::from("hello"))`, dan itulah yang bakal jadi `self` di 
 dalem body method `call` pas `m.call()` jalan.
 
-Yuk kita liat enum lain di standard library yang sangat umum dan kepake banget: 
+Yuk kita liat enum lain di standard library yang sangat umum dan kepake sekali: 
 `Option`.
 
 ### Enum `Option` dan Keuntungannya Dibandingin Nilai Null
@@ -223,13 +223,13 @@ Mistake,” Tony Hoare, penemu null, bilang gini:
 > Tujuan saya adalah buat mastiin kalau semua penggunaan referensi harus bener-bener 
 > aman, dengan pengecekan yang dilakuin otomatis sama _compiler_. Tapi saya 
 > nggak bisa nahan godaan buat masukin referensi null, cuma karena itu gampang 
-> banget buat diimplementasikan. Ini udah memicu error, kerentanan, dan 
+> sekali buat diimplementasikan. Ini udah memicu error, kerentanan, dan 
 > kerusakan sistem yang nggak kehitung jumlahnya, yang mungkin udah nyebabin 
 > penderitaan dan kerugian satu miliar dolar di empat puluh tahun terakhir.
 
 Masalah dari nilai null adalah kalau kita nyoba pake nilai null seolah-olah itu 
 nilai yang bukan-null, kita bakal dapet semacam error. Karena properti null 
-atau tidak-null ini ada di mana-mana (pervasive), gampang banget buat bikin 
+atau tidak-null ini ada di mana-mana (pervasive), gampang sekali buat bikin 
 error kayak gini.
 
 Tapi, konsep yang dicoba diekspresikan sama null itu tetep berguna: sebuah null 
@@ -318,7 +318,7 @@ mana-mana dan ningkatin keamanan kode Rust.
 
 Terus gimana cara ngeluarin nilai `T` dari sebuah varian `Some` pas kita punya 
 nilai bertipe `Option<T>` biar kita bisa pake nilainya? Enum `Option<T>` punya 
-banyak banget method yang kepake di berbagai situasi; kita bisa cek mereka di 
+sangat banyak method yang kepake di berbagai situasi; kita bisa cek mereka di 
 [dokumentasinya][docs]. Biasain diri sama method-method di `Option<T>` bakal 
 sangat berguna di perjalanan kita bareng Rust.
 

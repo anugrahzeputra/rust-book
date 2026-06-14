@@ -58,7 +58,7 @@ pakai bersarang di lebih dari satu modul, kita memilih buat membawa induk
 modulnya ke dalam _scope_ ketimbang fungsinya langsung. Dengan melakukan hal itu, 
 kita bisa dengan gampang memakai fungsi lain dari `std::env`. Hal ini juga 
 mengurangi kebingungan (ambiguity) dibandingkan menambahkan `use std::env::args` 
-lalu memanggil fungsinya dengan `args` doang, karena `args` gampang banget 
+lalu memanggil fungsinya dengan `args` doang, karena `args` gampang sekali 
 disangka fungsi yang didefinisikan di modul saat ini.
 
 > ### Fungsi `args` dan Unicode Tidak Valid
@@ -76,8 +76,8 @@ memakai `collect` buat mengubah iterator itu jadi vector yang berisi semua nilai
 yang dihasilkan sama iterator-nya. Kita bisa memakai fungsi `collect` buat bikin 
 berbagai jenis koleksi, jadi kita harus secara eksplisit menganotasi tipe dari 
 `args` buat menentukan kalau kita mau sebuah vector berisi _strings_. Walaupun 
-kita jarang banget perlu menganotasi tipe di Rust, `collect` adalah salah satu 
-fungsi yang sering banget butuh anotasi karena Rust tidak bisa menebak jenis 
+kita jarang sekali perlu menganotasi tipe di Rust, `collect` adalah salah satu 
+fungsi yang sering sekali butuh anotasi karena Rust tidak bisa menebak jenis 
 koleksi apa yang kita mau.
 
 Terakhir, kita mencetak vector-nya pakai _debug macro_. Mari kita coba 

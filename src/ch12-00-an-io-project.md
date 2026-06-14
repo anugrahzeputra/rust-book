@@ -25,7 +25,7 @@ ke *stream* konsol *standard error* (`stderr`) bukannya *standard output*
 yang sukses ke sebuah file tapi tetap bisa melihat pesan error di layar.
 
 Salah satu anggota komunitas Rust, Andrew Gallant, udah bikin versi `grep` yang 
-berfitur lengkap dan kenceng banget, namanya `ripgrep`. Sebagai perbandingan, 
+berfitur lengkap dan kenceng sekali, namanya `ripgrep`. Sebagai perbandingan, 
 versi kita bakal lumayan sederhana, tapi bab ini bakal ngasih kita beberapa 
 pengetahuan dasar yang kita butuhin buat paham project dunia nyata kayak 
 `ripgrep`.

@@ -1,8 +1,8 @@
 ## Menjalankan Kode saat Proses Pembersihan (Cleanup) dengan Trait `Drop`
 
 Trait kedua yang penting buat pola _smart pointer_ adalah `Drop`, yang 
-membiarkan Anda mengkustomisasi apa yang terjadi saat sebuah nilai bakal 
-keluar dari _scope_. Anda bisa menyediakan sebuah implementasi buat trait 
+membiarkan kita mengkustomisasi apa yang terjadi saat sebuah nilai bakal 
+keluar dari _scope_. Kita bisa menyediakan sebuah implementasi buat trait 
 `Drop` di tipe apa pun, dan kode tersebut bisa dipakai buat melepaskan 
 (release) _resources_ kayak file atau koneksi jaringan.
 
@@ -15,15 +15,15 @@ Di beberapa bahasa, buat tipe-tipe tertentu, si programmer harus memanggil kode
 buat membebaskan memori atau _resources_ setiap kali mereka kelar memakai 
 sebuah instance dari tipe-tipe tersebut. Contohnya termasuk _file handles_ 
 (pegangan file), *sockets*, sama *locks*. Kalau mereka lupa, sistem bisa jadi 
-_overloaded_ dan _crash_. Di Rust, Anda bisa menentukan bahwa sekumpulan 
+_overloaded_ dan _crash_. Di Rust, kita bisa menentukan bahwa sekumpulan 
 kode tertentu bakal dijalankan setiap kali sebuah nilai keluar dari _scope_, 
 dan _compiler_ bakal menyisipkan (insert) kode ini secara otomatis. Hasilnya, 
-Anda tidak perlu repot-repot menaruh kode _cleanup_ (pembersihan) di mana-mana 
+kita tidak perlu repot-repot menaruh kode _cleanup_ (pembersihan) di mana-mana 
 di dalam program setiap kali sebuah instance dari suatu tipe sudah selesai 
-dipakai—dan Anda tetap tidak bakal membocorkan (leak) _resources_!
+dipakai—dan kita tetap tidak bakal membocorkan (leak) _resources_!
 
-Anda menentukan kode yang bakal jalan saat sebuah nilai keluar dari _scope_ 
-dengan mengimplementasikan trait `Drop`. Trait `Drop` mewajibkan Anda buat 
+Kita menentukan kode yang bakal jalan saat sebuah nilai keluar dari _scope_ 
+dengan mengimplementasikan trait `Drop`. Trait `Drop` mewajibkan kita buat 
 mengimplementasikan satu method bernama `drop` yang menerima referensi 
 _mutable_ ke `self`. Buat melihat kapan Rust memanggil `drop`, mari kita 
 mengimplementasikan `drop` dengan *statements* `println!` dulu buat sekarang.
@@ -44,9 +44,9 @@ kapan Rust menjalankan method `drop`.
 Trait `Drop` sudah dimasukkan ke dalam _prelude_, jadi kita tidak perlu membawa 
 trait itu ke dalam _scope_. Kita mengimplementasikan trait `Drop` pada 
 `CustomSmartPointer` dan menyediakan sebuah implementasi buat method `drop` yang 
-memanggil `println!`. _Body_ dari method `drop` adalah tempat di mana Anda 
-bakal menaruh logika apa pun yang mau Anda jalankan pas sebuah instance dari 
-tipe Anda keluar dari _scope_. Kita mencetak sedikit teks di sini buat 
+memanggil `println!`. _Body_ dari method `drop` adalah tempat di mana kita 
+bakal menaruh logika apa pun yang mau kita jalankan pas sebuah instance dari 
+tipe kita keluar dari _scope_. Kita mencetak sedikit teks di sini buat 
 mendemonstrasikan secara visual kapan Rust bakal memanggil `drop`.
 
 Di `main`, kita bikin dua instance dari `CustomSmartPointer` lalu mencetak 
@@ -64,9 +64,9 @@ Pas kita menjalankan program ini, kita bakal melihat output berikut:
 Rust secara otomatis memanggil `drop` buat kita pas instance-instance kita keluar 
 dari _scope_, dan menjalankan kode yang sudah kita tentukan. Variabel-variabel 
 di-_drop_ dalam urutan yang berlawanan dari pembuatannya, jadi `d` di-_drop_ 
-sebelum `c`. Contoh ini tujuannya adalah buat ngasih Anda panduan visual soal 
-gimana method `drop` itu bekerja; biasanya Anda bakal menentukan kode _cleanup_ 
-yang dibutuhkan sama tipe Anda, ketimbang cuma pesan *print* biasa.
+sebelum `c`. Contoh ini tujuannya adalah buat ngasih kita panduan visual soal 
+gimana method `drop` itu bekerja; biasanya kita bakal menentukan kode _cleanup_ 
+yang dibutuhkan sama tipe kita, ketimbang cuma pesan *print* biasa.
 
 <!-- Old link, do not remove -->
 
@@ -75,13 +75,13 @@ yang dibutuhkan sama tipe Anda, ketimbang cuma pesan *print* biasa.
 Sayangnya, menonaktifkan fungsionalitas `drop` otomatis ini tidak 
 gampang. Menonaktifkan `drop` biasanya juga tidak diperlukan; keseluruhan 
 poin dari trait `Drop` adalah supaya hal itu diurus secara otomatis. Tapi, 
-terkadang, Anda mungkin pengen membersihkan (clean up) sebuah nilai lebih 
+terkadang, kita mungkin pengen membersihkan (clean up) sebuah nilai lebih 
 awal. Salah satu contohnya adalah pas lagi memakai _smart pointers_ yang 
-mengelola *locks*: Anda mungkin pengen memaksa method `drop` yang bakal 
+mengelola *locks*: kita mungkin pengen memaksa method `drop` yang bakal 
 melepaskan *lock* itu agar kode lain di _scope_ yang sama bisa mendapatkan 
-*lock* tersebut. Rust tidak membiarkan Anda buat memanggil method `drop` 
-dari trait `Drop` secara manual; sebaliknya, Anda harus memanggil fungsi 
-`std::mem::drop` yang disediakan sama _standard library_ kalau Anda mau 
+*lock* tersebut. Rust tidak membiarkan kita buat memanggil method `drop` 
+dari trait `Drop` secara manual; sebaliknya, kita harus memanggil fungsi 
+`std::mem::drop` yang disediakan sama _standard library_ kalau kita mau 
 memaksa sebuah nilai buat di-_drop_ sebelum akhir dari _scope_-nya.
 
 Kalau kita mencoba memanggil method `drop` dari trait `Drop` secara manual 
@@ -144,13 +144,13 @@ teks `CustomSmartPointer created.` dan `CustomSmartPointer dropped
 before the end of main.`, menunjukkan kalau kode method `drop` dipanggil 
 buat me-_drop_ `c` pada titik tersebut.
 
-Anda bisa memakai kode yang ditentukan di dalam implementasi trait `Drop` 
+Kita bisa memakai kode yang ditentukan di dalam implementasi trait `Drop` 
 pakai berbagai cara buat membikin _cleanup_ jadi nyaman dan aman: misalnya, 
-Anda bisa memakainya buat membikin *memory allocator* Anda sendiri! Dengan trait 
-`Drop` dan sistem _ownership_ di Rust, Anda tidak perlu repot nginget-nginget 
+kita bisa memakainya buat membikin *memory allocator* kita sendiri! Dengan trait 
+`Drop` dan sistem _ownership_ di Rust, kita tidak perlu repot nginget-nginget 
 buat _cleanup_ karena Rust ngelakuin itu secara otomatis.
 
-Anda juga tidak perlu khawatir soal masalah-masalah yang timbul dari secara 
+Kita juga tidak perlu khawatir soal masalah-masalah yang timbul dari secara 
 tidak sengaja membersihkan nilai yang masih dipakai: sistem _ownership_ yang 
 memastikan kalau referensi bakal selalu valid juga memastikan kalau `drop` 
 cuma bakal dipanggil satu kali pas nilainya memang sudah tidak dipakai lagi.

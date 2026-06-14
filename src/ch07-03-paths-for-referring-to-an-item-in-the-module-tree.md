@@ -285,7 +285,7 @@ Karena kita bikin enum `Appetizer` jadi _public_, kita bisa pake varian `Soup`
 sama `Salad` di `eat_at_restaurant`.
 
 Enums nggak terlalu berguna kalau variannya nggak _public_; bakal nyebelin 
-banget kalau harus nganotasi semua varian enum pake `pub` di setiap kasus, jadi 
+sekali kalau harus nganotasi semua varian enum pake `pub` di setiap kasus, jadi 
 default buat varian enum adalah _public_. Structs biasanya berguna walaupun 
 field-nya nggak _public_, jadi field struct ngikutin aturan umum bahwa segala 
 hal itu _private_ secara default kecuali dianotasi pake `pub`.

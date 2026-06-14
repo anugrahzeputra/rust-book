@@ -110,7 +110,7 @@ _encapsulation_ terhadap detail-detail implementasi.
 
 _Inheritance_ (pewarisan) adalah sebuah mekanisme di mana sebuah objek bisa 
 mewarisi (inherit) elemen-elemen dari definisi objek lain, dengan begitu ia 
-mendapatkan data dan perilaku dari objek induk (parent object) tanpa Anda 
+mendapatkan data dan perilaku dari objek induk (parent object) tanpa kita 
 harus mendefinisikannya lagi.
 
 Kalau sebuah bahasa _wajib_ punya _inheritance_ buat bisa disebut berorientasi 
@@ -118,17 +118,17 @@ objek, maka Rust tidak termasuk dalam bahasa tersebut. Tidak ada cara buat
 mendefinisikan sebuah struct yang mewarisi field-field dan implementasi _method_ 
 dari struct induk tanpa memakai _macro_.
 
-Namun, kalau Anda udah biasa (used to) punya _inheritance_ di alat (toolbox) 
-pemrograman Anda, Anda bisa memakai solusi lain di Rust, tergantung dari alasan 
-kenapa Anda mencari _inheritance_ tersebut sejak awal.
+Namun, kalau kita udah biasa (used to) punya _inheritance_ di alat (toolbox) 
+pemrograman kita, kita bisa memakai solusi lain di Rust, tergantung dari alasan 
+kenapa kita mencari _inheritance_ tersebut sejak awal.
 
-Anda biasanya bakal milih buat memakai _inheritance_ karena dua alasan utama. 
-Alasan pertama adalah buat pemakaian ulang kode (reuse of code): Anda bisa 
+Kita biasanya bakal milih buat memakai _inheritance_ karena dua alasan utama. 
+Alasan pertama adalah buat pemakaian ulang kode (reuse of code): kita bisa 
 mengimplementasikan perilaku tertentu untuk satu tipe, dan _inheritance_ 
-memungkinkan Anda buat memakai ulang implementasi tersebut buat tipe yang berbeda. 
-Anda bisa melakukan hal ini secara terbatas di kode Rust dengan memakai 
+memungkinkan kita buat memakai ulang implementasi tersebut buat tipe yang berbeda. 
+Kita bisa melakukan hal ini secara terbatas di kode Rust dengan memakai 
 _default trait method implementations_ (implementasi bawaan pada trait method), 
-yang udah Anda lihat di Listing 10-14 pas kita menambahkan implementasi default 
+yang udah kita lihat di Listing 10-14 pas kita menambahkan implementasi default 
 dari method `summarize` pada trait `Summary`. Tipe apa pun yang 
 mengimplementasikan trait `Summary` bakal langsung punya method `summarize` yang 
 bisa dipakai padanya tanpa perlu nulis kode tambahan lagi. Ini mirip dengan 
@@ -142,7 +142,7 @@ implementasi _method_ yang diwarisinya dari sebuah *parent class*.
 Alasan lain memakai _inheritance_ berkaitan dengan sistem tipenya: yakni 
 memungkinkan sebuah tipe *child* (anak) buat dipakai di tempat-tempat yang 
 sama kayak tipe *parent* (induk)-nya. Ini juga disebut dengan _polymorphism_ 
-(polimorfisme), yang berarti Anda bisa mensubstitusikan (menggantikan) berbagai 
+(polimorfisme), yang berarti kita bisa mensubstitusikan (menggantikan) berbagai 
 objek untuk satu sama lain pas _runtime_ asalkan mereka berbagi karakteristik 
 tertentu.
 

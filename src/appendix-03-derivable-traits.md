@@ -1,39 +1,39 @@
 ## Lampiran C: Derivable Traits (Trait yang Bisa Di-derive)
 
 Di berbagai tempat di buku ini, kita udah ngebahas atribut `derive`, 
-yang mana bisa Anda sematkan ke definisi _struct_ atau _enum_. Atribut `derive` 
+yang mana bisa kita sematkan ke definisi _struct_ atau _enum_. Atribut `derive` 
 ini bakal menghasilkan kode yang mengimplementasikan (implement) sebuah trait 
-lengkap dengan implementasi _default_ (bawaan)-nya pada tipe yang udah Anda 
+lengkap dengan implementasi _default_ (bawaan)-nya pada tipe yang udah kita 
 anotasi (annotated) memakai sintaks `derive` tersebut.
 
 Di lampiran ini, kita menyediakan referensi dari semua traits di _standard library_ 
-yang mana bisa Anda pakai dengan atribut `derive`. Masing-masing bagian mencakup:
+yang mana bisa kita pakai dengan atribut `derive`. Masing-masing bagian mencakup:
 
 - Operator dan method apa saja yang bakal difungsikan (_enable_) dengan nge-_derive_ trait ini
 - Apa saja yang dilakukan sama implementasi trait yang disediain oleh `derive` tersebut
-- Apa makna (signifies) dari mengimplementasikan trait tersebut bagi tipe Anda
-- Persyaratan dan kondisi di mana Anda dibolehkan atau tidak dibolehkan buat 
+- Apa makna (signifies) dari mengimplementasikan trait tersebut bagi tipe kita
+- Persyaratan dan kondisi di mana kita dibolehkan atau tidak dibolehkan buat 
   mengimplementasikan trait ini
 - Contoh-contoh operasi yang mewajibkan adanya trait ini
 
-Kalau Anda pengen mendapatkan perilaku yang berbeda dari yang disediain sama atribut 
+Kalau kita pengen mendapatkan perilaku yang berbeda dari yang disediain sama atribut 
 `derive`, silakan cek dokumentasi [standard library](../std/index.html) buat setiap trait 
 demi mendapatkan detail soal gimana caranya buat mengimplementasikan mereka secara manual.
 
 Trait-trait yang terdaftar di sini adalah satu-satunya trait yang didefinisikan sama 
-_standard library_ yang bisa diimplementasikan ke tipe Anda memakai `derive`. Trait 
+_standard library_ yang bisa diimplementasikan ke tipe kita memakai `derive`. Trait 
 lain yang didefinisikan di _standard library_ itu tidak punya perilaku bawaan (_default_) 
-yang masuk akal (sensible), jadinya itu semua tergantung Anda buat mengimplementasikannya 
-pakai cara yang paling masuk akal sejalan dengan apa yang mau Anda capai.
+yang masuk akal (sensible), jadinya itu semua tergantung kita buat mengimplementasikannya 
+pakai cara yang paling masuk akal sejalan dengan apa yang mau kita capai.
 
 Contoh dari sebuah trait yang tidak bisa di-_derive_ adalah `Display`, yang mana 
-bertugas menangani format teks buat para pengguna akhir (_end users_). Anda harus 
+bertugas menangani format teks buat para pengguna akhir (_end users_). Kita harus 
 selalu mempertimbangkan cara yang paling pantas buat menampilkan sebuah tipe ke 
 _end user_. Bagian mana aja dari tipe tersebut yang boleh dilihat sama _end user_? 
 Bagian mana aja yang bakal mereka anggap relevan? Format data kayak gimana yang 
 bakal paling gampang dimengerti sama mereka? _Compiler_ Rust tidak punya wawasan 
 (_insight_) kayak gini, jadinya dia tidak bisa menyediakan perilaku _default_ 
-yang pantas buat Anda.
+yang pantas buat kita.
 
 Daftar _derivable traits_ (trait yang bisa di-_derive_) yang disediain di 
 lampiran ini itu tidaklah komprehensif: _libraries_ lain bisa aja ngimplementasiin 
@@ -45,19 +45,19 @@ bagian [“Custom `derive` Macros”][custom-derive-macros]<!-- ignore --> di Ba
 ### `Debug` Buat Output Programmer
 
 Trait `Debug` memfungsikan (_enables_) pemformatan _debug_ di dalem format _strings_, 
-yang mana bisa Anda indikasikan dengan nambahin sisipan `:?` ke dalem kurung 
+yang mana bisa kita indikasikan dengan nambahin sisipan `:?` ke dalem kurung 
 kurawal `{}` (*placeholders*).
 
-Trait `Debug` ngasih Anda kebebasan buat mencetak *instances* dari sebuah tipe buat 
-tujuan *debugging* (pemeriksaan error), supaya Anda dan programmer lainnya yang 
-lagi makek tipe Anda tersebut bisa menginspeksi *instance* tersebut pas ada di 
+Trait `Debug` ngasih kita kebebasan buat mencetak *instances* dari sebuah tipe buat 
+tujuan *debugging* (pemeriksaan error), supaya kita dan programmer lainnya yang 
+lagi makek tipe kita tersebut bisa menginspeksi *instance* tersebut pas ada di 
 satu titik tertentu di program pas lagi dieksekusi.
 
 Trait `Debug` diwajibkan, misalnya, saat kita menggunakan macro `assert_eq!`. Macro ini akan mencetak nilai-nilai dari *instances* yang diberikan kepadanya sebagai argumen jika *equality assertion* gagal sehingga para programmer bisa melihat dengan jelas alasan mengapa kedua *instance* tersebut tidak sama.
 
 ### `PartialEq` dan `Eq` Buat Perbandingan Kesamaan (Equality Comparisons)
 
-Trait `PartialEq` ngasih Anda kemungkinan buat ngebandingin *instances* dari sebuah tipe 
+Trait `PartialEq` ngasih kita kemungkinan buat ngebandingin *instances* dari sebuah tipe 
 buat mengecek apakah mereka itu sama atau tidak, dan juga memfungsikan pemakaian 
 operator `==` dan `!=`.
 
@@ -78,13 +78,13 @@ point* menyatakan kalau dua instances dari nilai *not-a-number* (`NaN`) itu tida
 
 Salah satu contoh kasus di mana `Eq` diwajibkan adalah untuk *keys* (kunci) di dalem 
 sebuah `HashMap<K, V>` supaya si `HashMap<K, V>` ini bisa ngebedain apakah dua *keys* 
-yang ada itu beneran sama (same) atau tidak.
+yang ada itu benar-benar sama (same) atau tidak.
 
 ### `PartialOrd` dan `Ord` Buat Perbandingan Pengurutan (Ordering Comparisons)
 
-Trait `PartialOrd` memungkinkan Anda buat membandingkan instances dari suatu tipe buat 
+Trait `PartialOrd` memungkinkan kita buat membandingkan instances dari suatu tipe buat 
 keperluan *sorting* (pengurutan). Sebuah tipe yang mengimplementasikan `PartialOrd` bisa 
-dipakai dengan operator `<`, `>`, `<=`, dan `>=`. Anda cuma bisa memakai atribut trait 
+dipakai dengan operator `<`, `>`, `<=`, dan `>=`. Kita cuma bisa memakai atribut trait 
 `PartialOrd` ini ke tipe-tipe yang juga udah mengimplementasikan `PartialEq`.
 
 Nge-_derive_ `PartialOrd` bakal mengimplementasikan method `partial_cmp`, yang bakal 
@@ -105,11 +105,11 @@ Trait `PartialOrd` diwajibkan, misalnya, buat pemakaian method `gen_range` dari 
 `rand` yang tugasnya menghasilkan nilai acak di dalem jangkauan (_range_) yang 
 udah dispesifikasikan pakai ekspresi _range_.
 
-Trait `Ord` ngasih tahu Anda kalau, untuk sembarang dua nilai apa pun dari tipe yang udah 
+Trait `Ord` ngasih tahu kita kalau, untuk sembarang dua nilai apa pun dari tipe yang udah 
 dianotasi, pastilah selalu ada sebuah sistem pengurutan yang valid yang bakal eksis (exist). 
 Trait `Ord` mengimplementasikan method `cmp`, yang mengembalikan sebuah tipe `Ordering` dan bukan 
 `Option<Ordering>` karena sebuah pengurutan yang valid itu bakal selalu dijamin selalu mungkin 
-buat terjadi. Anda cuma boleh naruh atribut trait `Ord` ke tipe yang mana juga udah 
+buat terjadi. Kita cuma boleh naruh atribut trait `Ord` ke tipe yang mana juga udah 
 mengimplementasikan `PartialOrd` sekaligus `Eq` (dan perlu diingat kalau `Eq` juga mewajibkan adanya 
 `PartialEq`). Saat di-_derive_ pada _structs_ dan _enums_, method `cmp` bakal beroperasi (behaves) 
 pakai cara yang sama persis kayak apa yang dilakuin sama implementasi yang di-_derive_ untuk method 
@@ -149,22 +149,22 @@ Trait `Copy` ini sama sekali tidak mendefinisikan method apa pun karena tujuanny
 mencegah (prevent) para programmer dari nge-_overload_ method tersebut dan ngelanggar (_violating_) 
 asumsi mutlak bahwa tidak ada eksekusi kode acak apa pun yang berjalan selama proses duplikasi ini. 
 Dengan cara kayak gini, semua programmer bisa berasumsi dengan aman (assume) kalau aksi 
-meng-*copy* sebuah nilai yang punya trait ini bakal kerasa cepet banget (very fast).
+meng-*copy* sebuah nilai yang punya trait ini bakal kerasa cepet sekali (very fast).
 
 Kita bisa nge-_derive_ `Copy` pada tipe apa pun yang mana semua elemen komponennya itu udah mengimplementasikan `Copy`. Tipe yang udah mengimplementasikan `Copy` juga wajib mutlak mengimplementasikan `Clone`, karena sebuah tipe yang mengimplementasikan `Copy` otomatis udah punya implementasi buat `Clone` yang sepele (_trivial implementation_) yang menunaikan tugas yang sama persis kayak `Copy` tersebut.
 
-Trait `Copy` itu jarang banget diwajibkan secara eksplisit; tapi tipe-tipe yang 
+Trait `Copy` itu jarang sekali diwajibkan secara eksplisit; tapi tipe-tipe yang 
 mengimplementasikan `Copy` punya privilese ketersediaan buat dioptimasi (optimizations 
-available), yang artinya Anda jadinya tidak perlu rajin-rajin ngetik manggil `clone`, yang mana 
+available), yang artinya kita jadinya tidak perlu rajin-rajin ngetik manggil `clone`, yang mana 
 ngebikin kodenya jadi lebih padat (concise) dan ringkas.
 
-Segala apa pun yang bisa dicapai (possible) pakai `Copy` tentu juga bisa Anda capai (accomplish) 
+Segala apa pun yang bisa dicapai (possible) pakai `Copy` tentu juga bisa kita capai (accomplish) 
 dengan memakai `Clone`, tapi ya kodenya itu mungkin bisa jadi agak lebih lelet (slower) atau 
 menuntut keharusan buat manggil `clone` di mana-mana (in places).
 
 ### `Hash` Buat Memetakan Nilai ke Nilai Lain Berukuran Tetap (Fixed Size)
 
-Trait `Hash` ngasih Anda kapabilitas buat ngambil *instance* dari sebuah tipe dengan ukuran 
+Trait `Hash` ngasih kita kapabilitas buat ngambil *instance* dari sebuah tipe dengan ukuran 
 yang sembarang (arbitrary size) lalu memetakan (_map_) instance tersebut menjadi sebuah nilai yang 
 punya ukuran tetap (_fixed size_) menggunakan sebuah fungsi _hash_. Nge-_derive_ `Hash` bakal 
 mengimplementasikan method `hash`. Implementasi _derived_ dari method `hash` ini bakal 
@@ -178,7 +178,7 @@ lebih efisien (efficiently).
 
 ### `Default` Buat Pembuatan Nilai Bawaan (Default Values)
 
-Trait `Default` ngebolehin Anda buat ngebikin nilai bawaan (default value) buat sebuah tipe. 
+Trait `Default` ngebolehin kita buat ngebikin nilai bawaan (default value) buat sebuah tipe. 
 Nge-_derive_ `Default` bakal mengimplementasikan fungsi `default`. Implementasi turunan 
 (_derived implementation_) dari fungsi `default` ini bakal ngerjain tugasnya dengan cara 
 ikut-ikutan manggil fungsi `default` buat setiap komponen/elemen dari tipe tersebut, yang mana 
@@ -188,7 +188,7 @@ trait `Default`.
 
 Fungsi `Default::default` ini umumnya sering dipakai digabungin barengan sama sintaks pembaruan struct (_struct update syntax_) yang pernah kita obrolin di bagian [“Ngebikin Instances dari Instances Lain dengan Struct Update Syntax”][creating-instances-from-other-instances-with-struct-update-syntax]<!-- ignore --> di Bab 5. Kita bisa mengkustomisasi beberapa *fields* tertentu aja dari sebuah struct dan sesudahnya itu mengatur (set) lalu memakai nilai _default_ bawaannya buat ngisi sisa bidang-bidang (rest of the fields) yang belum diisi dengan cara memakai `..Default::default()`.
 
-Trait `Default` diwajibkan saat Anda memakai method `unwrap_or_default` pada *instances* dari 
+Trait `Default` diwajibkan saat kita memakai method `unwrap_or_default` pada *instances* dari 
 tipe `Option<T>`, contohnya. Kalau nilai `Option<T>`-nya ternyata adalah `None`, method 
 `unwrap_or_default` ini nantinya bakal nge-return (ngembaliin) hasil tebakan tebasan yang asalnya dari panggilan 
 `Default::default` buat si tipe `T` yang lagi disimpen di dalam `Option<T>` tersebut.

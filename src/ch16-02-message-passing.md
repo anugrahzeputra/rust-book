@@ -12,17 +12,17 @@ menyediakan sebuah implementasi dari saluran (channels). Sebuah _channel_
 adalah konsep pemrograman umum di mana data dikirim dari satu _thread_ ke 
 _thread_ lainnya.
 
-Anda bisa membayangkan sebuah _channel_ di dalam pemrograman itu kayak 
+Kita bisa membayangkan sebuah _channel_ di dalam pemrograman itu kayak 
 saluran air yang mengalir ke satu arah, seperti sungai atau selokan. Kalau 
-Anda menaruh sesuatu kayak bebek karet ke dalam sungai, dia bakal mengalir 
+kita menaruh sesuatu kayak bebek karet ke dalam sungai, dia bakal mengalir 
 ke hilir (downstream) sampai ke ujung saluran air tersebut.
 
 Sebuah _channel_ punya dua paruh: sebuah _transmitter_ (pemancar/pengirim) 
 dan sebuah _receiver_ (penerima). Paruh _transmitter_ adalah lokasi hulu 
-(upstream) tempat Anda menaruh bebek karetnya ke dalam sungai, dan paruh 
+(upstream) tempat kita menaruh bebek karetnya ke dalam sungai, dan paruh 
 _receiver_ adalah hilir tempat si bebek karet pada akhirnya berlabuh. Satu 
-bagian dari kode Anda memanggil method-method di _transmitter_ dengan data 
-yang mau Anda kirim, dan bagian lain mengecek ujung penerima (receiving end) 
+bagian dari kode kita memanggil method-method di _transmitter_ dengan data 
+yang mau kita kirim, dan bagian lain mengecek ujung penerima (receiving end) 
 buat melihat pesan yang datang. Sebuah _channel_ dikatakan _closed_ (tertutup) 
 kalau entah paruh _transmitter_ atau _receiver_-nya di-_drop_ (dibuang).
 
@@ -30,8 +30,8 @@ Di sini, kita bakal perlahan ngebangun sebuah program yang punya satu _thread_
 buat nge-generate nilai dan mengirimkannya ke dalam sebuah _channel_, dan 
 satu _thread_ lain yang bakal menerima nilai-nilai tersebut lalu mencetaknya 
 ke layar. Kita bakal mengirim nilai-nilai sederhana antar _threads_ 
-memakai sebuah _channel_ buat mengilustrasikan fitur ini. Begitu Anda udah 
-terbiasa sama tekniknya, Anda bisa memakai _channels_ buat _threads_ mana 
+memakai sebuah _channel_ buat mengilustrasikan fitur ini. Begitu kita udah 
+terbiasa sama tekniknya, kita bisa memakai _channels_ buat _threads_ mana 
 aja yang butuh berkomunikasi satu sama lain, kayak sistem _chat_ atau sistem 
 di mana banyak _threads_ melakukan bagian-bagian dari sebuah perhitungan 
 lalu mengirim bagian-bagian tersebut ke satu _thread_ yang mengagregasikan 
@@ -151,9 +151,9 @@ Sempurna!
 ### Channels dan Transfer Kepemilikan (Ownership Transference)
 
 Aturan-aturan _ownership_ (kepemilikan) memainkan peran vital dalam 
-pengiriman pesan karena mereka ngebantu Anda nulis kode konkuren yang aman. 
+pengiriman pesan karena mereka ngebantu kita nulis kode konkuren yang aman. 
 Mencegah error di pemrograman konkuren adalah keuntungan (advantage) dari 
-memikirkan tentang _ownership_ di sepanjang program Rust Anda. Mari kita 
+memikirkan tentang _ownership_ di sepanjang program Rust kita. Mari kita 
 lakukan sebuah eksperimen buat nunjukin gimana _channels_ dan _ownership_ 
 bekerja bersama-sama mencegah timbulnya masalah: kita bakal nyoba memakai 
 sebuah nilai `val` di dalam _spawned thread_ _setelah_ kita ngirim nilai itu 
@@ -216,7 +216,7 @@ lagi: sebaliknya, kita memperlakukan `rx` sebagai sebuah iterator. Buat setiap
 nilai yang diterima, kita bakal mencetaknya. Saat _channel_-nya ditutup, 
 iterasinya bakal berakhir.
 
-Pas kita menjalankan kode di Listing 16-10, Anda seharusnya melihat output 
+Pas kita menjalankan kode di Listing 16-10, kita seharusnya melihat output 
 berikut dengan jeda satu detik di antara setiap barisnya:
 
 <!-- Not extracting output because changes to this output aren't significant;
@@ -257,7 +257,7 @@ _transmitter_ aslinya ke sebuah _spawned thread_ yang kedua. Hal ini ngasih
 kita dua _threads_, di mana masing-masing mengirim pesan yang berbeda ke 
 satu _receiver_ yang sama.
 
-Pas Anda menjalankan kodenya, output Anda harusnya bakal kelihatan kurang 
+Pas kita menjalankan kodenya, output kita harusnya bakal kelihatan kurang 
 lebih kayak gini:
 
 <!-- Not extracting output because changes to this output aren't significant;
@@ -275,9 +275,9 @@ Got: thread
 Got: you
 ```
 
-Anda mungkin bakal melihat nilai-nilainya dalam urutan yang berbeda, 
-tergantung dari sistem yang Anda pakai. Inilah yang membikin konkurensi 
-jadi hal yang menarik sekaligus sulit. Kalau Anda eksperimen sama 
+kita mungkin bakal melihat nilai-nilainya dalam urutan yang berbeda, 
+tergantung dari sistem yang kita pakai. Inilah yang membikin konkurensi 
+jadi hal yang menarik sekaligus sulit. Kalau kita eksperimen sama 
 `thread::sleep`, ngasih dia nilai yang beda-beda di berbagai _threads_ 
 tersebut, masing-masing jalan (run) bakal jadi makin tidak deterministik 
 dan menghasilkan output yang berbeda-beda setiap kalinya.

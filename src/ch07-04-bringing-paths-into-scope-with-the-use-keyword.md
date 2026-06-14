@@ -202,7 +202,7 @@ di Bab 2, kita bawa trait `Rng` ke dalem scope terus manggil fungsi
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-03/src/main.rs:ch07-04}}
 ```
 
-Anggota komunitas Rust udah bikin banyak banget package yang tersedia di 
+Anggota komunitas Rust udah bikin sangat banyak package yang tersedia di 
 [crates.io](https://crates.io/), dan masukin salah satu dari mereka ke package 
 kita itu ngelibatin langkah-langkah yang sama: daftarin mereka di file 
 _Cargo.toml_ package kita terus pake `use` buat bawa item dari crate mereka ke 
@@ -251,11 +251,11 @@ di Listing 7-18.
 </Listing>
 
 Di program yang lebih gede, bawa banyak item ke dalem scope dari crate atau modul 
-yang sama pake nested paths bisa ngurangin banget jumlah statement `use` 
+yang sama pake nested paths bisa ngurangin sekali jumlah statement `use` 
 terpisah yang dibutuhin!
 
 Kita bisa pake nested path di level mana pun di dalem sebuah path, yang berguna 
-banget pas ngegabungin dua statement `use` yang nge-share _subpath_. Misalnya, 
+sekali pas ngegabungin dua statement `use` yang nge-share _subpath_. Misalnya, 
 Listing 7-19 nunjukin dua statement `use`: satu yang bawa `std::io` ke dalem 
 scope dan satu lagi yang bawa `std::io::Write` ke dalem scope.
 
@@ -299,7 +299,7 @@ berubah, yang bisa memicu error _compiler_ pas kita upgrade dependensi kalau
 dependensinya nambahin definisi dengan nama yang sama kayak definisi punya kita 
 di scope yang sama, misalnya.
 
-Operator glob sering banget dipake pas lagi _testing_ buat bawa semua hal yang 
+Operator glob sering sekali dipake pas lagi _testing_ buat bawa semua hal yang 
 mau di-test ke dalem modul `tests`; kita bakal bahas itu di [“Gimana Cara Nulis 
 Test”][writing-tests] di Bab 11. Operator glob juga kadang dipake sebagai bagian 
 dari pola _prelude_: liat [dokumentasi standard library](../std/prelude/index.html#other-preludes) 

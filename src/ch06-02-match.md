@@ -33,7 +33,7 @@ balikin nilainya dalam satuan sen (_cents_), kayak yang ditunjukin di Listing 6-
 
 Yuk kita bedah ekspresi `match` di fungsi `value_in_cents`. Pertama kita nulis 
 keyword `match` diikuti sama sebuah ekspresi, yang di kasus ini adalah nilai 
-`coin`. Ini keliatannya mirip banget sama ekspresi kondisional yang dipake bareng 
+`coin`. Ini keliatannya mirip sekali sama ekspresi kondisional yang dipake bareng 
 `if`, tapi ada perbedaan gede: kalau pake `if`, kondisinya harus dievaluasi jadi 
 nilai Boolean, tapi di sini dia bisa jadi tipe apa pun. Tipe dari `coin` di 
 contoh ini adalah enum `Coin` yang kita definisikan di baris pertama.
@@ -120,7 +120,7 @@ Katakanlah kita mau nulis fungsi yang nerima sebuah `Option<i32>` dan, kalau ada
 nilai di dalemnya, nambahin 1 ke nilai itu. Kalau nggak ada nilainya, fungsi itu 
 harus balikin nilai `None` dan nggak nyoba ngelakuin operasi apa pun.
 
-Fungsi ini gampang banget ditulis, berkat `match`, dan bakal keliatan kayak 
+Fungsi ini gampang sekali ditulis, berkat `match`, dan bakal keliatan kayak 
 Listing 6-5.
 
 <Listing number="6-5" caption="Fungsi yang pake ekspresi `match` pada sebuah `Option<i32>`">

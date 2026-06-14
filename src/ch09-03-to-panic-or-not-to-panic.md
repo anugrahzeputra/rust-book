@@ -28,7 +28,7 @@ bisa _panic_ itu dimaksudkan sebagai _placeholder_ (tempat pengganti) buat
 gimana kita maunya aplikasi kita nanganin error, yang mana bisa beda-beda 
 tergantung dari apa yang lagi dilakuin sama sisa kode kita.
 
-Sama halnya, method `unwrap` sama `expect` itu praktis banget pas lagi 
+Sama halnya, method `unwrap` sama `expect` itu praktis sekali pas lagi 
 _prototyping_ (bikin prototipe), sebelum kita siap mutusin gimana cara nanganin 
 error. Mereka ninggalin tanda yang jelas di kode kita buat pas kita udah siap 
 bikin program kita jadi lebih kuat (robust).
@@ -111,7 +111,7 @@ karena alasan keamanan (_safety_): nyoba beroperasi pada data yang nggak valid
 bisa nge-ekspos kode kita ke celah keamanan (vulnerabilities). Ini alasan utama 
 kenapa _standard library_ bakal manggil `panic!` kalau kita nyoba akses memori 
 di luar batas (out-of-bounds): nyoba akses memori yang bukan milik struktur 
-data saat ini adalah masalah keamanan yang umum banget. Fungsi-fungsi sering 
+data saat ini adalah masalah keamanan yang umum sekali. Fungsi-fungsi sering 
 kali punya _contracts_ (kontrak): perilaku mereka cuma dijamin kalau inputnya 
 menuhin syarat tertentu. _Panic_ pas kontrak dilanggar itu masuk akal karena 
 pelanggaran kontrak selalu ngindikasikan ada _bug_ di pihak pemanggil (_caller-side_), 
@@ -121,8 +121,8 @@ pulih; si _programmer_ yang bikin kode pemanggil harus benerin kodenya. Kontrak
 buat sebuah fungsi, terutama pas ada pelanggaran yang bakal nyebabin _panic_, 
 harusnya dijelasin di dokumentasi API buat fungsi itu.
 
-Tapi, punya banyak banget pengecekan error di semua fungsi kita bakal panjang 
-banget (verbose) dan nyebelin. Untungnya, kita bisa pake sistem tipe (_type system_) 
+Tapi, punya sangat banyak pengecekan error di semua fungsi kita bakal panjang 
+sekali (verbose) dan nyebelin. Untungnya, kita bisa pake sistem tipe (_type system_) 
 Rust (dan karena itu dapet pengecekan tipe yang dilakuin sama _compiler_) buat 
 ngelakuin banyak pengecekan buat kita. Kalau fungsi kita nerima tipe tertentu 
 sebagai parameternya, kita bisa lanjut sama logika kode kita dengan tenang 
@@ -168,10 +168,10 @@ dan minta tebakan lain. Setelah ekspresi `if`, kita bisa lanjut sama perbandinga
 antara `guess` sama angka rahasianya dengan tenang karena tau `guess` pasti di 
 antara 1 sampe 100.
 
-Tapi, ini bukan solusi yang ideal: kalau bener-bener kritis banget (absolutely 
+Tapi, ini bukan solusi yang ideal: kalau bener-bener kritis sekali (absolutely 
 critical) kalau programnya cuma beroperasi pada nilai di antara 1 sampe 100, dan 
 program itu punya banyak fungsi dengan persyaratan ini, punya pengecekan kayak 
-gini di tiap fungsi bakal ngebosenin dan repetitif banget (dan mungkin ngaruh ke 
+gini di tiap fungsi bakal ngebosenin dan repetitif sekali (dan mungkin ngaruh ke 
 performa juga).
 
 Sebagai gantinya, kita bisa bikin tipe baru di dalem modul yang didedikasikan 
@@ -215,7 +215,7 @@ Selanjutnya, kita mengimplementasikan sebuah method namanya `value` yang minjem
 (`borrows`) `self`, nggak punya parameter lain apa pun, dan balikin sebuah `i32`. 
 Tipe method kayak gini kadang disebut _getter_ karena tujuannya adalah buat dapet 
 beberapa data dari field-nya terus balikin datanya. Method _public_ ini dibutuhin 
-karena field `value` dari struct `Guess` itu _private_. Ini penting banget biar 
+karena field `value` dari struct `Guess` itu _private_. Ini penting sekali biar 
 field `value` tetep _private_ biar kode yang pake struct `Guess` nggak dibolehin 
 nge-set `value` secara langsung: kode di luar modul `guessing_game` *harus* pake 
 fungsi `Guess::new` buat bikin instance dari `Guess`, dan dengan gitu ngejamin 
@@ -240,7 +240,7 @@ sukses atau gagal juga. Pake `panic!` sama `Result` di situasi yang pas bakal
 bikin kode kita lebih bisa diandelin pas ngadepin masalah yang nggak bisa 
 dihindarin.
 
-Sekarang setelah kita liat cara yang kepake banget di mana _standard library_ 
+Sekarang setelah kita liat cara yang kepake sekali di mana _standard library_ 
 pake generik bareng enum `Option` sama `Result`, kita bakal bahas gimana cara 
 kerja generik (generics) dan gimana kita bisa pakenya di kode kita.
 

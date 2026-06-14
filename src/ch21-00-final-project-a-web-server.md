@@ -27,7 +27,7 @@ pakai Rust. Anggota komunitas udah memublikasikan beberapa _crates_ yang siap
 buat dipakai di _production_ (production-ready) yang tersedia di 
 [crates.io](https://crates.io/) yang mana menyediakan implementasi web server 
 dan _thread pool_ yang jauh lebih lengkap ketimbang apa yang bakal kita bikin 
-ini. Namun, niat kita di bab ini adalah ngebantu Anda buat belajar, bukannya 
+ini. Namun, niat kita di bab ini adalah ngebantu kita buat belajar, bukannya 
 ngambil jalan yang gampang. Karena Rust itu adalah bahasa pemrograman sistem 
 (systems programming language), kita bisa milih tingkat abstraksi yang pengen 
 kita kerjain dan kita bisa turun ke tingkat (level) yang lebih rendah ketimbang 
@@ -42,5 +42,5 @@ Pada akhirnya, seperti yang udah kita sebutin balik di Bab 17, banyak _runtimes_
 _async_ yang juga memakai _thread pools_ buat mengelola kerjaan mereka kok.
 
 Oleh karena itu, kita bakal menulis sebuah HTTP server dasar dan _thread pool_ 
-secara manual supaya Anda bisa belajar ide-ide umum dan teknik-teknik di balik 
-_crates_ yang mana mungkin bakal Anda pakai di masa depan.
+secara manual supaya kita bisa belajar ide-ide umum dan teknik-teknik di balik 
+_crates_ yang mana mungkin bakal kita pakai di masa depan.

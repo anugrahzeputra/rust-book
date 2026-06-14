@@ -3,7 +3,7 @@
 _Patterns_ (pola) adalah sebuah sintaks spesial di Rust buat mencocokkan (matching) 
 struktur dari berbagai tipe, baik yang kompleks maupun yang sederhana. Memakai 
 _patterns_ bersamaan dengan ekspresi `match` dan konstruk-konstruk lainnya 
-ngasih Anda kontrol yang lebih banyak terhadap _control flow_ (alur kontrol) 
+ngasih kita kontrol yang lebih banyak terhadap _control flow_ (alur kontrol) 
 dari sebuah program. Sebuah _pattern_ terdiri dari beberapa kombinasi dari 
 hal-hal berikut ini:
 
@@ -28,8 +28,8 @@ dikasih nama. Kalau tidak cocok, kode yang terkait sama _pattern_ tersebut tidak
 bakal dijalankan.
 
 Bab ini adalah sebuah referensi tentang semua hal yang berkaitan dengan _patterns_. 
-Kita bakal membahas tempat-tempat valid di mana Anda bisa memakai _patterns_, 
+Kita bakal membahas tempat-tempat valid di mana kita bisa memakai _patterns_, 
 perbedaan antara _refutable_ (bisa dibantah/bisa gagal) dan _irrefutable_ (tidak 
 bisa dibantah/pasti sukses) _patterns_, serta berbagai macam sintaks _pattern_ 
-yang mungkin bakal Anda temui. Di akhir bab ini, Anda bakal tahu gimana cara 
+yang mungkin bakal kita temui. Di akhir bab ini, kita bakal tahu gimana cara 
 memakai _patterns_ buat mengekspresikan banyak konsep dengan cara yang jelas.

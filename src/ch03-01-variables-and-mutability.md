@@ -37,14 +37,14 @@ dapet error dari _compiler_.
 Kita dapet pesan error `` cannot assign twice to immutable variable `x` `` 
 karena kita nyoba buat ngasih nilai kedua ke variabel `x` yang _immutable_.
 
-Penting banget buat kita dapet _compile-time error_ pas kita nyoba ngerubah nilai 
+Penting sekali buat kita dapet _compile-time error_ pas kita nyoba ngerubah nilai 
 yang udah ditentuin sebagai _immutable_ karena situasi ini bisa memicu _bug_. 
 Kalau satu bagian kode kita jalan dengan asumsi kalau sebuah nilai nggak bakal 
 berubah, terus bagian kode lain malah ngerubah nilai itu, ada kemungkinan bagian 
 pertama tadi nggak bakal jalan sesuai desainnya. Penyebab _bug_ kayak gini bisa 
-susah banget dilacak setelah kejadian, apalagi kalau bagian kode kedua ngerubah 
+susah sekali dilacak setelah kejadian, apalagi kalau bagian kode kedua ngerubah 
 nilainya cuma "kadang-kadang" doang. _Compiler_ Rust ngejamin kalau pas kita 
-bilang sebuah nilai nggak bakal berubah, ya dia beneran nggak bakal berubah, 
+bilang sebuah nilai nggak bakal berubah, ya dia benar-benar nggak bakal berubah, 
 jadi kita nggak perlu repot-repot jagain sendiri. Kode kita jadi lebih gampang 
 buat dipahamin alurnya.
 
@@ -116,7 +116,7 @@ kita yang mungkin perlu diketahuin sama banyak bagian program, kayak jumlah
 poin maksimal yang boleh didapet player sebuah game, atau kecepatan cahaya.
 
 Ngambil nilai _hardcoded_ yang dipake di seluruh program terus dikasih nama 
-sebagai konstanta itu berguna banget buat nyampein makna nilai itu ke orang 
+sebagai konstanta itu sangat berguna buat nyampein makna nilai itu ke orang 
 yang bakal maintain kodenya nanti. Ini juga ngebantu biar cuma ada satu tempat 
 di kode kita yang perlu diubah kalau nilai _hardcoded_ itu perlu di-update di 
 masa depan.

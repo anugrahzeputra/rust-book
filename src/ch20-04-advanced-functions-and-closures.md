@@ -6,13 +6,13 @@ mengembalikan _closures_.
 
 ### Function Pointers
 
-Kita udah ngebahas gimana caranya mengoper _closures_ ke fungsi-fungsi; Anda juga 
-bisa mengoper fungsi biasa ke fungsi-fungsi lho! Teknik ini berguna banget pas 
-Anda mau ngoper fungsi yang emang udah Anda definisikan sebelumnya ketimbang 
+Kita udah ngebahas gimana caranya mengoper _closures_ ke fungsi-fungsi; kita juga 
+bisa mengoper fungsi biasa ke fungsi-fungsi lho! Teknik ini sangat berguna pas 
+kita mau ngoper fungsi yang emang udah kita definisikan sebelumnya ketimbang 
 harus ngebikin _closure_ baru. Fungsi itu bisa dipaksa (_coerce_) menjadi 
 tipe `fn` (dengan huruf _f_ kecil), yang mana jangan sampai tertukar sama trait 
 _closure_ `Fn`. Tipe `fn` ini disebut sebagai _function pointer_. Mengoper fungsi 
-memakai _function pointers_ bakal memungkinkan Anda buat memakai fungsi sebagai 
+memakai _function pointers_ bakal memungkinkan kita buat memakai fungsi sebagai 
 argumen buat fungsi yang lainnya.
 
 Sintaks buat menentukan kalau sebuah parameter itu adalah _function pointer_ itu 
@@ -44,18 +44,18 @@ mendeklarasikan sebuah parameter tipe generik yang mana trait _bounds_-nya
 memakai salah satu dari trait `Fn`.
 
 _Function pointers_ mengimplementasikan ketiga trait _closure_ sekaligus 
-(`Fn`, `FnMut`, dan `FnOnce`), yang berarti Anda bakal selalu bisa mengoper sebuah 
+(`Fn`, `FnMut`, dan `FnOnce`), yang berarti kita bakal selalu bisa mengoper sebuah 
 _function pointer_ sebagai argumen buat fungsi yang membutuhkan sebuah _closure_. 
 Praktik terbaiknya adalah nulis fungsi memakai tipe generik dan salah satu dari 
-trait-trait _closure_ tersebut supaya fungsi Anda bisa nerima fungsi biasa maupun 
+trait-trait _closure_ tersebut supaya fungsi kita bisa nerima fungsi biasa maupun 
 _closures_.
 
-Namun, ada satu contoh di mana Anda mungkin cuma mau nerima tipe `fn` aja dan 
-tidak mau nerima _closures_, yaitu pas Anda lagi berinteraksi (interfacing) 
+Namun, ada satu contoh di mana kita mungkin cuma mau nerima tipe `fn` aja dan 
+tidak mau nerima _closures_, yaitu pas kita lagi berinteraksi (interfacing) 
 dengan kode eksternal yang emang tidak punya _closures_: Fungsi-fungsi C bisa 
 menerima fungsi biasa sebagai argumen, tapi C tidak punya fitur _closures_.
 
-Sebagai contoh buat situasi di mana Anda bisa memakai sebuah _closure_ yang 
+Sebagai contoh buat situasi di mana kita bisa memakai sebuah _closure_ yang 
 didefinisikan secara langsung (inline) atau sebuah fungsi bernama, mari kita 
 lihat penggunaan method `map` yang disediain sama trait `Iterator` di _standard 
 library_. Buat memakai method `map` buat mengubah sebuah _vector_ angka-angka 
@@ -109,21 +109,21 @@ di dalam rentang yang mana dipanggil oleh method `map` dengan jalan memakai
 fungsi inisialisasi dari varian `Status::Value` tersebut. Beberapa orang lebih 
 suka gaya penulisan kayak gini dan beberapa orang lainnya lebih milih buat pakai 
 _closures_. Mereka di-compile jadi hasil kode yang sama kok, jadi pakai aja gaya mana 
-yang lebih jelas dan enak dibaca buat Anda.
+yang lebih jelas dan enak dibaca buat kita.
 
 ### Mengembalikan Closures
 
-_Closures_ direpresentasikan memakai traits, yang artinya Anda tidak bisa ngembaliin 
-_closures_ secara langsung. Di sebagian besar kasus di mana Anda mungkin pengen 
-mengembalikan sebuah trait, Anda bisa memakai tipe konkret yang emang 
+_Closures_ direpresentasikan memakai traits, yang artinya kita tidak bisa ngembaliin 
+_closures_ secara langsung. Di sebagian besar kasus di mana kita mungkin pengen 
+mengembalikan sebuah trait, kita bisa memakai tipe konkret yang emang 
 mengimplementasikan trait tersebut sebagai nilai kembalian fungsinya. Tapi, 
-biasanya Anda tidak bisa ngelakuin itu buat _closures_ karena mereka tidak punya 
-tipe konkret yang bisa di-return (dikembalikan); contohnya, Anda tidak diizinkan 
+biasanya kita tidak bisa ngelakuin itu buat _closures_ karena mereka tidak punya 
+tipe konkret yang bisa di-return (dikembalikan); contohnya, kita tidak diizinkan 
 buat memakai _function pointer_ `fn` sebagai tipe kembalian kalau _closure_-nya itu 
 menangkap (captures) nilai-nilai apa pun dari _scope_-nya.
 
-Sebaliknya, Anda biasanya bakal memakai sintaks `impl Trait` yang udah kita 
-pelajarin di Bab 10. Anda bisa ngembaliin tipe fungsi apa aja, dengan memakai 
+Sebaliknya, kita biasanya bakal memakai sintaks `impl Trait` yang udah kita 
+pelajarin di Bab 10. Kita bisa ngembaliin tipe fungsi apa aja, dengan memakai 
 `Fn`, `FnOnce` dan `FnMut`. Contohnya, kode di Listing 20-32 bakal sukses 
 di-compile dengan baik.
 
@@ -137,9 +137,9 @@ di-compile dengan baik.
 
 Namun, kayak yang udah kita sebutin di [“Inferensi Tipe dan Anotasi pada 
 Closure”][closure-types] di Bab 13, masing-masing _closure_ itu juga merupakan tipe 
-mereka sendiri yang berbeda-beda. Kalau Anda perlu beroperasi sama fungsi-fungsi 
-yang punya _signature_ yang sama tapi implementasi yang berbeda-beda, Anda perlu 
-memakai *trait object* buat mereka. Coba bayangin apa yang terjadi kalau Anda nulis 
+mereka sendiri yang berbeda-beda. Kalau kita perlu beroperasi sama fungsi-fungsi 
+yang punya _signature_ yang sama tapi implementasi yang berbeda-beda, kita perlu 
+memakai *trait object* buat mereka. Coba bayangin apa yang terjadi kalau kita nulis 
 kode kayak yang ditunjukin di Listing 20-33.
 
 <Listing file-name="src/main.rs" number="20-33" caption="Membikin sebuah `Vec<T>` berisi closures yang didefinisikan sama fungsi-fungsi yang mengembalikan tipe `impl Fn`">

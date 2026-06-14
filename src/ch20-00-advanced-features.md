@@ -1,13 +1,13 @@
 # Fitur-fitur Tingkat Lanjut (Advanced Features)
 
-Sekarang, Anda udah mempelajari bagian-bagian yang paling sering dipakai di 
+Sekarang, kita udah mempelajari bagian-bagian yang paling sering dipakai di 
 bahasa pemrograman Rust. Sebelum kita mengerjakan satu project lagi di Bab 21, 
-kita bakal melihat beberapa aspek dari bahasa ini yang mungkin bakal Anda temui 
-sekali-sekali, biarpun Anda mungkin tidak memakainya setiap hari. Anda bisa 
-memakai bab ini sebagai referensi saat Anda ketemu hal-hal yang belum Anda 
-ketahui. Fitur-fitur yang dibahas di sini berguna banget buat situasi-situasi 
-yang sangat spesifik. Walaupun Anda mungkin jarang memakainya, kita pengen 
-memastikan Anda punya pemahaman soal semua fitur yang ditawarkan oleh Rust.
+kita bakal melihat beberapa aspek dari bahasa ini yang mungkin bakal kita temui 
+sekali-sekali, biarpun kita mungkin tidak memakainya setiap hari. Kita bisa 
+memakai bab ini sebagai referensi saat kita ketemu hal-hal yang belum kita 
+ketahui. Fitur-fitur yang dibahas di sini sangat berguna buat situasi-situasi 
+yang sangat spesifik. Walaupun kita mungkin jarang memakainya, kita pengen 
+memastikan kita punya pemahaman soal semua fitur yang ditawarkan oleh Rust.
 
 Di bab ini, kita bakal membahas:
 

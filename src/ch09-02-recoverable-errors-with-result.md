@@ -128,7 +128,7 @@ buat error apa pun selain error file nggak ditemuin.
 
 > #### Alternatif Buat Penggunaan `match` dengan `Result<T, E>`
 >
-> Banyak banget ya `match`-nya! Ekspresi `match` itu berguna banget tapi dia 
+> Banyak sekali ya `match`-nya! Ekspresi `match` itu sangat berguna tapi dia 
 > juga lumayan primitif. Di Bab 13, kita bakal belajar soal _closures_, yang 
 > dipake bareng banyak method yang didefinisikan pada `Result<T, E>`. Method-
 > method ini bisa lebih ringkas daripada pake `match` pas nanganin nilai 
@@ -160,7 +160,7 @@ buat error apa pun selain error file nggak ditemuin.
 > ekspresi `match` apa pun dan lebih bersih buat dibaca. Balik lagi ke contoh 
 > ini setelah kita kelar baca Bab 13, terus cek method `unwrap_or_else` di 
 > dokumentasi _standard library_. Masih banyak lagi method kayak gini yang bisa 
-> ngerapihin ekspresi `match` bersarang yang gede banget pas kita lagi berurusan 
+> ngerapihin ekspresi `match` bersarang yang sangat besar pas kita lagi berurusan 
 > sama error.
 
 #### Jalan Pintas buat Panic Kalo Error: `unwrap` sama `expect`
@@ -340,7 +340,7 @@ bakal ngelewatin fungsi `from`, yang didefinisikan di trait `From` di _standard
 library_, yang dipake buat nge-convert nilai dari satu tipe ke tipe lainnya. 
 Pas operator `?` manggil fungsi `from`, tipe error yang diterima bakal di-convert 
 jadi tipe error yang didefinisikan di tipe kembalian (return type) dari fungsi 
-saat ini. Ini berguna banget pas sebuah fungsi balikin satu tipe error kustom 
+saat ini. Ini sangat berguna pas sebuah fungsi balikin satu tipe error kustom 
 buat merepresentasikan semua kemungkinan cara fungsi itu bisa gagal, walaupun 
 bagian-bagian di dalemnya mungkin gagal karena banyak alasan yang beda.
 
@@ -357,7 +357,7 @@ terjadi, operator `?` bakal langsung keluar (return early) dari keseluruhan
 fungsi dan ngasih nilai `Err` apa pun ke kode pemanggil. Hal yang sama juga 
 berlaku buat tanda `?` di akhir pemanggilan `read_to_string`.
 
-Operator `?` ngilangin banyak banget _boilerplate code_ dan bikin implementasi 
+Operator `?` ngilangin sangat banyak _boilerplate code_ dan bikin implementasi 
 fungsi ini jadi lebih simpel. Kita bahkan bisa nyederhanain kode ini lebih 
 lanjut dengan nge-chaining (nyambungin) pemanggilan method langsung setelah `?`, 
 kayak yang ditunjukin di Listing 9-8.

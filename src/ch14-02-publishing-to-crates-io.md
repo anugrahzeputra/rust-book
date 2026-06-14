@@ -4,16 +4,16 @@ Kita sudah memakai _packages_ dari [crates.io](https://crates.io/) sebagai
 _dependencies_ buat project kita, tapi kita juga bisa nge-share kode kita 
 sama orang lain dengan mempublikasikan _packages_ milik kita sendiri. _Registry_ 
 _crate_ di [crates.io](https://crates.io/) mendistribusikan _source code_ dari 
-_packages_ Anda, jadi ia pada dasarnya meng-_host_ kode yang _open source_ 
+_packages_ kita, jadi ia pada dasarnya meng-_host_ kode yang _open source_ 
 (sumber terbuka).
 
-Rust dan Cargo punya berbagai fitur yang bikin _package_ yang Anda publikasikan 
+Rust dan Cargo punya berbagai fitur yang bikin _package_ yang kita publikasikan 
 jadi lebih gampang dicari dan dipakai orang. Kita bakal membahas beberapa fitur 
 ini lalu menjelaskan gimana caranya mempublikasikan sebuah _package_.
 
 ### Menulis Komentar Dokumentasi yang Berguna
 
-Mendokumentasikan _packages_ Anda secara akurat bakal membantu para _user_ 
+Mendokumentasikan _packages_ kita secara akurat bakal membantu para _user_ 
 lain tahu gimana dan kapan mereka bisa memakainya, jadi sangat sepadan 
 menghabiskan waktu buat nulis dokumentasi. Di Bab 3, kita sudah membahas gimana 
 cara memberi komentar di kode Rust menggunakan dua garis miring, `//`. Rust 
@@ -21,7 +21,7 @@ juga punya jenis komentar khusus buat dokumentasi, yang lebih enak disebut
 _documentation comment_ (komentar dokumentasi), yang bakal men-_generate_ 
 dokumentasi dalam format HTML. HTML ini menampilkan isi dari komentar dokumentasi 
 buat item-item API _public_ yang ditujukan buat para programmer yang tertarik 
-buat tahu gimana cara _memakai_ _crate_ Anda, bukannya gimana _crate_ Anda itu 
+buat tahu gimana cara _memakai_ _crate_ kita, bukannya gimana _crate_ kita itu 
 _diimplementasikan_.
 
 Komentar dokumentasi memakai tiga garis miring, `///`, bukannya dua dan 
@@ -47,9 +47,9 @@ didistribusikan bersama Rust dan menaruh dokumentasi HTML hasilnya ke dalam
 direktori _target/doc_.
 
 Biar lebih praktis, menjalankan `cargo doc --open` bakal mem-build HTML buat 
-dokumentasi dari _crate_ Anda saat ini (beserta dokumentasi buat semua 
-_dependencies_ _crate_ Anda) lalu membuka hasilnya di web browser. Arahkan 
-navigasi ke fungsi `add_one` dan Anda bakal melihat gimana teks di komentar 
+dokumentasi dari _crate_ kita saat ini (beserta dokumentasi buat semua 
+_dependencies_ _crate_ kita) lalu membuka hasilnya di web browser. Arahkan 
+navigasi ke fungsi `add_one` dan kita bakal melihat gimana teks di komentar 
 dokumentasi tersebut dirender, seperti yang ditunjukkan di Gambar 14-1.
 
 <img alt="Dokumentasi HTML yang dirender untuk fungsi `add_one` dari `my_crate`" src="img/trpl14-01.png" class="center" />
@@ -60,7 +60,7 @@ dokumentasi tersebut dirender, seperti yang ditunjukkan di Gambar 14-1.
 
 Kita memakai _heading_ Markdown `# Examples` di Listing 14-1 buat membikin 
 sebuah bagian di HTML-nya dengan judul “Examples.” Berikut ini beberapa bagian 
-lain yang sering banget dipakai oleh para pembuat _crate_ di dokumentasi mereka:
+lain yang sering sekali dipakai oleh para pembuat _crate_ di dokumentasi mereka:
 
 - **Panics**: Skenario-skenario di mana fungsi yang didokumentasikan ini bisa 
   mengalami _panic_. Kode pemanggil fungsi ini yang tidak mau programnya 
@@ -77,15 +77,15 @@ lain yang sering banget dipakai oleh para pembuat _crate_ di dokumentasi mereka:
   diharapkan oleh fungsi tersebut buat dipatuhi sama pemanggilnya.
 
 Kebanyakan komentar dokumentasi tidak perlu punya semua bagian ini, tapi ini 
-adalah _checklist_ yang bagus buat ngingetin Anda soal aspek-aspek kode Anda 
+adalah _checklist_ yang bagus buat ngingetin kita soal aspek-aspek kode kita 
 yang bakal bikin _user_ tertarik buat tahu.
 
 #### Komentar Dokumentasi Sebagai Tests (Pengujian)
 
-Menambahkan blok-blok contoh kode di dalam komentar dokumentasi Anda bisa 
-membantu mendemonstrasikan gimana cara memakai _library_ Anda, dan 
+Menambahkan blok-blok contoh kode di dalam komentar dokumentasi kita bisa 
+membantu mendemonstrasikan gimana cara memakai _library_ kita, dan 
 melakukannya punya keuntungan ekstra: menjalankan `cargo test` bakal 
-menjalankan contoh kode di dokumentasi Anda tersebut sebagai pengujian! 
+menjalankan contoh kode di dokumentasi kita tersebut sebagai pengujian! 
 Tidak ada yang lebih baik dari dokumentasi yang disertai contoh. Tapi tidak 
 ada yang lebih parah dari contoh yang tidak jalan gara-gara kodenya udah 
 diubah sejak dokumentasinya ditulis. Kalau kita menjalankan `cargo test` 
@@ -151,32 +151,32 @@ _public_ di _crate_ tersebut, seperti yang ditunjukkan di Gambar 14-2.
 Komentar dokumentasi yang ditaruh di dalam item sangat berguna buat 
 mendeskripsikan _crates_ dan juga _modules_ (modul). Pakailah mereka buat 
 menjelaskan tujuan keseluruhan dari wadah (container)-nya demi membantu para 
-_user_ Anda memahami organisasi _crate_ tersebut.
+_user_ kita memahami organisasi _crate_ tersebut.
 
 ### Mengekspor API Public yang Nyaman dengan `pub use`
 
-Struktur dari API _public_ Anda adalah pertimbangan besar saat mempublikasikan 
-sebuah _crate_. Orang-orang yang memakai _crate_ Anda itu kurang familier 
-dengan strukturnya dibandingkan Anda dan mungkin bakal kesusahan mencari 
-bagian-bagian yang mau mereka pakai kalau _crate_ Anda punya hierarki modul 
+Struktur dari API _public_ kita adalah pertimbangan besar saat mempublikasikan 
+sebuah _crate_. Orang-orang yang memakai _crate_ kita itu kurang familier 
+dengan strukturnya dibandingkan kita dan mungkin bakal kesusahan mencari 
+bagian-bagian yang mau mereka pakai kalau _crate_ kita punya hierarki modul 
 yang besar.
 
 Di Bab 7, kita sudah membahas gimana cara membikin item jadi _public_ memakai 
 keyword `pub`, dan gimana cara membawa item ke dalam _scope_ memakai keyword 
-`use`. Namun, struktur yang menurut Anda masuk akal saat Anda lagi ngembangin 
-sebuah _crate_ mungkin aja tidak terlalu nyaman buat para _user_ Anda. Anda 
-mungkin mau mengatur _structs_ Anda di dalam sebuah hierarki yang terdiri dari 
-beberapa tingkat, tapi nanti orang yang mau memakai tipe yang sudah Anda 
+`use`. Namun, struktur yang menurut kita masuk akal saat kita lagi ngembangin 
+sebuah _crate_ mungkin aja tidak terlalu nyaman buat para _user_ kita. Kita 
+mungkin mau mengatur _structs_ kita di dalam sebuah hierarki yang terdiri dari 
+beberapa tingkat, tapi nanti orang yang mau memakai tipe yang sudah kita 
 definisikan jauh di kedalaman hierarki itu mungkin bakal kesulitan buat tahu kalau 
 tipe tersebut ada. Mereka juga mungkin bakal jengkel karena harus mengetikkan 
 `use my_crate::some_module::another_module::UsefulType;` bukannya sekadar 
 `use my_crate::UsefulType;`.
 
-Kabar baiknya adalah kalau struktur yang Anda buat _tidak_ nyaman buat orang lain 
-pakai dari _library_ mereka, Anda tidak harus menata ulang organisasi 
-internalnya: sebagai gantinya, Anda bisa me-*re-export* (mengekspor ulang) 
+Kabar baiknya adalah kalau struktur yang kita buat _tidak_ nyaman buat orang lain 
+pakai dari _library_ mereka, kita tidak harus menata ulang organisasi 
+internalnya: sebagai gantinya, kita bisa me-*re-export* (mengekspor ulang) 
 item-item buat bikin sebuah struktur _public_ yang beda dari struktur _private_ 
-Anda dengan menggunakan `pub use`. *Re-exporting* mengambil sebuah item _public_ 
+kita dengan menggunakan `pub use`. *Re-exporting* mengambil sebuah item _public_ 
 di satu lokasi lalu membikinnya jadi _public_ di lokasi lain, seolah-olah 
 item tersebut didefinisikan di lokasi yang lain itu.
 
@@ -267,51 +267,51 @@ tipe di level teratas dengan `pub use` bisa bikin perbedaan yang sangat besar
 dalam pengalaman (_experience_) orang-orang yang memakai _crate_ tersebut. 
 Kegunaan umum lain dari `pub use` adalah buat me-*re-export* definisi dari 
 sebuah _dependency_ (dependensi) di _crate_ saat ini buat bikin definisi 
-_crate_ itu jadi bagian dari API _public_ _crate_ Anda.
+_crate_ itu jadi bagian dari API _public_ _crate_ kita.
 
 Membikin struktur API _public_ yang berguna itu lebih ke arah seni ketimbang sains 
-eksak, dan Anda bisa melakukan iterasi buat nemuin API apa yang bekerja paling 
-baik buat para _user_ Anda. Memilih buat pakai `pub use` ngasih Anda fleksibilitas 
-dalam mengatur gimana struktur internal _crate_ Anda dan melepaskan kaitan 
-(decouples) antara struktur internal itu dari apa yang Anda tampilkan ke para _user_ 
-Anda. Coba deh lihat beberapa kode dari _crates_ yang udah Anda instal buat melihat 
+eksak, dan kita bisa melakukan iterasi buat nemuin API apa yang bekerja paling 
+baik buat para _user_ kita. Memilih buat pakai `pub use` ngasih kita fleksibilitas 
+dalam mengatur gimana struktur internal _crate_ kita dan melepaskan kaitan 
+(decouples) antara struktur internal itu dari apa yang kita tampilkan ke para _user_ 
+kita. Coba deh lihat beberapa kode dari _crates_ yang udah kita instal buat melihat 
 apakah struktur internal mereka berbeda dari API _public_ mereka.
 
 ### Menyiapkan Akun Crates.io
 
-Sebelum Anda bisa mempublikasikan _crates_ apa pun, Anda harus bikin akun dulu 
+Sebelum kita bisa mempublikasikan _crates_ apa pun, kita harus bikin akun dulu 
 di [crates.io](https://crates.io/) dan dapetin API token. Buat melakukannya, 
 kunjungi halaman depan di [crates.io](https://crates.io/) lalu _login_ pakai akun 
 GitHub. (Akun GitHub saat ini adalah syarat wajibnya, tapi situsnya mungkin bakal 
-mendukung cara lain buat bikin akun di masa depan.) Setelah Anda _login_, kunjungi 
-pengaturan akun Anda di [https://crates.io/me/](https://crates.io/me/) lalu ambil 
-kunci (key) API Anda. Kemudian jalankan perintah `cargo login` dan *paste* 
-kunci API Anda pas diminta, kayak gini:
+mendukung cara lain buat bikin akun di masa depan.) Setelah kita _login_, kunjungi 
+pengaturan akun kita di [https://crates.io/me/](https://crates.io/me/) lalu ambil 
+kunci (key) API kita. Kemudian jalankan perintah `cargo login` dan *paste* 
+kunci API kita pas diminta, kayak gini:
 
 ```console
 $ cargo login
 abcdefghijklmnopqrstuvwxyz012345
 ```
 
-Perintah ini bakal ngasih tahu Cargo soal token API Anda lalu menyimpannya secara 
+Perintah ini bakal ngasih tahu Cargo soal token API kita lalu menyimpannya secara 
 lokal di _~/.cargo/credentials.toml_. Perhatikan bahwa token ini adalah 
-sebuah *rahasia* (_secret_): jangan bagikan ke orang lain. Kalau Anda 
-membagikannya ke orang lain dengan alasan apa pun, Anda harus menariknya (revoke) 
+sebuah *rahasia* (_secret_): jangan bagikan ke orang lain. Kalau kita 
+membagikannya ke orang lain dengan alasan apa pun, kita harus menariknya (revoke) 
 dan membuat token baru di [crates.io](https://crates.io/).
 
 ### Menambahkan Metadata ke Crate Baru
 
-Katakanlah Anda punya sebuah _crate_ yang mau Anda publikasikan. Sebelum dipublish, 
-Anda harus menambahkan beberapa metadata di bagian `[package]` dari file _Cargo.toml_ 
+Katakanlah kita punya sebuah _crate_ yang mau kita publikasikan. Sebelum dipublish, 
+kita harus menambahkan beberapa metadata di bagian `[package]` dari file _Cargo.toml_ 
 milik _crate_ tersebut.
 
-_Crate_ Anda bakal butuh nama yang unik. Selama Anda mengerjakan _crate_ secara 
-lokal, Anda bisa menamai _crate_ sesuka Anda. Namun, nama _crate_ di 
+_Crate_ kita bakal butuh nama yang unik. Selama kita mengerjakan _crate_ secara 
+lokal, kita bisa menamai _crate_ sesuka kita. Namun, nama _crate_ di 
 [crates.io](https://crates.io/) itu dialokasikan berdasarkan siapa cepat dia 
 dapat (first-come, first-served). Begitu sebuah nama _crate_ sudah diambil, 
 tidak ada orang lain yang bisa mempublikasikan _crate_ dengan nama tersebut. 
-Sebelum mencoba buat mempublikasikan sebuah _crate_, carilah nama yang pengen Anda 
-pakai. Kalau nama tersebut sudah terpakai, Anda harus mencari nama lain lalu 
+Sebelum mencoba buat mempublikasikan sebuah _crate_, carilah nama yang pengen kita 
+pakai. Kalau nama tersebut sudah terpakai, kita harus mencari nama lain lalu 
 mengedit field `name` di dalam file _Cargo.toml_ di bawah bagian `[package]` buat 
 memakai nama baru tersebut untuk publikasi, kayak gini:
 
@@ -322,8 +322,8 @@ memakai nama baru tersebut untuk publikasi, kayak gini:
 name = "guessing_game"
 ```
 
-Meskipun Anda sudah milih nama yang unik, saat Anda menjalankan `cargo publish` 
-buat mempublikasikan _crate_ di titik ini, Anda bakal dapat peringatan dan lalu 
+Meskipun kita sudah milih nama yang unik, saat kita menjalankan `cargo publish` 
+buat mempublikasikan _crate_ di titik ini, kita bakal dapat peringatan dan lalu 
 sebuah error:
 
 <!-- manual-regeneration
@@ -345,16 +345,16 @@ Caused by:
   the remote server responded with an error (status 400 Bad Request): missing or empty metadata fields: description, license. Please see https://doc.rust-lang.org/cargo/reference/manifest.html for more information on configuring these fields
 ```
 
-Ini menghasilkan error karena Anda kelupaan beberapa informasi yang krusial: 
+Ini menghasilkan error karena kita kelupaan beberapa informasi yang krusial: 
 sebuah deskripsi (description) dan lisensi (license) diwajibkan supaya 
-orang-orang bisa tahu apa yang dilakukan sama _crate_ Anda dan di bawah 
+orang-orang bisa tahu apa yang dilakukan sama _crate_ kita dan di bawah 
 ketentuan (terms) apa mereka bisa memakainya. Di _Cargo.toml_, tambahkan sebuah 
 deskripsi yang hanya terdiri dari satu atau dua kalimat aja, karena itu bakal 
-muncul bareng _crate_ Anda di hasil pencarian. Buat field `license`, Anda harus 
+muncul bareng _crate_ kita di hasil pencarian. Buat field `license`, kita harus 
 memberikan _nilai pengenal lisensi_ (license identifier value). 
 [Software Package Data Exchange (SPDX) milik Linux Foundation][spdx] 
-mendaftarkan pengenal yang bisa Anda pakai buat nilai ini. Misalnya, buat 
-menentukan kalau Anda melisensikan _crate_ Anda memakai Lisensi MIT, tambahkan 
+mendaftarkan pengenal yang bisa kita pakai buat nilai ini. Misalnya, buat 
+menentukan kalau kita melisensikan _crate_ kita memakai Lisensi MIT, tambahkan 
 pengenal `MIT`:
 
 <span class="filename">Nama file: Cargo.toml</span>
@@ -365,19 +365,19 @@ name = "guessing_game"
 license = "MIT"
 ```
 
-Kalau Anda mau memakai lisensi yang tidak muncul di SPDX, Anda perlu menaruh teks 
-dari lisensi tersebut di sebuah file, memasukkan file itu di project Anda, lalu 
+Kalau kita mau memakai lisensi yang tidak muncul di SPDX, kita perlu menaruh teks 
+dari lisensi tersebut di sebuah file, memasukkan file itu di project kita, lalu 
 memakai `license-file` buat menentukan nama dari file tersebut sebagai ganti dari 
 memakai key `license`.
 
-Panduan soal lisensi mana yang pas buat project Anda ada di luar cakupan buku ini. 
+Panduan soal lisensi mana yang pas buat project kita ada di luar cakupan buku ini. 
 Banyak orang di komunitas Rust melisensikan project mereka pakai cara yang sama 
 kayak Rust dengan memakai _dual license_ (lisensi ganda) `MIT OR Apache-2.0`. 
-Praktik ini menunjukkan kalau Anda juga bisa menentukan lebih dari satu 
+Praktik ini menunjukkan kalau kita juga bisa menentukan lebih dari satu 
 pengenal lisensi yang dipisahkan oleh `OR` buat punya banyak lisensi di 
-project Anda.
+project kita.
 
-Dengan nama yang unik, versi, deskripsi Anda, dan lisensi yang sudah 
+Dengan nama yang unik, versi, deskripsi kita, dan lisensi yang sudah 
 ditambahkan, file _Cargo.toml_ untuk project yang siap dipublish mungkin 
 bakal kelihatan kayak gini:
 
@@ -395,13 +395,13 @@ license = "MIT OR Apache-2.0"
 ```
 
 [Dokumentasi Cargo](https://doc.rust-lang.org/cargo/) mendeskripsikan 
-metadata lain yang bisa Anda tentukan buat memastikan orang lain bisa lebih 
-gampang menemukan dan memakai _crate_ Anda.
+metadata lain yang bisa kita tentukan buat memastikan orang lain bisa lebih 
+gampang menemukan dan memakai _crate_ kita.
 
 ### Mempublikasikan ke Crates.io
 
-Sekarang karena Anda udah bikin akun, nyimpan token API Anda, memilih nama 
-buat _crate_ Anda, dan menentukan metadata yang dibutuhin, Anda sudah siap 
+Sekarang karena kita udah bikin akun, nyimpan token API kita, memilih nama 
+buat _crate_ kita, dan menentukan metadata yang dibutuhin, kita sudah siap 
 buat melakukan publikasi! Mempublikasikan sebuah _crate_ mengunggah versi 
 spesifiknya ke [crates.io](https://crates.io/) biar orang lain bisa pakai.
 
@@ -412,7 +412,7 @@ adalah bertindak sebagai arsip kode yang permanen sehingga proses *build*
 dari semua project yang bergantung pada _crates_ dari [crates.io](https://crates.io/) 
 bakal terus berfungsi. Mengizinkan penghapusan versi bakal bikin pemenuhan 
 tujuan tersebut jadi mustahil. Namun, tidak ada batas buat seberapa banyak 
-versi _crate_ yang bisa Anda publikasikan.
+versi _crate_ yang bisa kita publikasikan.
 
 Jalankan perintah `cargo publish` lagi. Kali ini harusnya udah berhasil:
 
@@ -439,17 +439,17 @@ You may press ctrl-c to skip waiting; the crate should be available shortly.
    Published guessing_game v0.1.0 at registry `crates-io`
 ```
 
-Selamat! Anda sekarang sudah nge-share kode Anda sama komunitas Rust, dan 
-siapa pun bisa dengan gampang nambahin _crate_ Anda sebagai *dependency* 
+Selamat! Kita sekarang sudah nge-share kode kita sama komunitas Rust, dan 
+siapa pun bisa dengan gampang nambahin _crate_ kita sebagai *dependency* 
 di project mereka.
 
 ### Mempublikasikan Versi Baru dari Crate yang Sudah Ada
 
-Saat Anda bikin perubahan di _crate_ Anda dan udah siap buat ngerilis versi 
-baru, Anda cukup ganti nilai `version` yang ditentukan di file _Cargo.toml_ 
-Anda dan _publish_ ulang (republish). Pakai aturan [Semantic Versioning][semver] 
+Saat kita bikin perubahan di _crate_ kita dan udah siap buat ngerilis versi 
+baru, kita cukup ganti nilai `version` yang ditentukan di file _Cargo.toml_ 
+kita dan _publish_ ulang (republish). Pakai aturan [Semantic Versioning][semver] 
 buat nentuin apa nomor versi selanjutnya yang paling pas, berdasarkan 
-jenis perubahan yang sudah Anda buat. Terus jalankan `cargo publish` buat 
+jenis perubahan yang sudah kita buat. Terus jalankan `cargo publish` buat 
 mengunggah versi barunya.
 
 <!-- Old link, do not remove -->
@@ -458,7 +458,7 @@ mengunggah versi barunya.
 
 ### Melarang Penggunaan Versi Lama dari Crates.io dengan `cargo yank`
 
-Meskipun Anda tidak bisa menghapus versi lama dari sebuah _crate_, Anda bisa 
+Meskipun kita tidak bisa menghapus versi lama dari sebuah _crate_, kita bisa 
 mencegah project-project di masa depan buat menambahkan versi tersebut 
 sebagai *dependency* baru. Hal ini berguna pas sebuah versi _crate_ ternyata 
 rusak (broken) karena suatu alasan tertentu. Di situasi semacam itu, Cargo 
@@ -472,8 +472,8 @@ akan rusak, dan file _Cargo.lock_ apa pun yang di-generate di masa depan
 tidak bakal memakai versi yang di-_yank_ tersebut.
 
 Buat menge-_yank_ sebuah versi _crate_, dari dalam direktori _crate_ yang 
-tadinya sudah Anda publikasikan, jalankan `cargo yank` dan tentukan versi mana 
-yang mau Anda _yank_. Misalnya, kalau kita sudah mempublikasikan sebuah _crate_ 
+tadinya sudah kita publikasikan, jalankan `cargo yank` dan tentukan versi mana 
+yang mau kita _yank_. Misalnya, kalau kita sudah mempublikasikan sebuah _crate_ 
 bernama `guessing_game` versi 1.0.1 dan kita mau menge-_yank_-nya, di dalam 
 direktori project buat `guessing_game` kita bakal menjalankan:
 
@@ -488,7 +488,7 @@ $ cargo yank --vers 1.0.1
         Yank guessing_game@1.0.1
 ```
 
-Dengan menambahkan `--undo` ke dalam *command*-nya, Anda juga bisa 
+Dengan menambahkan `--undo` ke dalam *command*-nya, kita juga bisa 
 membatalkan aksi _yank_ (meng-_unyank_) lalu mengizinkan project-project buat 
 mulai bergantung lagi pada sebuah versi:
 
@@ -500,7 +500,7 @@ $ cargo yank --vers 1.0.1 --undo
 
 Aksi _yank_ _sama sekali tidak_ menghapus kode apa pun. Ia tidak bisa, misalnya, 
 menghapus data rahasia (*secrets*) yang tidak sengaja terunggah. Kalau hal 
-seperti itu terjadi, Anda harus langsung nge-reset rahasia tersebut.
+seperti itu terjadi, kita harus langsung nge-reset rahasia tersebut.
 
 [spdx]: https://spdx.org/licenses/
 [semver]: https://semver.org/

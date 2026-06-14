@@ -47,7 +47,7 @@ lewat beberapa contoh yang fokus ke struktur data yang sangat umum: _strings_.
 > kadang disingkat jadi _allocating_ doang (naruh nilai ke _stack_ nggak 
 > dianggap sebagai _allocating_). Karena _pointer_ ke _heap_ itu ukurannya udah 
 > tau dan tetap, kita bisa nyimpen _pointer_-nya di _stack_, tapi pas kita mau 
-> datanya beneran, kita harus ngikutin _pointer_-nya. Bayangin kayak duduk di 
+> datanya benar-benar, kita harus ngikutin _pointer_-nya. Bayangin kayak duduk di 
 > restoran. Pas masuk, kita bilang jumlah orang di grup kita, terus pelayannya 
 > nemuin meja kosong yang pas buat semuanya terus nganterin kita ke sana. Kalau 
 > ada temen kita yang telat dateng, mereka bisa nanya kita duduk di mana buat 
@@ -141,7 +141,7 @@ di-_pop_ keluar dari _stack_ pas scope-nya abis, dan bisa di-copy secara cepet
 dan gampang buat bikin instance baru yang independen kalau bagian kode lain 
 perlu pake nilai yang sama di scope yang beda. Tapi kita mau liat data yang 
 disimpan di _heap_ dan eksplor gimana Rust tau kapan harus ngebersihin data itu, 
-dan tipe `String` adalah contoh yang oke banget.
+dan tipe `String` adalah contoh yang oke sekali.
 
 Kita bakal fokus ke bagian-bagian `String` yang terkait sama _ownership_. 
 Aspek-aspek ini juga berlaku buat tipe data kompleks lainnya, baik yang 
@@ -260,7 +260,7 @@ Sekarang yuk liat versi `String`-nya:
 {{#rustdoc_include ../listings/ch04-understanding-ownership/no-listing-03-string-move/src/main.rs:here}}
 ```
 
-Ini keliatannya mirip banget, jadi kita mungkin asumsikan kalau cara kerjanya 
+Ini keliatannya mirip sekali, jadi kita mungkin asumsikan kalau cara kerjanya 
 bakal sama: yaitu, baris kedua bakal bikin copy dari nilai di `s1` terus bind 
 ke `s2`. Tapi nggak gitu yang sebenernya terjadi.
 
@@ -298,7 +298,7 @@ yang punya copy dari pointer, length, dan capacity dari `s1`</span>
 Representasinya _nggak_ keliatan kayak Gambar 4-3, yang merupakan penampakan 
 memori kalau misalnya Rust malah ikut copy data _heap_-nya juga. Kalau Rust 
 lakuin ini, operasi `s2 = s1` bisa jadi sangat mahal dalam hal performa 
-Pas _runtime_ kalau datanya di _heap_ itu gede banget.
+Pas _runtime_ kalau datanya di _heap_ itu sangat besar.
 
 <img alt="Empat tabel: dua tabel merepresentasikan data stack buat s1 dan s2, 
 dan masing-masing nunjuk ke copy data string-nya sendiri di heap." 
@@ -337,7 +337,7 @@ Kalau kita pernah denger istilah _shallow copy_ (copy dangkal) sama _deep copy_
 dan _capacity_ tanpa nyalin datanya mungkin kedengeran kayak lagi bikin _shallow 
 copy_. Tapi karena Rust juga ngebatalin variabel pertamanya, bukannya disebut 
 _shallow copy_, ini dikenal sebagai _move_ (pindah). Di contoh ini, kita bakal 
-bilang kalau `s1` udah di-_move_ ke dalem `s2`. Jadi, apa yang beneran terjadi 
+bilang kalau `s1` udah di-_move_ ke dalem `s2`. Jadi, apa yang benar-benar terjadi 
 ditunjukin di Gambar 4-4.
 
 <img alt="Tiga tabel: tabel s1 dan s2 merepresentasikan string itu di stack, 
@@ -513,7 +513,7 @@ di Listing 4-5.
 
 </Listing>
 
-Tapi ini terlalu banyak upacaranya (ceremony) dan kerjaan banget buat konsep 
+Tapi ini terlalu banyak upacaranya (ceremony) dan kerjaan sekali buat konsep 
 yang harusnya umum. Untungnya buat kita, Rust punya fitur buat pake sebuah nilai 
 tanpa mentransfer _ownership_, namanya _references_ (referensi).
 

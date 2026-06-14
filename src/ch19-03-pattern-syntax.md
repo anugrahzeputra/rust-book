@@ -1,12 +1,12 @@
 ## Sintaks Pattern
 
 Di bagian ini, kita mengumpulkan semua sintaks yang valid buat dipakai di 
-dalam _patterns_ dan ngebahas kenapa dan kapan Anda mungkin mau memakai 
+dalam _patterns_ dan ngebahas kenapa dan kapan kita mungkin mau memakai 
 masing-masing dari sintaks tersebut.
 
 ### Mencocokkan Literals (Nilai Harfiah)
 
-Seperti yang udah Anda lihat di Bab 6, Anda bisa mencocokkan _patterns_ secara 
+Seperti yang udah kita lihat di Bab 6, kita bisa mencocokkan _patterns_ secara 
 langsung dengan _literals_. Kode berikut ini ngasih beberapa contoh:
 
 ```rust
@@ -14,14 +14,14 @@ langsung dengan _literals_. Kode berikut ini ngasih beberapa contoh:
 ```
 
 Kode ini mencetak `one` karena nilai di dalam `x` adalah `1`. Sintaks ini berguna 
-pas Anda pengen kode Anda mengambil suatu tindakan tertentu kalau dia dapat sebuah 
+pas kita pengen kode kita mengambil suatu tindakan tertentu kalau dia dapat sebuah 
 nilai konkret yang spesifik.
 
 ### Mencocokkan Variabel Bernama (Named Variables)
 
 Variabel bernama adalah _patterns_ _irrefutable_ yang bakal cocok dengan nilai apa 
 pun, dan kita udah memakainya berkali-kali di buku ini. Namun, ada sedikit kerumitan 
-pas Anda memakai variabel bernama di dalam ekspresi `match`, `if let`, atau 
+pas kita memakai variabel bernama di dalam ekspresi `match`, `if let`, atau 
 `while let`. Karena setiap jenis ekspresi ini memulai sebuah _scope_ (ruang lingkup) 
 baru, variabel yang dideklarasikan sebagai bagian dari sebuah _pattern_ di dalam 
 ekspresi ini bakal menimpa (shadow) variabel dengan nama yang sama yang ada di 
@@ -73,7 +73,7 @@ Match Guards”](#kondisional-tambahan-memakai-match-guards).
 
 ### Multiple Patterns (Banyak Pola Sekaligus)
 
-Di dalam ekspresi `match`, Anda bisa mencocokkan banyak _patterns_ sekaligus dengan 
+Di dalam ekspresi `match`, kita bisa mencocokkan banyak _patterns_ sekaligus dengan 
 memakai sintaks `|`, yang mana merupakan operator _or_ (atau) buat _pattern_. 
 Misalnya, di kode berikut ini kita mencocokkan nilai `x` terhadap _match arms_-nya, 
 yang mana arm pertamanya punya sebuah opsi _or_, yang berarti kalau nilai dari `x` 
@@ -142,8 +142,8 @@ di dalam _pattern_-nya tidak harus sama dengan nama-nama field di dalam struct-n
 Namun, sudah menjadi hal yang umum buat menyamakan nama variabelnya dengan nama 
 field-nya supaya lebih gampang buat diingat variabel mana yang berasal dari field mana. 
 Karena penggunaan umum ini, dan karena nulis `let Point { x: x, y: y } = p;` itu berisi 
-banyak banget duplikasi, Rust punya bentuk singkat (shorthand) buat _patterns_ yang 
-mencocokkan field struct: Anda cuma perlu menyebutkan nama field struct-nya aja, dan 
+sangat banyak duplikasi, Rust punya bentuk singkat (shorthand) buat _patterns_ yang 
+mencocokkan field struct: kita cuma perlu menyebutkan nama field struct-nya aja, dan 
 variabel yang dibikin dari _pattern_ tersebut bakal punya nama yang sama. Listing 
 19-13 berperilaku persis sama kayak kode di Listing 19-12, tapi variabel yang dibikin 
 di _pattern_ `let`-nya itu bernama `x` dan `y` bukannya `a` dan `b`.
@@ -277,18 +277,18 @@ Kode ini membiarkan kita memecah tipe-tipe yang kompleks menjadi bagian-bagian
 komponen dasarnya (component parts) supaya kita bisa memakai nilai-nilai yang kita 
 butuhkan secara terpisah.
 
-_Destructuring_ memakai _patterns_ ini adalah cara yang nyaman banget buat memakai 
+_Destructuring_ memakai _patterns_ ini adalah cara yang nyaman sekali buat memakai 
 potongan-potongan dari sebuah nilai, kayak misalnya nilai yang ada dari masing-
 masing field di dalam sebuah struct, secara terpisah dari satu sama lain.
 
 ### Mengabaikan Nilai di dalam sebuah Pattern
 
-Anda udah melihat kalau kadang-kadang itu sangat berguna buat mengabaikan nilai-
+kita udah melihat kalau kadang-kadang itu sangat berguna buat mengabaikan nilai-
 nilai di dalam sebuah _pattern_, kayak misalnya di arm terakhir dari sebuah `match`, 
 buat ngedapetin _catch-all_ yang tidak benar-benar ngelakuin apa-apa tapi tetep 
 mempertimbangkan (account for) semua kemungkinan nilai yang tersisa. Ada beberapa 
 cara buat mengabaikan seluruh nilai atau sebagian aja dari suatu nilai di dalam 
-sebuah _pattern_: dengan memakai _pattern_ `_` (yang udah Anda lihat), dengan memakai 
+sebuah _pattern_: dengan memakai _pattern_ `_` (yang udah kita lihat), dengan memakai 
 _pattern_ `_` di dalam _pattern_ lainnya, dengan memakai nama yang diawali dengan 
 garis bawah (underscore), atau dengan memakai `..` buat mengabaikan semua sisa bagian 
 dari sebuah nilai. Mari kita eksplorasi gimana dan kapan alasan yang tepat buat 
@@ -302,7 +302,7 @@ memakai masing-masing _patterns_ ini.
 
 Kita udah memakai garis bawah (underscore) sebagai _wildcard pattern_ (pola yang bisa 
 jadi apa saja) yang bakal cocok dengan nilai apa pun tapi tidak bakal mengikat 
-dirinya (bind) ke nilai tersebut. Ini berguna banget dipakai sebagai arm terakhir di 
+dirinya (bind) ke nilai tersebut. Ini sangat berguna dipakai sebagai arm terakhir di 
 dalam ekspresi `match`, tapi kita juga bisa memakainya di _pattern_ mana aja lho, 
 termasuk di parameter fungsi, kayak yang ditunjukin di Listing 19-17.
 
@@ -317,15 +317,15 @@ termasuk di parameter fungsi, kayak yang ditunjukin di Listing 19-17.
 Kode ini bakal bener-bener mengabaikan nilai `3` yang dioper sebagai argumen 
 pertama, dan dia bakal mencetak `This code only uses the y parameter: 4`.
 
-Di mayoritas kasus saat Anda udah tidak butuh suatu parameter fungsi tertentu lagi, 
-seharusnya Anda sekalian aja ngubah _signature_-nya supaya dia tidak nyertain 
+Di mayoritas kasus saat kita udah tidak butuh suatu parameter fungsi tertentu lagi, 
+seharusnya kita sekalian aja ngubah _signature_-nya supaya dia tidak nyertain 
 parameter yang tidak terpakai itu. Mengabaikan sebuah parameter fungsi bisa sangat 
-berguna banget di kasus-kasus di mana, misalnya, Anda lagi mengimplementasikan 
-sebuah trait saat Anda diwajibkan buat punya _type signature_ yang spesifik tapi 
-isi fungsinya (function body) di implementasi Anda sama sekali tidak butuh salah satu 
-parameternya. Dengan melakukan itu Anda bisa terhindar dari dapat peringatan (warning) 
+sangat berguna di kasus-kasus di mana, misalnya, kita lagi mengimplementasikan 
+sebuah trait saat kita diwajibkan buat punya _type signature_ yang spesifik tapi 
+isi fungsinya (function body) di implementasi kita sama sekali tidak butuh salah satu 
+parameternya. Dengan melakukan itu kita bisa terhindar dari dapat peringatan (warning) 
 _compiler_ tentang parameter fungsi yang tidak terpakai (unused function parameters), 
-yang mana peringatan itu bakal muncul kalau seandainya Anda malah memakai sebuah nama.
+yang mana peringatan itu bakal muncul kalau seandainya kita malah memakai sebuah nama.
 
 <a id="ignoring-parts-of-a-value-with-a-nested-_"></a>
 
@@ -351,7 +351,7 @@ lagi kosong (unset).
 
 Kode ini bakal mencetak `Can't overwrite an existing customized value` dan terus 
 `setting is Some(5)`. Di match arm yang pertama, kita tidak perlu mencocokkan atau 
-memakai nilai-nilai yang ada di dalam masing-masing varian `Some`, tapi kita beneran 
+memakai nilai-nilai yang ada di dalam masing-masing varian `Some`, tapi kita benar-benar 
 perlu buat ngetes kasus di mana `setting_value` dan `new_setting_value` dua-duanya 
 adalah varian `Some`. Di kasus itu, kita mencetak alasan kenapa kita tidak 
 mengubah `setting_value`, dan nilainya emang tidak jadi diubah.
@@ -381,13 +381,13 @@ diabaikan.
 
 #### Mengabaikan Variabel yang Tidak Terpakai dengan Mengawali Namanya Memakai `_`
 
-Kalau Anda membikin sebuah variabel tapi tidak pernah memakannya di mana pun, Rust 
+Kalau kita membikin sebuah variabel tapi tidak pernah memakannya di mana pun, Rust 
 biasanya bakal mengeluarkan peringatan (warning) karena variabel yang tidak 
 terpakai itu bisa aja merupakan sebuah _bug_. Namun, kadang-kadang itu kepake 
-banget buat bisa bikin sebuah variabel yang belum mau Anda pakai sekarang, kayak 
-pas Anda lagi nge-prototipe (_prototyping_) atau pas lagi memulai sebuah project. 
-Di situasi ini, Anda bisa ngasih tahu Rust supaya tidak ngasih peringatan ke 
-Anda soal variabel yang tidak terpakai dengan ngawalin nama variabelnya pakai 
+sekali buat bisa bikin sebuah variabel yang belum mau kita pakai sekarang, kayak 
+pas kita lagi nge-prototipe (_prototyping_) atau pas lagi memulai sebuah project. 
+Di situasi ini, kita bisa ngasih tahu Rust supaya tidak ngasih peringatan ke 
+kita soal variabel yang tidak terpakai dengan ngawalin nama variabelnya pakai 
 sebuah garis bawah (underscore). Di Listing 19-20, kita bikin dua variabel 
 yang tidak dipakai, tapi pas kita mengompilasi kode ini, kita harusnya cuma bakal 
 dapat satu peringatan aja tentang salah satunya.
@@ -457,7 +457,7 @@ koordinat `x` doang dan ngabaiin nilai-nilai yang ada di field `y` dan `z`.
 
 Kita nyebutin nilai `x` lalu setelah itu kita cuma masukin _pattern_ `..` aja. 
 Ini jauh lebih cepet daripada kita harus nulisin `y: _` dan `z: _`, terutama 
-pas kita lagi ngerjain structs yang punya banyak banget field di mana cuma ada satu 
+pas kita lagi ngerjain structs yang punya sangat banyak field di mana cuma ada satu 
 atau dua field doang yang relevan buat kita.
 
 Sintaks `..` ini bakal melebar (expand) ke seberapa banyak pun nilai yang dibutuhin. 
@@ -575,7 +575,7 @@ memperkenalkan variabel baru apa pun. `y` ini _adalah_ si `y` luar ketimbang
 sebuah `y` baru yang menimpanya, dan kita bisa nyari-nyari sebuah nilai yang punya 
 nilai yang sama kayak si `y` luar tersebut dengan membandingkan `n` ke `y`.
 
-Anda juga bisa memakai operator _or_ `|` di dalam sebuah match guard buat 
+Kita juga bisa memakai operator _or_ `|` di dalam sebuah match guard buat 
 menentukan lebih dari satu _patterns_; di mana kondisi dari match guard tersebut 
 bakal berlaku buat kesemua _patterns_-nya. Listing 19-28 nunjukin hierarki (precedence) 
 saat ngegabungin sebuah _pattern_ yang memakai `|` dengan sebuah match guard. Bagian 
@@ -657,10 +657,10 @@ ke dalam sebuah variabel dalam satu _pattern_ tunggal.
 
 ## Ringkasan
 
-_Patterns_ di Rust itu sangat berguna banget dalam membedakan (distinguishing) berbagai 
+_Patterns_ di Rust itu sangat sangat berguna dalam membedakan (distinguishing) berbagai 
 macam jenis data yang berbeda. Pas mereka dipakai di dalam ekspresi `match`, Rust 
-memastikan kalau _patterns_ Anda udah mencakup semua kemungkinan nilai yang ada, 
-karena kalau tidak program Anda tidak bakal bisa di-compile. _Patterns_ yang ada di 
+memastikan kalau _patterns_ kita udah mencakup semua kemungkinan nilai yang ada, 
+karena kalau tidak program kita tidak bakal bisa di-compile. _Patterns_ yang ada di 
 dalam statement `let` dan parameter fungsi ngebikin konstruk-konstruk tersebut jadi 
 jauh lebih berguna, memungkinkan proses memecah (_destructuring_) sebuah nilai jadi 
 bagian-bagian yang lebih kecil dan meng-assign (ngasih nilai ke) bagian-bagian itu 

@@ -28,7 +28,7 @@ Kode ini berhasil nyari tau luas persegi panjangnya dengan manggil fungsi
 `area` pake tiap dimensinya, tapi kita bisa lakuin lebih banyak lagi buat bikin 
 kode ini lebih jelas dan enak dibaca.
 
-Masalah dari kode ini keliatan banget di signature fungsi `area`:
+Masalah dari kode ini keliatan sekali di signature fungsi `area`:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch05-using-structs-to-structure-related-data/listing-05-08/src/main.rs:here}}
@@ -60,7 +60,7 @@ harus ngindeks ke bagian-bagian tuple-nya, yang bikin kalkulasi kita jadi
 kurang gamblang.
 
 Ketuker antara lebar sama tinggi nggak bakal ngaruh buat kalkulasi luas, tapi 
-kalau kita mau gambar persegi panjangnya di layar, itu baru ngaruh banget! 
+kalau kita mau gambar persegi panjangnya di layar, itu baru ngaruh sekali! 
 Kita harus terus inget kalau `width` itu indeks tuple `0` dan `height` itu 
 indeks tuple `1`. Ini bakal makin susah buat orang lain buat cari tau dan 
 diinget-inget kalau mereka mau pake kode kita. Karena kita nggak nyampein 
@@ -103,7 +103,7 @@ Ini kemenangan buat kejelasan kodenya.
 
 ### Nambahin Fungsionalitas Berguna pake Derived Traits
 
-Bakal berguna banget kalau kita bisa nyetak sebuah instance dari `Rectangle` 
+Bakal sangat berguna kalau kita bisa nyetak sebuah instance dari `Rectangle` 
 pas lagi debugging program kita dan liat nilai buat semua field-nya. Listing 5-11 
 nyoba pake [macro `println!`][println] kayak yang udah kita pake di bab-bab 
 sebelumnya. Tapi, ini nggak bakal jalan.
@@ -179,7 +179,7 @@ kita bakal liat output berikut:
 ```
 
 Mantap! Emang bukan output yang paling cakep sih, tapi dia nunjukin nilai dari 
-semua field buat instance ini, yang pasti bakal ngebantu banget pas lagi 
+semua field buat instance ini, yang pasti bakal ngebantu sekali pas lagi 
 debugging. Pas kita punya struct yang lebih gede, bakal berguna kalau punya 
 output yang sedikit lebih gampang dibaca; di kasus kayak gitu, kita bisa pake 
 `{:#?}` bukannya `{:?}` di string `println!`. Di contoh ini, pake gaya `{:#?}` 
@@ -223,7 +223,7 @@ kita lagi debugging ekspresi `30 * scale`, dan nilai hasilnya adalah `60`
 (formatting `Debug` yang diimplementasikan buat integer itu nyetak nilainya 
 doang). Pemanggilan `dbg!` di baris 14 dari _src/main.rs_ ngeluarin nilai dari 
 `&rect1`, yaitu struct `Rectangle`. Output ini pake formatting `Debug` yang 
-rapi dari tipe `Rectangle`. Macro `dbg!` ini bisa ngebantu banget pas kita 
+rapi dari tipe `Rectangle`. Macro `dbg!` ini bisa ngebantu sekali pas kita 
 lagi nyoba cari tau apa yang sebenernya lagi dilakuin kode kita!
 
 Selain trait `Debug`, Rust juga nyediain sejumlah traits buat kita pake bareng 

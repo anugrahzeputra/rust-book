@@ -6,7 +6,7 @@ kita sudah banyak ngomongin ide-ide kuncinya di sana, di bagian ini kita bakal
 fokus sama apa aja yang berbeda antara _threads_ dan _futures_.
 
 Di banyak kasus, API buat bekerja bareng konkurensi memakai asinkron itu mirip 
-banget sama yang dipakai buat _threads_. Di kasus lain, mereka jadinya lumayan 
+sekali sama yang dipakai buat _threads_. Di kasus lain, mereka jadinya lumayan 
 berbeda. Bahkan kalau API-nya _kelihatan_ mirip antara _threads_ dan asinkron, 
 mereka sering kali punya perilaku yang berbeda—dan mereka hampir selalu punya 
 karakteristik performa yang berbeda.
@@ -20,7 +20,7 @@ karakteristik performa yang berbeda.
 Operasi pertama yang kita tangani di bagian [“Membikin Thread Baru dengan 
 `spawn`”][thread-spawn]<!-- ignore --> di Bab 16 adalah menghitung angka di dua 
 _threads_ terpisah. Mari kita lakukan hal yang sama memakai asinkron. _Crate_ 
-`trpl` menyediakan fungsi `spawn_task` yang kelihatannya mirip banget sama API 
+`trpl` menyediakan fungsi `spawn_task` yang kelihatannya mirip sekali sama API 
 `thread::spawn`, dan fungsi `sleep` yang merupakan versi asinkron dari API 
 `thread::sleep`. Kita bisa memakai keduanya bersama-sama buat 
 mengimplementasikan contoh penghitungan angka tersebut, kayak yang ditunjukkan 
@@ -40,7 +40,7 @@ supaya fungsi tingkat teratas kita bisa bersifat asinkron.
 > Catatan: Mulai dari titik ini di bab ini, setiap contoh bakal menyertakan kode 
 > pembungkus yang sama persis pakai `trpl::block_on` di `main`, jadi kita bakal 
 > sering mengabaikannya (skip) sama seperti kita mengabaikan `main`. Jangan lupa 
-> buat menyertakannya di dalam kode Anda ya!
+> buat menyertakannya di dalam kode kita ya!
 
 Terus kita menulis dua _loops_ di dalam blok tersebut, masing-masing mengandung 
 pemanggilan `trpl::sleep`, yang bakal nunggu selama setengah detik (500 
@@ -49,8 +49,8 @@ isi dari `trpl::spawn_task` dan satu lagi di dalam _loop_ `for` tingkat teratas.
 Kita juga nambahin `await` setelah pemanggilan `sleep`.
 
 Kode ini berperilaku mirip sama implementasi berbasis _thread_—termasuk fakta 
-bahwa Anda mungkin bakal melihat pesan-pesannya muncul dalam urutan yang berbeda 
-di terminal Anda pas Anda menjalankannya:
+bahwa kita mungkin bakal melihat pesan-pesannya muncul dalam urutan yang berbeda 
+di terminal kita pas kita menjalankannya:
 
 <!-- Not extracting output because changes to this output aren't significant;
 the changes are likely to be due to the threads running differently rather than
@@ -70,8 +70,8 @@ hi number 5 from the first task!
 
 Versi ini bakal berhenti begitu _loop_ `for` di dalam isi blok asinkron utamanya 
 selesai, karena _task_ yang ditelurkan sama `spawn_task` bakal dimatikan pas 
-fungsi `main` berakhir. Kalau Anda pengen _task_ tersebut jalan sampai kelar, 
-Anda perlu memakai _join handle_ buat nungguin _task_ pertamanya selesai. Pas 
+fungsi `main` berakhir. Kalau kita pengen _task_ tersebut jalan sampai kelar, 
+kita perlu memakai _join handle_ buat nungguin _task_ pertamanya selesai. Pas 
 pakai _threads_, kita memakai method `join` buat "memblokir" sampai _thread_-nya 
 selesai jalan. Di Listing 17-7, kita bisa memakai `await` buat ngelakuin hal yang 
 sama, karena _task handle_ itu sendiri adalah sebuah _future_. Tipe `Output`-nya 
@@ -120,10 +120,10 @@ menyuruh _runtime_ menjalankan keduanya sampai selesai memakai fungsi
 
 Di bagian [“Menunggu Semua Thread sampai Selesai”][join-handles]<!-- ignore --> 
 di Bab 16, kita menunjukkan gimana cara memakai method `join` pada tipe 
-`JoinHandle` yang dikembalikan pas Anda memanggil `std::thread::spawn`. Fungsi 
-`trpl::join` itu mirip, tapi buat _futures_. Pas Anda ngasih dia dua _futures_, 
+`JoinHandle` yang dikembalikan pas kita memanggil `std::thread::spawn`. Fungsi 
+`trpl::join` itu mirip, tapi buat _futures_. Pas kita ngasih dia dua _futures_, 
 dia bakal memproduksi satu _future_ baru yang output-nya adalah sebuah _tuple_ 
-berisi output dari tiap _future_ yang Anda masukkan tadi begitu _keduanya_ 
+berisi output dari tiap _future_ yang kita masukkan tadi begitu _keduanya_ 
 selesai. Jadi, di Listing 17-8, kita memakai `trpl::join` buat nungguin baik 
 `fut1` maupun `fut2` sampai selesai. Kita *tidak* me-_await_ `fut1` dan `fut2` 
 melainkan me-_await_ _future_ baru yang dihasilkan sama `trpl::join`. Kita 
@@ -159,8 +159,8 @@ hi number 8 from the first task!
 hi number 9 from the first task!
 ```
 
-Nah, Anda bakal melihat urutan yang sama persis di tiap jalannya, yang mana 
-berbeda banget sama apa yang kita lihat di _threads_ dan di `trpl::spawn_task` 
+Nah, kita bakal melihat urutan yang sama persis di tiap jalannya, yang mana 
+berbeda sekali sama apa yang kita lihat di _threads_ dan di `trpl::spawn_task` 
 di Listing 17-7. Itu gara-gara fungsi `trpl::join` ini sifatnya _adil_ (fair), 
 yang artinya dia mengecek tiap _future_ dengan frekuensi yang sama, ganti-
 gantian di antara mereka, dan tidak pernah membiarkan satu pun balapan (race) 
@@ -172,7 +172,7 @@ sebuah _async runtime_ mungkin memakai _threads_ sistem operasi di balik layar
 sebagai bagian dari caranya mengelola konkurensi, jadi menjamin keadilan bisa 
 jadi kerjaan ekstra buat sebuah _runtime_—tapi tetap mungkin kok!) _Runtimes_ 
 tidak diwajibkan buat menjamin keadilan buat sembarang operasi, dan mereka 
-sering kali menawarkan API yang berbeda-beda biar Anda bisa milih mau yang adil 
+sering kali menawarkan API yang berbeda-beda biar kita bisa milih mau yang adil 
 atau nggak.
 
 Cobain deh beberapa variasi me-_await_ _futures_ ini dan lihat apa yang mereka 
@@ -184,7 +184,7 @@ lakukan:
   hasilnya setelah isi dari _loop_ kedua.
 
 Buat tantangan ekstra, coba deh tebak bakal kayak apa output-nya di tiap kasus 
-_sebelum_ Anda menjalankan kodenya!
+_sebelum_ kita menjalankan kodenya!
 
 <!-- Old headings. Do not remove or links may break. -->
 
@@ -232,7 +232,7 @@ yang kita pakai buat mengirim ini sifatnya *unbounded* (tidak dibatasi).
 > pemanggilan `trpl::block_on`, semua hal di dalamnya bisa menghindari memblokir. 
 > Namun, kode di *luar* blok tersebut bakal memblokir pada saat fungsi 
 > `block_on` dikembalikan. Itulah poin utama dari fungsi `trpl::block_on`: ia 
-> membiarkan Anda *memilih* di mana harus memblokir pada sekumpulan kode 
+> membiarkan kita *memilih* di mana harus memblokir pada sekumpulan kode 
 inkron, dan dengan begitu bisa bertransisi antara kode sinkron dan asinkron.
 
 Perhatikan dua hal soal contoh ini. Pertama, pesannya bakal tiba seketika itu 
@@ -288,7 +288,7 @@ Kodenya sekarang berhasil mengirim dan menerima semua pesan tersebut.
 Sayangnya, masih ada beberapa masalah. Salah satunya, pesan-pesannya tidak tiba 
 dalam interval setengah detik. Mereka tiba semuanya sekaligus, 2 detik (2.000 
 milidetik) setelah kita menyalakan programnya. Terus, program ini juga tidak 
-pernah berakhir! Sebaliknya, ia menunggu selamanya buat pesan baru. Anda bakal 
+pernah berakhir! Sebaliknya, ia menunggu selamanya buat pesan baru. Kita bakal 
 perlu mematikannya memakai <kbd>ctrl</kbd>-<kbd>C</kbd>.
 
 #### Kode di Dalam Satu Blok Asinkron Dieksekusi secara Linear
@@ -353,7 +353,7 @@ Saat ini, blok asinkron tempat kita mengirim pesannya cuma *meminjam* `tx`
 karena mengirim pesan tidak mewajibkan adanya kepemilikan, tapi kalau seandainya 
 kita bisa *memindahkan* (`move`) `tx` ke dalam blok asinkron tersebut, dia bakal 
 di-_drop_ begitu blok itu berakhir. Di Bab 13 di bagian [“Menangkap Referensi 
-atau Memindahkan Kepemilikan”][capture-or-move]<!-- ignore -->, Anda sudah 
+atau Memindahkan Kepemilikan”][capture-or-move]<!-- ignore -->, kita sudah 
 mempelajari cara memakai keyword `move` bersama _closures_, dan, seperti yang 
 dibahas di bagian [“Memakai `move` Closures bersama Threads”][move-threads]<!-- 
 ignore --> di Bab 16, kita sering kali perlu memindahkan data ke dalam 

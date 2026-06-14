@@ -15,7 +15,7 @@ bersaing mengenai apa itu OOP, dan berdasarkan beberapa dari definisi-definisi
 tersebut Rust bisa dibilang berorientasi objek, tapi berdasarkan definisi 
 lainnya dia bukan. Di bab ini, kita bakal mengeksplorasi ciri-ciri tertentu 
 yang umumnya dianggap berorientasi objek dan gimana ciri-ciri itu diterjemahkan 
-(translated) ke Rust yang idiomatik. Kita lalu bakal menunjukkan ke Anda gimana 
+(translated) ke Rust yang idiomatik. Kita lalu bakal menunjukkan ke kita gimana 
 cara mengimplementasikan sebuah desain pola (_design pattern_) berorientasi objek 
 di Rust dan membahas _trade-offs_ (kelebihan dan kekurangan) dari melakukannya 
 dibandingkan dengan mengimplementasikan solusi yang memanfaatkan kekuatan-

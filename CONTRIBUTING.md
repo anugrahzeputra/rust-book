@@ -1,6 +1,6 @@
 # Berkontribusi (Contributing)
 
-Kami bakal senang banget dapat bantuan Anda! Makasih ya udah peduli sama buku ini.
+Kami bakal sangat senang dapat bantuan kita! Makasih ya udah peduli sama buku ini.
 
 ## Di Mana Harus Mengedit
 
@@ -18,16 +18,16 @@ Kita menggunakan [`rustfmt`][rustfmt] untuk menerapkan gaya pemformatan standar 
 [rustfmt]: https://github.com/rust-lang/rustfmt
 [dprint]: https://dprint.dev
 
-Anda pada umumnya otomatis punya `rustfmt` yang sudah terpasang (installed) andaikata 
-Anda udah memasang komponen _toolchain_ Rust; tapi kalau misal Anda ternyata belum 
-punya salinan aplikasi `rustfmt`, Anda bisa menambahkan perkakas ini dengan menjalankan 
+kita pada umumnya otomatis punya `rustfmt` yang sudah terpasang (installed) andaikata 
+kita udah memasang komponen _toolchain_ Rust; tapi kalau misal kita ternyata belum 
+punya salinan aplikasi `rustfmt`, kita bisa menambahkan perkakas ini dengan menjalankan 
 perintah berikut:
 
 ```sh
 rustup component add rustfmt
 ```
 
-Buat menginstal `dprint`, Anda bisa menjalankan perintah ini:
+Buat menginstal `dprint`, kita bisa menjalankan perintah ini:
 
 ```sh
 cargo install dprint
@@ -38,8 +38,8 @@ web `dprint`.
 
 [install-dprint]: https://dprint.dev/install/
 
-Buat memformat kode Rust, Anda bisa menjalankan perintah `rustfmt <path to file>` 
-(jalur ke file), dan untuk memformat file-file lainnya, Anda bisa mengoper 
+Buat memformat kode Rust, kita bisa menjalankan perintah `rustfmt <path to file>` 
+(jalur ke file), dan untuk memformat file-file lainnya, kita bisa mengoper 
 perintah `dprint fmt <path to file>`. Mayoritas teks _editors_ pada umumnya juga udah 
 punya dukungan bawaan (*native*) maupun fitur ekstensi tambahan untuk `rustfmt` dan 
 sekaligus `dprint`.
@@ -47,7 +47,7 @@ sekaligus `dprint`.
 ## Mengecek Ketersediaan Perbaikan (Checking for Fixes)
 
 Sirkulasi buku ini ngebuntut di atas gerbong jadwal _release trains_ (kereta perilisan) Rust. 
-Oleh karena itu, kalau Anda kebetulan menjumpai ada sebuah masalah mampang di link 
+Oleh karena itu, kalau kita kebetulan menjumpai ada sebuah masalah mampang di link 
 https://doc.rust-lang.org/stable/book, besar kemungkinan masalah tersebut mungkin emang 
 udah lebih dulu diberesin (fixed) dan nangkring dengan status beres di *branch* `main` dari repo 
 ini, tapi cuma aja status perbaikannya ini emang belum resmi mbrojol ngelewatin silsilah rute 
@@ -57,7 +57,7 @@ nightly -> beta -> stable doang. Jadi mohon dicek terlebih dahulu ya isi dahan *
 Ngintip catatan _history_ (riwayat) buat suatu _file_ tertentu secara spesifik juga bisa 
 ngasih suguhan ekstra info (more information) seputar ngasih kejelasan entah apakah dan 
 gimana rute status sebuah *issue* tersebut udah diberesin atau belum kalau umpamanya 
-Anda emang lagi penasaran nyari tahu soal itu (trying to figure that out).
+kita emang lagi penasaran nyari tahu soal itu (trying to figure that out).
 
 Dimohon juga untuk rajin-rajin nyempatin diri buat nyari menelusuri (*search*) tumpukan 
 *issues* sama PR (Pull Requests) yang statusnya masih kebuka (_open_) maupun yang udah ketutup 
@@ -67,7 +67,7 @@ Dimohon juga untuk rajin-rajin nyempatin diri buat nyari menelusuri (*search*) t
 ## Lisensi (Licensing)
 
 Repositori ini bernaung di bawah payung bendera lisensi yang sama persis kayak si Rust itu 
-sendiri, yaitu MIT/Apache2. Anda bisa nemuin salinan lengkap draf utuh dari teks kedua lisensi 
+sendiri, yaitu MIT/Apache2. Kita bisa nemuin salinan lengkap draf utuh dari teks kedua lisensi 
 tersebut di balik berkas file-file `LICENSE-*` yang terpajang di repo ini.
 
 ## Pedoman Perilaku (Code of Conduct)
@@ -82,9 +82,9 @@ Mengingat bahwa versi draf buku ini itu [dicetak][nostarch] (printed), dan
 mengingat bahwa kami ini punya niat sungguh-sungguh buat sebisa mungkin ngejaga isi konten 
 versi _online_ buku ini supaya tetep sinkron sejajar sedekat mungkin bareng isi konten dari versi 
 cetaknya andaikata memungkinkan (when possible), proses dan penanganan (_address_) terhadap 
-urutan laporan *issue* maupun tumpukan *pull request* yang Anda lempar barangkali bisa 
+urutan laporan *issue* maupun tumpukan *pull request* yang kita lempar barangkali bisa 
 saja memakan tempo kelang waktu pengerjaan yang rasanya agak sedikit kelewat jauh lebih lama (_longer_) 
-dari yang sewajarnya biasa Anda tungguin.
+dari yang sewajarnya biasa kita tungguin.
 
 [nostarch]: https://nostarch.com/rust-programming-language-2nd-edition
 
@@ -93,16 +93,16 @@ skala raksasa gede-gedean (larger revision) supaya sengaja pas selaras nge-pas b
 _coincide_ beririsan seiringan nyambut dengan peluncuran momentum pergantian musim wujud [Rust Editions](https://doc.rust-lang.org/edition-guide/). 
 Nah, pada jeda senggang sela waktu yang menyempil di antara musim-musim revisi raksasa tersebut (between those larger revisions), 
 kami murni cuma bakal ngelakuin aksi pembenahan ralat error-error (correcting errors) sepele. 
-Jadinya misal andaikata emang tumpukan *issue* atau draf *pull request* ajuan Anda ini isinya emang 
+Jadinya misal andaikata emang tumpukan *issue* atau draf *pull request* ajuan kita ini isinya emang 
 bukan murni strictly (*strictly*) perihal ngebenerin status murni _error_ (fixing an error), laporannya 
 ini besar peluangnya emang mungkin cuma dibiarin aja bakal ngendon diantrikan di pojok bangku penantian 
 sampai masa datangnya waktu kelak (next time) pas giliran sirkulasi momentum jadwal kami balik lagi terjun berjibaku ngerjain edisi (_larger revision_) revisi raksasa yang berikutnya: kasaran perhitungannya sih ya (_expect_) 
 bisa makan tempo waktu (on the order of) sampe kisaran sekian bilangan deretan bulan atau malah mungkin memakan hitungan deretan angka sekelas tahunan (years). Kami amat sanjung haturin apresiasi banyak-banyak (_Thank you_) 
-terima kasih atas asupan ekstra porsi sabarnya Anda (your patience)!
+terima kasih atas asupan ekstra porsi sabarnya kita (your patience)!
 
 ## Butuh Bantuan Tambahan (Help wanted)
 
-Seandainya kalau kebetulan (If) Anda ini emang lagi pada iseng nyari celah pintu-pintu (*ways to help*) 
+Seandainya kalau kebetulan (If) kita ini emang lagi pada iseng nyari celah pintu-pintu (*ways to help*) 
 buat bisa ikut nimbrung mampir bantu andil (help) tapi tanpa ngewajibin tanpa ada andil pengerahan campur urusan repot ngabisin ngetik apalagi buat (_don't involve_) 
 kudu ngolah melahap ngebaca plus nulis bahan bacaan asupan _reading or writing_ dalam takaran kargo porsi raksasa (large amounts), silakan coba tengok kunjungi mampir nengok (_check out_) 
 daftar kepingan [*open issues* (laporan bermasalah) yang nangkring dibelay disematin label nama tempelan mampang berjuluk E-help-wanted][help-wanted]. 

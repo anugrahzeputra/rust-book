@@ -132,7 +132,7 @@ dan sebuah _trait bound_, seperti di Listing 18-6.
 </Listing>
 
 Cara ini membatasi kita pada satu instance `Screen` yang punya daftar komponen yang 
-semuanya bertipe `Button` atau semuanya bertipe `TextField`. Kalau Anda emang 
+semuanya bertipe `Button` atau semuanya bertipe `TextField`. Kalau kita emang 
 cuma bakal punya koleksi yang homogen (sama semua jenisnya), memakai generik 
 dan _trait bounds_ lebih disarankan karena definisi-definisinya bakal 
 di-_monomorphize_ (diubah ke tipe spesifik) saat _compile time_ buat memakai 
@@ -258,9 +258,9 @@ dilakukan pada tipe generik oleh _compiler_: _compiler_ membikin (generates)
 implementasi fungsi dan method yang non-generik (spesifik) buat setiap tipe konkret 
 yang kita pakai buat gantiin parameter tipe generik tersebut. Kode hasil dari 
 _monomorphization_ ini melakukan _static dispatch_ (pengiriman statis), yaitu 
-ketika _compiler_ sudah tahu method apa yang Anda panggil saat _compile time_. 
+ketika _compiler_ sudah tahu method apa yang kita panggil saat _compile time_. 
 Ini berlawanan dengan _dynamic dispatch_ (pengiriman dinamis), yaitu ketika 
-_compiler_ tidak bisa tahu pasti pas _compile time_ method mana yang Anda panggil. 
+_compiler_ tidak bisa tahu pasti pas _compile time_ method mana yang kita panggil. 
 Di kasus _dynamic dispatch_, _compiler_ menghasilkan (emits) kode yang saat _runtime_ 
 baru bakal mencari tahu method mana yang harus dipanggil.
 
@@ -273,10 +273,10 @@ harus dipanggil. Pencarian (_lookup_) ini menimbulkan beban _runtime_ (runtime
 cost) yang tidak terjadi pada _static dispatch_. _Dynamic dispatch_ juga mencegah 
 _compiler_ dari memilih buat meng-_inline_ (menyisipkan kode secara langsung) 
 kode dari sebuah method, yang mana berakibat mencegah (prevents) dilakukannya 
-beberapa optimasi lain. Rust juga punya beberapa aturan soal di mana Anda boleh 
+beberapa optimasi lain. Rust juga punya beberapa aturan soal di mana kita boleh 
 dan tidak boleh memakai _dynamic dispatch_, yang disebut _dyn compatibility_ 
 (kompatibilitas dinamis). Aturan-aturan itu ada di luar cakupan pembahasan ini, 
-tapi Anda bisa baca lebih lanjut soal itu [di referensinya][dyn-compatibility]. 
+tapi kita bisa baca lebih lanjut soal itu [di referensinya][dyn-compatibility]. 
 Namun, kita dapat kebebasan ekstra (extra flexibility) di dalam kode yang kita tulis 
 di Listing 18-5 dan berhasil mendukung tipe baru di Listing 18-9, jadi ini adalah 
 _trade-off_ (pertukaran) yang patut dipertimbangkan.

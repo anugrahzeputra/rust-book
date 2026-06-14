@@ -105,7 +105,7 @@ Tapi ini agak nyebelin buat diikutin dengan caranya sendiri! Satu cabang dari
 
 Buat bikin pola umum ini lebih enak buat diekspresikan, Rust punya `let...else`. 
 Sintaks `let...else` nerima sebuah pattern di sisi kiri dan sebuah ekspresi di 
-sisi kanan, mirip banget sama `if let`, tapi dia nggak punya cabang `if`, cuma 
+sisi kanan, mirip sekali sama `if let`, tapi dia nggak punya cabang `if`, cuma 
 cabang `else`. Kalau pattern-nya cocok, dia bakal nge-bind nilai dari pattern 
 ke _scope_ luar. Kalau pattern-nya _nggak_ cocok, programnya bakal ngalir ke 
 dalem arm `else`, yang harus _return_ (kembali) dari fungsinya.

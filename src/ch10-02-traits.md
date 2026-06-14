@@ -290,7 +290,7 @@ Dengan dua _trait bounds_ yang ditentukan, body dari `notify` bisa memanggil
 
 Memakai terlalu banyak _trait bounds_ ada sisi negatifnya. Masing-masing generik 
 punya _trait bounds_-nya sendiri, jadi fungsi dengan banyak parameter tipe generik 
-bisa mengandung banyak banget informasi _trait bound_ di antara nama fungsi dan 
+bisa mengandung sangat banyak informasi _trait bound_ di antara nama fungsi dan 
 daftar parameternya, yang mana bisa bikin _signature_ fungsinya jadi susah 
 dibaca. Karena alasan ini, Rust punya sintaks alternatif buat menentukan 
 _trait bounds_ di dalam sebuah klausa `where` setelah _signature_ fungsinya. 
@@ -374,7 +374,7 @@ memungkinkan untuk dicetak).
 Kita juga bisa mengimplementasikan secara bersyarat sebuah _trait_ buat tipe apa 
 pun yang mengimplementasikan _trait_ lain. Implementasi sebuah _trait_ pada 
 tipe apa pun yang memenuhi _trait bounds_-nya disebut sebagai _blanket 
-implementations_ (implementasi selimut) dan ini banyak banget dipakai di _standard 
+implementations_ (implementasi selimut) dan ini sangat banyak dipakai di _standard 
 library_ Rust. Misalnya, _standard library_ mengimplementasikan _trait_ `ToString` 
 pada tipe apa pun yang mengimplementasikan _trait_ `Display`. Blok `impl` di 
 _standard library_ keliatan mirip kayak kode ini:

@@ -87,7 +87,7 @@ help: there is a method `try_next` with a similar name
 
 Sesuai penjelasan output ini, alasan error _compiler_-nya adalah karena kita 
 butuh trait yang tepat berada di dalam _scope_ supaya bisa memakai method 
-`next`. Mengingat pembahasan kita sejauh ini, Anda mungkin secara wajar 
+`next`. Mengingat pembahasan kita sejauh ini, kita mungkin secara wajar 
 berekspektasi kalau trait tersebut adalah `Stream`, tapi sebenarnya ia adalah 
 `StreamExt`. Singkatan dari _extension_ (ekstensi), `Ext` adalah pola yang umum 
 di komunitas Rust buat memperluas satu trait dengan trait lainnya.

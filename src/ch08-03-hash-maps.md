@@ -7,7 +7,7 @@ memori. Banyak bahasa pemrograman support struktur data jenis ini, tapi mereka
 sering pake nama yang beda-beda, kayak _hash_, _map_, _object_, _hash table_, 
 _dictionary_, atau _associative array_, buat nyebut beberapa di antaranya.
 
-Hash maps berguna banget pas kita mau nyari data bukan pake indeks, kayak yang 
+Hash maps sangat berguna pas kita mau nyari data bukan pake indeks, kayak yang 
 kita lakuin pake vectors, tapi pake _key_ yang tipenya bisa apa aja. Misalnya, 
 di dalem game, kita bisa nyatet skor tiap tim di dalem hash map di mana tiap 
 _key_-nya adalah nama timnya dan nilainya adalah skor tiap tim. Kalo kita punya 
@@ -141,7 +141,7 @@ Kode ini bakal nyetak `{"Blue": 25}`. Nilai asli `10` udah ditindih.
 
 #### Nambahin Key dan Nilai Cuma Kalau Key-nya Belum Ada
 
-Sering banget kita mau nge-cek apakah sebuah key tertentu udah ada di hash map 
+Sering sekali kita mau nge-cek apakah sebuah key tertentu udah ada di hash map 
 dengan suatu nilai terus ngambil tindakan berikut: kalau key itu emang udah ada 
 di hash map, nilai yang udah ada biarin aja kayak gitu; kalau key-nya belum ada, 
 _insert_ key itu bareng nilainya.
@@ -210,7 +210,7 @@ Secara default, `HashMap` pake fungsi hashing namanya _SipHash_ yang bisa ngasih
 ketahanan dari serangan _denial-of-service (DoS)_ yang ngelibatin _hash 
 tables_[^siphash]. Ini bukan algoritma hashing paling cepet yang ada, tapi 
 _trade-off_ buat keamanan yang lebih baik dengan sedikit penurunan performa 
-itu sepadan banget. Kalau kita nge-_profile_ kode kita dan ngerasa kalau 
+itu sepadan sekali. Kalau kita nge-_profile_ kode kita dan ngerasa kalau 
 fungsi hash default-nya terlalu lambat buat tujuan kita, kita bisa ganti ke 
 fungsi lain dengan nentuin _hasher_ yang beda. Sebuah _hasher_ adalah tipe yang 
 mengimplementasikan trait `BuildHasher`. Kita bakal bahas traits dan cara 
@@ -230,7 +230,7 @@ ada beberapa latihan yang sekarang harusnya udah bisa kita selesein:
 
 1. Dikasih sekumpulan integer, pake sebuah vector dan balikin median (pas 
    diurutin, nilai di posisi tengah) sama modus (nilai yang paling sering 
-   muncul; hash map bakal ngebantu banget di sini) dari sekumpulan nilai itu.
+   muncul; hash map bakal ngebantu sekali di sini) dari sekumpulan nilai itu.
 1. Convert strings ke _pig latin_. Konsonan pertama dari tiap kata dipindah ke 
    akhir kata terus ditambahin _ay_, jadi _first_ jadi _irst-fay_. Kata-kata 
    yang diawali sama huruf vokal ditambahin _hay_ di akhirnya (_apple_ jadi 
@@ -242,7 +242,7 @@ ada beberapa latihan yang sekarang harusnya udah bisa kita selesein:
    atau semua orang di perusahaan berdasarkan departemen, diurutin secara alfabet.
 
 Dokumentasi API _standard library_ ngejelasin method-method yang dipunyai sama 
-vectors, strings, sama hash maps yang bakal ngebantu banget buat latihan-
+vectors, strings, sama hash maps yang bakal ngebantu sekali buat latihan-
 latihan ini!
 
 Kita lagi masuk ke program-program yang lebih kompleks di mana operasi bisa aja 

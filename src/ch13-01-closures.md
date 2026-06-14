@@ -242,7 +242,7 @@ ini setelah ia dipanggil, jadi peminjaman _mutable_ itu pun berakhir. Di antara
 definisi _closure_ dan pemanggilannya, kita tidak diizinkan buat melakukan 
 peminjaman _immutable_ untuk mencetaknya karena peminjaman lain tidak 
 diperbolehkan selama masih ada peminjaman _mutable_. Coba tambahkan `println!` 
-di situ buat melihat pesan error apa yang bakal Anda dapatkan!
+di situ buat melihat pesan error apa yang bakal kita dapatkan!
 
 Kalau kita mau memaksa _closure_ buat mengambil _ownership_ dari nilai yang dia 
 pakai dari lingkungannya, biarpun isi _closure_-nya sebenarnya tidak 
@@ -361,7 +361,7 @@ batasan bahwa `unwrap_or_else` cuma bakal memanggil `f` maksimal satu kali saja.
 Di dalam isi `unwrap_or_else`, kita bisa melihat kalau `Option`-nya itu `Some`, 
 `f` tidak bakal dipanggil. Kalau `Option`-nya itu `None`, `f` bakal dipanggil 
 sekali. Karena semua _closures_ mengimplementasikan `FnOnce`, `unwrap_or_else` 
-bisa menerima ketiga jenis _closures_ dan dia fleksibel banget.
+bisa menerima ketiga jenis _closures_ dan dia fleksibel sekali.
 
 > Catatan: Kalau hal yang mau kita lakukan tidak mewajibkan kita menangkap 
 > nilai dari lingkungannya, kita bisa aja memakai nama sebuah fungsi sebagai 

@@ -1,7 +1,7 @@
 # Membuat Game Tebak Angka
 
 Yuk, kita langsung terjun ke Rust dengan ngerjain project bareng-bareng! Di bab 
-ini, kita bakal kenalan sama beberapa konsep umum di Rust lewat program beneran. 
+ini, kita bakal kenalan sama beberapa konsep umum di Rust lewat program benar-benar. 
 Kita bakal belajar soal `let`, `match`, methods, associated functions, external 
 crates, dan banyak lagi! Di bab-bab selanjutnya, kita bakal bahas konsep ini 
 lebih dalem. Tapi buat sekarang, kita latihan yang basic-basic dulu ya.
@@ -59,7 +59,7 @@ perintah `cargo run`:
 {{#include ../listings/ch02-guessing-game-tutorial/no-listing-01-cargo-new/output.txt}}
 ```
 
-Perintah `run` ini kepake banget pas kita butuh iterasi cepet di sebuah project, 
+Perintah `run` ini kepake sekali pas kita butuh iterasi cepet di sebuah project, 
 kayak di game ini nanti, buat ngetes tiap perubahan sebelum lanjut ke langkah 
 berikutnya.
 
@@ -256,7 +256,7 @@ bakal dapet warning:
 Rust ngasih tau kalau kita nggak pake nilai `Result` yang dibalikin sama 
 `read_line`, yang nunjukin kalau programnya belum handle kemungkinan error.
 
-Cara yang bener buat ilangin warning itu adalah dengan beneran nulis kode 
+Cara yang bener buat ilangin warning itu adalah dengan benar-benar nulis kode 
 error-handling, tapi dalam kasus kita, kita cuma mau nge-_crash_-in program ini 
 pas ada masalah, jadi kita bisa pake `expect`. Kita bakal belajar soal cara 
 bangkit dari error di [Bab 9][recover].
@@ -495,7 +495,7 @@ kita tentuin.
 
 Masih banyak lagi hal soal [Cargo][doccargo] dan [ekosistemnya][doccratesio] 
 yang bakal kita bahas di Bab 14, tapi buat sekarang, itu aja yang perlu kita 
-tau. Cargo bikin kita gampang banget buat reuse library, jadi para Rustacean 
+tau. Cargo bikin kita gampang sekali buat reuse library, jadi para Rustacean 
 bisa nulis project kecil yang disusun dari banyak packages.
 
 ### Menghasilkan Angka Random
@@ -694,7 +694,7 @@ Jadi sekarang perbandingannya bakal terjadi antara dua nilai dengan tipe yang
 sama!
 
 Method `parse` cuma bakal kerja pada karakter yang logisnya bisa di-convert jadi 
-angka, jadi dia gampang banget bikin error. Kalau misalnya string-nya isinya 
+angka, jadi dia gampang sekali bikin error. Kalau misalnya string-nya isinya 
 `A👍%`, nggak bakal ada cara buat convert itu jadi angka. Karena dia mungkin 
 gagal, method `parse` balikin tipe `Result`, mirip kayak method `read_line` (yang 
 udah dibahas tadi di [“Menangani Potensi Gagal dengan `Result`”](#handling-potential-failure-with-the-result-type)). 

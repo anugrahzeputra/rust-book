@@ -100,7 +100,7 @@ sintaks _lifetime_.
 
 Bahasa pemrograman lain biasanya tidak mengharuskan kita buat menghubungkan 
 argumen dengan nilai kembalian di *signature*-nya, tapi praktik ini bakal 
-terasa lebih mudah seiring berjalannya waktu. Anda mungkin mau membandingkan 
+terasa lebih mudah seiring berjalannya waktu. Kita mungkin mau membandingkan 
 contoh ini dengan contoh-contoh di bagian [“Memvalidasi Referensi dengan 
 Lifetimes”][validating-references-with-lifetimes] di Bab 10.
 
@@ -121,7 +121,7 @@ baris-baris.
 
 #### Iterasi Melewati Baris dengan Method `lines`
 
-Rust punya method yang membantu banget buat menangani iterasi baris per baris 
+Rust punya method yang membantu sekali buat menangani iterasi baris per baris 
 dari strings, dinamai dengan nama yang nyaman yaitu `lines`, yang bekerja seperti 
 yang ditunjukkan di Listing 12-17. Perhatikan kalau kode ini belum bisa di-compile.
 
@@ -222,7 +222,7 @@ input dan output file, _lifetimes_, pengujian, dan penguraian *command line*.
 
 Buat melengkapi project ini, kita bakal mendemonstrasikan secara singkat gimana 
 cara berurusan dengan _environment variables_ (variabel lingkungan) dan gimana 
-cara mencetak pesan ke *standard error*, yang mana keduanya berguna banget pas 
+cara mencetak pesan ke *standard error*, yang mana keduanya sangat berguna pas 
 kita lagi nulis program *command line*.
 
 [validating-references-with-lifetimes]: ch10-03-lifetime-syntax.html#validating-references-with-lifetimes

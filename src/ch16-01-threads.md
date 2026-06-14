@@ -2,14 +2,14 @@
 
 Di sebagian besar sistem operasi saat ini, kode dari sebuah program yang 
 dieksekusi dijalankan di dalam sebuah _process_ (proses), dan sistem operasi 
-bakal mengelola banyak proses sekaligus. Di dalam sebuah program, Anda juga 
+bakal mengelola banyak proses sekaligus. Di dalam sebuah program, kita juga 
 bisa punya bagian-bagian independen yang berjalan secara bersamaan 
 (simultaneously). Fitur yang menjalankan bagian-bagian independen ini 
 disebut _threads_ (utas). Misalnya, sebuah _web server_ bisa punya banyak 
 _threads_ sehingga ia bisa merespons lebih dari satu _request_ (permintaan) 
 di saat yang bersamaan.
 
-Memecah komputasi di program Anda menjadi banyak _threads_ buat menjalankan 
+Memecah komputasi di program kita menjadi banyak _threads_ buat menjalankan 
 banyak tugas di saat yang bersamaan bisa meningkatkan performa, tapi ini juga 
 menambahkan kerumitan (complexity). Karena _threads_ bisa berjalan secara 
 bersamaan, tidak ada jaminan bawaan (inherent guarantee) tentang urutan bagian 
@@ -77,13 +77,13 @@ hi number 5 from the spawned thread!
 Pemanggilan ke `thread::sleep` memaksa sebuah _thread_ buat menghentikan 
 eksekusinya untuk durasi yang singkat, memungkinkan _thread_ lain buat berjalan. 
 _Threads_ tersebut kemungkinan bakal berjalan bergantian, tapi itu tidak dijamin: 
-itu bergantung sama gimana sistem operasi Anda menjadwalkan (_schedules_) 
+itu bergantung sama gimana sistem operasi kita menjadwalkan (_schedules_) 
 _threads_ tersebut. Di jalannya (run) kali ini, _main thread_ mencetak duluan, 
 meskipun *statement print* dari _spawned thread_ muncul duluan di kodenya. Dan 
 walaupun kita menyuruh _spawned thread_ buat mencetak sampai `i` itu `9`, ia cuma 
 sampai ke `5` sebelum _main thread_ dimatikan.
 
-Kalau Anda menjalankan kode ini dan cuma melihat output dari _main thread_, atau 
+Kalau kita menjalankan kode ini dan cuma melihat output dari _main thread_, atau 
 tidak melihat tumpang tindih (overlap) apa pun, coba naikkan angka di rentangnya 
 (ranges) buat membikin lebih banyak kesempatan buat sistem operasi beralih di 
 antara _threads_ tersebut.
@@ -181,7 +181,7 @@ hi number 4 from the main thread!
 ```
 
 Detail-detail kecil, kayak di mana `join` itu dipanggil, bisa memengaruhi apakah 
-_threads_ Anda berjalan secara bersamaan atau tidak.
+_threads_ kita berjalan secara bersamaan atau tidak.
 
 ### Memakai Closures `move` bersama Threads
 
@@ -199,7 +199,7 @@ pun dari _main thread_ di dalam kode milik _spawned thread_. Buat memakai
 data dari _main thread_ di dalam _spawned thread_, _closure_ si _spawned thread_ 
 harus menangkap (capture) nilai-nilai yang dia butuhkan. Listing 16-3 
 menunjukkan usaha buat membikin sebuah vector di _main thread_ dan memakainya 
-di dalam _spawned thread_. Namun, ini belum bisa jalan, seperti yang bakal Anda 
+di dalam _spawned thread_. Namun, ini belum bisa jalan, seperti yang bakal kita 
 lihat sebentar lagi.
 
 <Listing number="16-3" file-name="src/main.rs" caption="Usaha buat memakai sebuah vector yang dibikin oleh _main thread_ di dalam _thread_ lainnya">

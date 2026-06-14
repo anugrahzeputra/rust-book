@@ -17,13 +17,13 @@ serangkaian alat yang sangat kuat buat membantu mengelola keamanan memori
 _dan_ masalah konkurensi! Dengan memanfaatkan _ownership_ dan pengecekan tipe 
 (type checking), banyak error konkurensi di Rust bakal menjadi error 
 _compile-time_ (saat kompilasi) ketimbang error _runtime_. Oleh karena itu, 
-ketimbang membiarkan Anda menghabiskan banyak waktu mencoba mereka ulang 
+ketimbang membiarkan kita menghabiskan banyak waktu mencoba mereka ulang 
 kondisi persis di mana sebuah _bug_ konkurensi _runtime_ terjadi, kode yang 
 salah bakal menolak untuk di-compile dan menyajikan error yang menjelaskan 
-masalahnya. Sebagai hasilnya, Anda bisa memperbaiki kode Anda saat Anda sedang 
+masalahnya. Sebagai hasilnya, kita bisa memperbaiki kode kita saat kita sedang 
 mengerjakannya, bukannya nanti setelah kodenya dikirim ke tahap produksi. 
 Kita menjuluki aspek dari Rust ini sebagai _fearless concurrency_ (konkurensi 
-tanpa rasa takut). _Fearless concurrency_ memungkinkan Anda buat menulis kode 
+tanpa rasa takut). _Fearless concurrency_ memungkinkan kita buat menulis kode 
 yang bebas dari _bugs_ yang tersembunyi (subtle bugs) dan mudah buat di-_refactor_ 
 tanpa memunculkan _bugs_ baru.
 
@@ -43,7 +43,7 @@ menjanjikan manfaat dari mengorbankan sedikit kontrol buat mendapatkan abstraksi
 Namun, bahasa tingkat rendah (lower-level languages) diharapkan bisa menyediakan 
 solusi dengan performa terbaik di situasi apa pun dan punya lebih sedikit abstraksi 
 di atas perangkat kerasnya. Oleh karena itu, Rust menawarkan berbagai alat buat 
-memodelkan masalah dengan cara apa pun yang cocok buat situasi dan kebutuhan Anda.
+memodelkan masalah dengan cara apa pun yang cocok buat situasi dan kebutuhan kita.
 
 Berikut adalah topik-topik yang bakal kita bahas di bab ini:
 

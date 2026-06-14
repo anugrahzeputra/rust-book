@@ -68,7 +68,7 @@ Firefox.
 
 Rust ditujukan bagi orang-orang yang ingin membangun bahasa pemrograman Rust, 
 komunitas, peralatan pengembang, dan pustaka (_libraries_). Kami menunggu 
-kontribusi Anda pada bahasa Rust.
+kontribusi kita pada bahasa Rust.
 
 ### Mereka yang Mengutamakan Kecepatan dan Stabilitas
 
@@ -88,15 +88,15 @@ disebutkan di sini hanyalah beberapa pemangku kepentingan terbesar. Secara
 keseluruhan, ambisi terbesar Rust adalah menghapus kompromi yang telah diterima 
 para programmer selama puluhan tahun dengan menyediakan keamanan _dan_ 
 produktivitas, kecepatan _dan_ ergonomi. Cobalah Rust dan lihat apakah pilihan-
-pilihannya cocok untuk Anda.
+pilihannya cocok untuk kita.
 
 ## Buku ini Ditujukan untuk Siapa
 
-Buku ini mengasumsikan bahwa Anda sudah pernah menulis kode dalam bahasa 
-pemrograman lain, tetapi tidak mengasumsikan bahasa mana yang Anda gunakan. 
+Buku ini mengasumsikan bahwa kita sudah pernah menulis kode dalam bahasa 
+pemrograman lain, tetapi tidak mengasumsikan bahasa mana yang kita gunakan. 
 Kami berusaha membuat materi ini dapat diakses secara luas oleh siapa pun dengan 
 berbagai latar belakang pemrograman. Kami tidak banyak membahas tentang apa itu 
-pemrograman atau bagaimana cara berpikir tentangnya. Jika Anda benar-benar baru 
+pemrograman atau bagaimana cara berpikir tentangnya. Jika kita benar-benar baru 
 dalam pemrograman, akan lebih baik membaca buku yang secara khusus memberikan 
 pengantar tentang pemrograman.
 
@@ -116,22 +116,22 @@ bab konsep.
 **Bab 1** menjelaskan bagaimana memasang Rust, bagaimana membuat program 
 "Hello, world!", dan bagaimana cara menggunakan Cargo, manajer paket dan alat 
 build Rust. **Bab 2** adalah pengenalan langsung dalam menulis program di Rust, 
-di mana Anda akan membuat permainan tebak-tebakan angka. Di sini, kita membahas 
+di mana kita akan membuat permainan tebak-tebakan angka. Di sini, kita membahas 
 konsep pada tingkat yang relatif tinggi, dan bab selanjutnya akan memberikan 
-detail tambahan. Jika Anda ingin segera mencoba mempraktikkan koding, Bab 2 
-adalah tempat yang paling cocok untuk itu. Jika Anda tipe pelajar yang sangat 
+detail tambahan. Jika kita ingin segera mencoba mempraktikkan koding, Bab 2 
+adalah tempat yang paling cocok untuk itu. Jika kita tipe pelajar yang sangat 
 teliti yang lebih memilih mempelajari setiap detailnya sebelum berpindah ke 
-topik selanjutnya, mungkin lebih baik Anda lewati Bab 2 dan langsung ke **Bab 3**, 
+topik selanjutnya, mungkin lebih baik kita lewati Bab 2 dan langsung ke **Bab 3**, 
 yang membahas fitur-fitur Rust yang mirip dengan bahasa pemrograman lainnya; 
-baru kemudian Anda kembali ke Bab 2 jika ingin mengerjakan suatu proyek untuk 
+baru kemudian kita kembali ke Bab 2 jika ingin mengerjakan suatu proyek untuk 
 menerapkan detail-detail yang sudah dipelajari.
 
-Di **Bab 4**, Anda akan mempelajari sistem *ownership* Rust. **Bab 5** membahas 
+Di **Bab 4**, kita akan mempelajari sistem *ownership* Rust. **Bab 5** membahas 
 struct dan method. **Bab 6** membahas enum, ekspresi `match`, serta konstruk 
-kontrol alur `if let` dan `let...else`. Anda akan menggunakan struct dan enum 
+kontrol alur `if let` dan `let...else`. Kita akan menggunakan struct dan enum 
 untuk membuat tipe kustom.
 
-Di **Bab 7**, Anda akan mempelajari sistem modul Rust dan aturan privasi untuk 
+Di **Bab 7**, kita akan mempelajari sistem modul Rust dan aturan privasi untuk 
 mengelola kode kita dan API publiknya yang terkait. **Bab 8** membahas beberapa 
 struktur data koleksi umum yang tersedia pada pustaka standar, seperti vector, 
 string, dan hash map. **Bab 9** menjelajahi filosofi dan teknik penanganan error 
@@ -141,7 +141,7 @@ di Rust.
 memberikan kita kemampuan dalam mendefinisikan kode yang diterapkan pada 
 beberapa tipe. **Bab 11** adalah semua hal tentang pengujian, di mana bahkan 
 dengan jaminan keamanan dari Rust, pengujian tetap dibutuhkan untuk memastikan 
-logika program Anda benar. Di **Bab 12**, kita akan membangun implementasi 
+logika program kita benar. Di **Bab 12**, kita akan membangun implementasi 
 sendiri dari sebagian fungsionalitas aplikasi baris perintah `grep` yang 
 melakukan pencarian teks di dalam berkas. Untuk keperluan ini, kita akan 
 menggunakan banyak konsep yang telah dibahas pada bab-bab sebelumnya.
@@ -149,17 +149,17 @@ menggunakan banyak konsep yang telah dibahas pada bab-bab sebelumnya.
 **Bab 13** mengeksplorasi *closures* dan *iterators*: fitur-fitur Rust yang 
 berasal dari bahasa pemrograman fungsional. Di **Bab 14**, kita akan memeriksa 
 Cargo lebih dalam dan berbicara mengenai praktik terbaik untuk membagikan 
-pustaka Anda ke orang lain. **Bab 15** membahas *smart pointers* yang disediakan 
+pustaka kita ke orang lain. **Bab 15** membahas *smart pointers* yang disediakan 
 pustaka standar dan trait yang mendukung fungsionalitasnya.
 
 Di **Bab 16**, kita akan membahas berbagai model pemrograman konkuren dan 
-mempelajari bagaimana Rust membantu Anda menulis program di banyak *threads* 
+mempelajari bagaimana Rust membantu kita menulis program di banyak *threads* 
 tanpa rasa takut. Di **Bab 17**, kita membangun di atas hal tersebut dengan 
 mengeksplorasi sintaks async dan await di Rust, beserta task, future, dan 
 stream, serta model konkurensi ringan yang mereka mungkinkan.
 
 **Bab 18** melihat bagaimana idiom Rust dibandingkan dengan prinsip pemrograman 
-berorientasi objek yang mungkin sudah Anda kenal. **Bab 19** adalah referensi 
+berorientasi objek yang mungkin sudah kita kenal. **Bab 19** adalah referensi 
 tentang pola dan *pattern matching*, yang merupakan cara kuat untuk 
 mengekspresikan ide di seluruh program Rust. **Bab 20** berisi beragam topik 
 lanjutan yang menarik, termasuk *unsafe Rust*, macros, serta pembahasan lebih 
@@ -173,25 +173,25 @@ format yang lebih mirip referensi. **Lampiran A** membahas kata kunci Rust,
 **Lampiran B** membahas operator dan simbol Rust, **Lampiran C** membahas trait 
 turunan (*derivable traits*) yang disediakan pustaka standar, **Lampiran D** 
 membahas beberapa alat pengembangan yang berguna, dan **Lampiran E** menjelaskan 
-edisi Rust. Pada **Lampiran F**, Anda bisa menemukan terjemahan dari buku ini, 
+edisi Rust. Pada **Lampiran F**, kita bisa menemukan terjemahan dari buku ini, 
 dan di **Lampiran G** kita akan membahas bagaimana Rust dibuat serta apa itu 
 Rust nightly.
 
-Tidak ada cara salah dalam membaca buku ini: jika Anda ingin melompat ke bab 
-depan, lakukan saja! Anda mungkin harus melompat kembali ke bab-bab awal jika 
-mengalami kebingungan. Tapi lakukanlah apa pun yang cocok untuk Anda.
+Tidak ada cara salah dalam membaca buku ini: jika kita ingin melompat ke bab 
+depan, lakukan saja! Kita mungkin harus melompat kembali ke bab-bab awal jika 
+mengalami kebingungan. Tapi lakukanlah apa pun yang cocok untuk kita.
 
 <span id="ferris"></span>
 
 Bagian penting dari proses pembelajaran Rust adalah mempelajari bagaimana 
 membaca pesan error yang ditampilkan oleh _compiler_: hal-hal ini akan menuntun 
-Anda menuju kode yang berfungsi. Karena itu, kami akan menyediakan banyak contoh 
+kita menuju kode yang berfungsi. Karena itu, kami akan menyediakan banyak contoh 
 yang tidak bisa di-compile beserta pesan error dari _compiler_ pada tiap situasi 
-tersebut. Pahami bahwa jika Anda memasukkan dan menjalankan contoh secara acak, 
-ada kemungkinan ia tidak bisa di-compile! Pastikan Anda membaca teks di 
+tersebut. Pahami bahwa jika kita memasukkan dan menjalankan contoh secara acak, 
+ada kemungkinan ia tidak bisa di-compile! Pastikan kita membaca teks di 
 sekitarnya untuk melihat apakah contoh tersebut memang ditujukan untuk error. 
-Dalam kebanyakan situasi, kami akan mengarahkan Anda ke versi yang benar dari 
-kode yang tidak bisa di-compile tersebut. Ferris juga akan membantu Anda 
+Dalam kebanyakan situasi, kami akan mengarahkan kita ke versi yang benar dari 
+kode yang tidak bisa di-compile tersebut. Ferris juga akan membantu kita 
 membedakan kode yang memang tidak dimaksudkan agar berfungsi:
 
 | Ferris                                                                                                           | Makna                                          |
@@ -200,7 +200,7 @@ membedakan kode yang memang tidak dimaksudkan agar berfungsi:
 | <img src="img/ferris/panics.svg" class="ferris-explain" alt="Ferris mengangkat tangan"/>                   | Kode ini menghasilkan panic!                   |
 | <img src="img/ferris/not_desired_behavior.svg" class="ferris-explain" alt="Ferris dengan satu capit di atas, mengedikkan bahu"/> | Kode ini tidak menghasilkan perilaku yang diinginkan. |
 
-Dalam kebanyakan situasi, kami akan mengarahkan Anda ke versi yang benar dari 
+Dalam kebanyakan situasi, kami akan mengarahkan kita ke versi yang benar dari 
 kode apa pun yang tidak bisa di-compile.
 
 ## Kode Sumber (Source Code)

@@ -11,14 +11,14 @@ lagi di-_await_ ternyata belum siap. Kebalikannya juga benar: Rust *hanya*
 me-_pause_ blok asinkron dan menyerahkan kontrol kembali ke _runtime_ pada 
 saat titik _await_. Semua hal di antara titik-titik _await_ itu sifatnya sinkron.
 
-Itu artinya kalau Anda melakukan banyak pekerjaan di dalam sebuah blok asinkron 
+Itu artinya kalau kita melakukan banyak pekerjaan di dalam sebuah blok asinkron 
 tanpa adanya titik _await_, _future_ tersebut bakal memblokir _futures_ lainnya 
-supaya tidak bisa bikin _progress_. Anda mungkin kadang-kadang mendengar hal ini 
+supaya tidak bisa bikin _progress_. Kita mungkin kadang-kadang mendengar hal ini 
 disebut sebagai satu _future_ yang me-_starving_ (membuat lapar/menghambat) 
 _futures_ lainnya. Di beberapa kasus, itu mungkin bukan masalah besar. Tapi, 
-kalau Anda lagi melakukan semacam _setup_ yang berat atau pekerjaan yang makan 
-waktu lama, atau kalau Anda punya sebuah _future_ yang bakal terus-menerus 
-melakukan suatu tugas tertentu selamanya, Anda perlu memikirkan kapan dan di 
+kalau kita lagi melakukan semacam _setup_ yang berat atau pekerjaan yang makan 
+waktu lama, atau kalau kita punya sebuah _future_ yang bakal terus-menerus 
+melakukan suatu tugas tertentu selamanya, kita perlu memikirkan kapan dan di 
 mana harus menyerahkan kontrol kembali ke _runtime_.
 
 Mari kita simulasikan sebuah operasi yang memakan waktu lama buat 
@@ -50,7 +50,7 @@ _CPU-bound_ ini di dalam sepasang _futures_.
 </Listing>
 
 Tiap _future_ menyerahkan kontrol kembali ke _runtime_ cuma *setelah* 
-melaksanakan serangkaian operasi lambat. Kalau Anda menjalankan kode ini, Anda 
+melaksanakan serangkaian operasi lambat. Kalau kita menjalankan kode ini, kita 
 bakal melihat output ini:
 
 <!-- manual-regeneration
@@ -149,7 +149,7 @@ lagi, komputer modern itu *cepat*: mereka bisa melakukan banyak hal dalam satu
 milidetik!
 
 Ini artinya asinkron bisa berguna bahkan buat tugas-tugas *compute-bound*, 
-tergantung dari apa lagi yang lagi dilakukan sama program Anda, karena dia 
+tergantung dari apa lagi yang lagi dilakukan sama program kita, karena dia 
 menyediakan alat yang berguna buat menstrukturkan hubungan antara berbagai 
 bagian program yang berbeda (tapi dengan biaya beban dari _state machine_ 
 asinkron tersebut). Ini adalah suatu bentuk _cooperative multitasking_, di mana 
@@ -158,15 +158,15 @@ titik-titik _await_. Oleh karena itu, tiap _future_ juga punya tanggung jawab
 buat menghindari memblokir terlalu lama. Di beberapa sistem operasi _embedded_ 
 berbasis Rust, ini adalah *satu-satunya* jenis _multitasking_ yang ada!
 
-Di kode dunia nyata, tentu saja Anda tidak bakal biasanya menyelingi pemanggilan 
+Di kode dunia nyata, tentu saja kita tidak bakal biasanya menyelingi pemanggilan 
 fungsi dengan titik-titik _await_ di tiap baris kodenya. Meskipun menyerahkan 
 kontrol pakai cara ini terhitung murah biayanya, tetap saja ia tidak gratis. Di 
 banyak kasus, mencoba memecah-mecah tugas *compute-bound* bisa jadi malah 
 bikin dia jauh lebih lambat, jadi kadang-kadang lebih baik buat performa 
 _keseluruhan_ kalau kita membiarkan sebuah operasi memblokir sebentar. Selalu 
 lakukan pengukuran (_measure_) buat melihat di mana sebenarnya letak *bottlenecks* 
-performa kode Anda. Dinamika dasarnya tetap penting buat diingat, terutama 
-kalau Anda melihat banyak pekerjaan yang terjadi secara serial padahal Anda 
+performa kode kita. Dinamika dasarnya tetap penting buat diingat, terutama 
+kalau kita melihat banyak pekerjaan yang terjadi secara serial padahal kita 
 mengharapnya terjadi secara konkuren!
 
 ### Membikin Abstraksi Asinkron Kita Sendiri
@@ -252,13 +252,13 @@ mencetak mode kegagalan setelah *timeout* terjadi:
 Failed after 2 seconds
 ```
 
-Karena _futures_ bisa digabung-gabungin bareng _futures_ lain, Anda bisa 
+Karena _futures_ bisa digabung-gabungin bareng _futures_ lain, kita bisa 
 membangun alat-alat yang sangat kuat memakai blok penyusun asinkron yang kecil-
-kecil. Misalnya, Anda bisa memakai pendekatan yang sama ini buat menggabungkan 
+kecil. Misalnya, kita bisa memakai pendekatan yang sama ini buat menggabungkan 
 *timeouts* dengan *retries*, dan sebaliknya memakai itu semua bersama operasi 
 lain kayak pemanggilan jaringan (seperti contoh yang ada di Listing 17-5).
 
-Di praktiknya, biasanya Anda bakal bekerja secara langsung dengan `async` dan 
+Di praktiknya, biasanya kita bakal bekerja secara langsung dengan `async` dan 
 `await`, dan secara sekunder memakai fungsi-fungsi kayak `select` dan macros 
 kayak macro `join!` buat mengontrol gimana _futures_ paling luarnya dieksekusi.
 

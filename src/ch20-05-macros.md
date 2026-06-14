@@ -22,13 +22,13 @@ biasa.
 Secara fundamental, macros itu adalah sebuah cara buat nulis kode yang 
 nulisin kode lain, yang mana dikenal dengan istilah _metaprogramming_ (metapemrograman). 
 Di Lampiran C, kita ngebahas soal atribut `derive`, yang menghasilkan 
-(generates) sebuah implementasi dari berbagai traits buat Anda. Kita juga udah 
+(generates) sebuah implementasi dari berbagai traits buat kita. Kita juga udah 
 memakai macro `println!` dan `vec!` di sepanjang buku ini. Semua macros 
 ini melebar (_expand_) buat menghasilkan lebih banyak kode ketimbang 
-kode yang secara manual Anda tulis.
+kode yang secara manual kita tulis.
 
-_Metaprogramming_ itu berguna banget buat ngurangin seberapa banyak kode 
-yang harus Anda tulis dan pelihara, yang mana juga merupakan salah satu dari 
+_Metaprogramming_ itu sangat berguna buat ngurangin seberapa banyak kode 
+yang harus kita tulis dan pelihara, yang mana juga merupakan salah satu dari 
 peran fungsi biasa. Namun, macros punya beberapa kekuatan tambahan yang 
 tidak dipunyai sama fungsi biasa.
 
@@ -44,14 +44,14 @@ karena dia dipanggil pas _runtime_ dan sebuah trait wajib diimplementasikan pas
 _compile time_.
 
 Kelemahan dari mengimplementasikan sebuah macro ketimbang sebuah fungsi adalah 
-kalau definisi macro itu lebih kompleks daripada definisi fungsi karena Anda lagi 
+kalau definisi macro itu lebih kompleks daripada definisi fungsi karena kita lagi 
 nulis kode Rust yang bertugas buat nulis kode Rust. Gara-gara ketidaklangsungan 
 (indirection) ini, definisi macro itu umumnya lebih susah buat dibaca, dipahami, 
 dan dipelihara ketimbang definisi fungsi.
 
-Perbedaan penting lainnya antara macros dan fungsi adalah Anda wajib mendefinisikan 
-macros atau membawa mereka ke dalam _scope_ (ruang lingkup) _sebelum_ Anda manggil 
-mereka di dalam sebuah file, berlawanan dengan fungsi biasa yang bisa Anda definisikan 
+Perbedaan penting lainnya antara macros dan fungsi adalah kita wajib mendefinisikan 
+macros atau membawa mereka ke dalam _scope_ (ruang lingkup) _sebelum_ kita manggil 
+mereka di dalam sebuah file, berlawanan dengan fungsi biasa yang bisa kita definisikan 
 di mana aja dan panggil dari mana aja.
 
 ### Macros Declarative dengan `macro_rules!` buat Metaprogramming Umum
@@ -59,7 +59,7 @@ di mana aja dan panggil dari mana aja.
 Bentuk macros yang paling sering dipakai di Rust adalah _declarative macro_ 
 (makro deklaratif). Ini kadang-kadang juga disebut sebagai “macros by example” 
 (makro lewat contoh), “macros `macro_rules!`”, atau sekadar “macros” doang. Pada 
-intinya, macros deklaratif membiarkan Anda nulis sesuatu yang mirip sama ekspresi 
+intinya, macros deklaratif membiarkan kita nulis sesuatu yang mirip sama ekspresi 
 `match` di Rust. Seperti yang udah dibahas di Bab 6, ekspresi `match` adalah 
 struktur kontrol yang mengambil sebuah ekspresi, ngebandingin nilai hasil dari ekspresi 
 tersebut dengan serangkaian _patterns_ (pola), lalu menjalankan kode yang 
@@ -71,7 +71,7 @@ dari kode sumber tadi; dan kode yang terkait dengan setiap _pattern_ itu, pas di
 bakal menggantikan kode yang dioper ke dalam macro tersebut. Ini semua terjadi pas 
 masa kompilasi.
 
-Buat mendefinisikan sebuah macro, Anda memakai konstruk `macro_rules!`. 
+Buat mendefinisikan sebuah macro, kita memakai konstruk `macro_rules!`. 
 Mari kita telusuri gimana cara memakai `macro_rules!` dengan melihat gimana si 
 macro `vec!` itu didefinisikan. Bab 8 mencakup gimana kita bisa memakai macro 
 `vec!` buat ngebikin sebuah vector baru dengan nilai-nilai tertentu. Misalnya, 
@@ -111,7 +111,7 @@ yang lagi kita definisikan ini _tanpa_ pake tanda seru. Nama itu, di kasus ini
 yakni `vec`, lalu diikuti dengan kurung kurawal yang menandakan isi (body) dari 
 definisi macro tersebut.
 
-Struktur yang ada di dalam isi dari `vec!` ini mirip banget sama struktur dari 
+Struktur yang ada di dalam isi dari `vec!` ini mirip sekali sama struktur dari 
 ekspresi `match`. Di sini kita punya satu arm (lengan) dengan _pattern_ 
 `( $( $x:expr ),* )`, lalu diikuti dengan `=>` dan blok kode yang terkait sama 
 _pattern_ ini. Kalau _pattern_ ini cocok, blok kode yang terkait itu bakal dipancarkan 
@@ -303,7 +303,7 @@ bahkan kalau mereka sebenernya tidak butuh sama fungsionalitas `derive`-nya.
 
 Kita perlu mendeklarasikan _crate_ `hello_macro_derive` ini sebagai sebuah _crate_ 
 macro prosedural. Kita juga bakal butuh fungsionalitas dari _crates_ `syn` dan 
-`quote`, kayak yang bakal Anda lihat sebentar lagi, jadi kita perlu nambahin mereka 
+`quote`, kayak yang bakal kita lihat sebentar lagi, jadi kita perlu nambahin mereka 
 sebagai dependensi. Tambahkan yang berikut ini ke dalam file _Cargo.toml_ untuk 
 `hello_macro_derive`:
 
@@ -316,7 +316,7 @@ sebagai dependensi. Tambahkan yang berikut ini ke dalam file _Cargo.toml_ untuk
 </Listing>
 
 Buat mulai mendefinisikan macro prosedural ini, tempatin kode dari Listing 20-40 
-ke dalam file _src/lib.rs_ Anda buat _crate_ `hello_macro_derive`. Perhatikan bahwa 
+ke dalam file _src/lib.rs_ kita buat _crate_ `hello_macro_derive`. Perhatikan bahwa 
 kode ini belum bakal bisa di-compile sampai kita udah nambahin definisi buat fungsi 
 `impl_hello_macro`.
 
@@ -334,9 +334,9 @@ si `TokenStream`, dan fungsi `impl_hello_macro`, yang mana bertanggung jawab
 buat mengubah (_transforming_) struktur pohon sintaksnya (syntax tree): ini 
 ngebikin penulisan sebuah macro prosedural jadi lebih nyaman (convenient). Kode di dalam 
 fungsi yang luar (`hello_macro_derive` di kasus ini) itu bakal sama aja bunyinya buat 
-hampir sebagian besar dari _crates_ macro prosedural yang pernah Anda lihat atau bikin. 
-Kode yang Anda tentuin di dalam isi fungsi dalamnya (`impl_hello_macro` di kasus ini) 
-itu bakal berbeda-beda tergantung dari apa tujuan macro prosedural Anda itu sebenernya.
+hampir sebagian besar dari _crates_ macro prosedural yang pernah kita lihat atau bikin. 
+Kode yang kita tentuin di dalam isi fungsi dalamnya (`impl_hello_macro` di kasus ini) 
+itu bakal berbeda-beda tergantung dari apa tujuan macro prosedural kita itu sebenernya.
 
 Kita udah memperkenalkan tiga _crates_ baru di sini: `proc_macro`, [`syn`][syn], 
 dan [`quote`][quote]. _Crate_ `proc_macro` itu emang udah dibawa bareng sama Rust, 
@@ -347,7 +347,7 @@ memanipulasi kode Rust dari dalam kode kita.
 _Crate_ `syn` itu mem-_parse_ kode Rust yang asalnya dari string menjadi sebuah struktur 
 data yang mana bisa kita operasikan lebih lanjut. _Crate_ `quote` kemudian mengubah si 
 struktur data `syn` tersebut kembali (_turns back_) menjadi kode Rust biasa. 
-_Crates_ ini ngebikin gampang banget buat mem-_parse_ segala macam kode Rust apa pun yang 
+_Crates_ ini ngebikin gampang sekali buat mem-_parse_ segala macam kode Rust apa pun yang 
 mungkin pengen kita tangani (handle): nulis _parser_ yang sempurna (full parser) 
 buat bahasa pemrograman Rust bukanlah tugas yang gampang lho.
 
@@ -405,13 +405,13 @@ _crate_ kita, jadi pas mereka mengompilasi (compile) _crate_ mereka, mereka baka
 dapetin fungsi tambahan yang udah kita sediain di dalam `TokenStream` yang udah 
 dimodifikasi tadi.
 
-Anda mungkin sempat merhatiin kalau kita tadi memanggil `unwrap` yang mana bakal 
+Kita mungkin sempat merhatiin kalau kita tadi memanggil `unwrap` yang mana bakal 
 ngebikin fungsi `hello_macro_derive` jadi _panic_ kalau pemanggilan ke fungsi 
 `syn::parse` tersebut ternyata gagal (fails) di sini. Sangat diwajibkan buat macro 
 prosedural kita supaya jadi _panic_ pas ada error karena fungsi-fungsi `proc_macro_derive` 
 itu wajib ngembaliin tipe `TokenStream` ketimbang `Result` supaya dia bisa patuh (conform) 
 sama API macro prosedural tersebut. Kita udah menyederhanakan contoh ini dengan 
-memakai `unwrap`; kalau di dalem kode produksi sungguhan (_production code_), Anda 
+memakai `unwrap`; kalau di dalem kode produksi sungguhan (_production code_), kita 
 harusnya menyediakan pesan error yang jauh lebih spesifik soal apa yang 
 sebenernya salah dengan memakai `panic!` atau `expect`.
 
@@ -443,9 +443,9 @@ macro `quote!`, jadi kita perlu buat ngubahnya (_convert it_) menjadi sebuah
 memakan (consumes) si representasi menengah (intermediate representation) ini lalu 
 mengembalikan sebuah nilai dengan tipe `TokenStream` yang diwajibkan tersebut.
 
-Macro `quote!` ini juga nyediain mekanisme templat (templating) yang keren banget lho: kita 
+Macro `quote!` ini juga nyediain mekanisme templat (templating) yang keren sekali lho: kita 
 bisa memasukkan `#name`, dan `quote!` bakal nggantiin itu dengan nilai yang ada di 
-dalam variabel `name`. Anda bahkan bisa ngelakuin pengulangan yang mirip sama cara 
+dalam variabel `name`. Kita bahkan bisa ngelakuin pengulangan yang mirip sama cara 
 kerja macros yang biasa. Silakan cek dokumentasi [crate `quote`][quote-docs] 
 buat perkenalan yang komprehensif (thorough).
 
@@ -470,12 +470,12 @@ Pada titik ini, jalanin `cargo build` seharusnya udah bisa kelar tanpa masalah d
 dalam `hello_macro` sekaligus `hello_macro_derive`. Mari kita pasangkan (_hook up_) 
 _crates_ ini dengan kode yang ada di dalam Listing 20-37 tadi buat ngelihat gimana 
 macro prosedural kita ini beraksi! Bikin sebuah project *binary* baru 
-di dalam *directory* _projects_ Anda memakai `cargo new pancakes`. Kita perlu menambahkan 
+di dalam *directory* _projects_ kita memakai `cargo new pancakes`. Kita perlu menambahkan 
 `hello_macro` dan `hello_macro_derive` sebagai dependensi (dependencies) di 
-dalam _Cargo.toml_ milik _crate_ `pancakes` ini. Kalau seandainya Anda mempublikasikan 
-versi dari `hello_macro` dan `hello_macro_derive` punya Anda ke 
+dalam _Cargo.toml_ milik _crate_ `pancakes` ini. Kalau seandainya kita mempublikasikan 
+versi dari `hello_macro` dan `hello_macro_derive` punya kita ke 
 [crates.io](https://crates.io/), mereka bakal jadi kayak dependensi biasa; 
-kalau belum dipublikasikan, Anda bisa menspesifikasikan mereka sebagai dependensi bertipe `path` 
+kalau belum dipublikasikan, kita bisa menspesifikasikan mereka sebagai dependensi bertipe `path` 
 (jalur ke folder) kayak gini:
 
 ```toml
@@ -496,10 +496,10 @@ prosedural lain kalau dibandingin dengan macros `derive` kustom.
 
 Macros yang mirip atribut itu serupa sama macros `derive` kustom, tapi 
 ketimbang menghasilkan (generating) kode buat atribut `derive`, macros ini ngebolehin 
-Anda buat membikin atribut baru (new attributes). Mereka juga lebih fleksibel: `derive` 
+kita buat membikin atribut baru (new attributes). Mereka juga lebih fleksibel: `derive` 
 itu kan cuma bisa kerja buat structs dan enums doang; sedangkan atribut itu bisa aja 
 diterapkan ke item-item lain, kayak fungsi misalnya. Berikut ini adalah sebuah 
-contoh penggunaan macro yang mirip atribut. Katakanlah Anda punya sebuah atribut 
+contoh penggunaan macro yang mirip atribut. Katakanlah kita punya sebuah atribut 
 bernama `route` yang mana nganotasi fungsi-fungsi pas lagi makek _framework_ aplikasi 
 web (web application framework):
 
@@ -524,9 +524,9 @@ to): di contoh kasus ini, buat si `fn index() {}` beserta sisa isi dari fungsi
 tersebut.
 
 Selain perbedaan tadi, macros mirip atribut ini bekerja dengan cara yang sama persis 
-dengan macros `derive` kustom: Anda membikin sebuah _crate_ dengan tipe _crate_ `proc-macro` 
-lalu Anda mengimplementasikan fungsi yang tugasnya buat ngehasilin kode (generates the code) 
-yang pengen Anda bikin!
+dengan macros `derive` kustom: kita membikin sebuah _crate_ dengan tipe _crate_ `proc-macro` 
+lalu kita mengimplementasikan fungsi yang tugasnya buat ngehasilin kode (generates the code) 
+yang pengen kita bikin!
 
 ### Macros Mirip Fungsi (Function-Like Macros)
 
@@ -556,20 +556,20 @@ sama macro tipe `macro_rules!`. Definisi macro `sql!` ini kelihatannya bakal kay
 pub fn sql(input: TokenStream) -> TokenStream {
 ```
 
-Definisi ini mirip banget kan sama _signature_ dari macro `derive` kustom tadi: kita 
+Definisi ini mirip sekali kan sama _signature_ dari macro `derive` kustom tadi: kita 
 menerima tokens yang ada di dalam tanda kurung tersebut (parentheses) dan 
 terus kita ngembaliin (return) kode yang emang pengen kita hasilin (generate).
 
 ## Ringkasan
 
-Fiuh! (Whew!) Nah sekarang Anda punya segelintir fitur Rust baru di sabuk perkakas 
-(toolbox) Anda yang mana kemungkinan besar Anda tidak bakal sering memakainya, 
-tapi seenggaknya Anda bakal tahu kalau mereka itu tersedia di situasi-situasi tertentu 
+Fiuh! (Whew!) Nah sekarang kita punya segelintir fitur Rust baru di sabuk perkakas 
+(toolbox) kita yang mana kemungkinan besar kita tidak bakal sering memakainya, 
+tapi seenggaknya kita bakal tahu kalau mereka itu tersedia di situasi-situasi tertentu 
 yang amat spesifik. Kita udah memperkenalkan beberapa topik yang kompleks (complex 
-topics) sehingga saat Anda kebetulan menjumpainya di dalam saran-saran pesan 
-error (error message suggestions) atau di dalam kode orang lain, Anda bakal sanggup 
+topics) sehingga saat kita kebetulan menjumpainya di dalam saran-saran pesan 
+error (error message suggestions) atau di dalam kode orang lain, kita bakal sanggup 
 buat mengenali berbagai macam konsep dan sintaks ini. Gunakan bab ini 
-sebagai sebuah pedoman referensi (reference guide) buat ngebimbing Anda nemuin solusinya.
+sebagai sebuah pedoman referensi (reference guide) buat ngebimbing kita nemuin solusinya.
 
 Berikutnya, kita bakal mempraktikkan (put into practice) segala macam hal yang udah 
 kita bicarain di sepanjang buku ini dengan cara mengerjakan satu _project_ lagi!

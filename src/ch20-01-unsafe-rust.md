@@ -12,19 +12,19 @@ keamanannya atau tidak, jauh lebih baik baginya buat menolak beberapa program
 yang sebenarnya valid ketimbang menerima beberapa program yang ternyata tidak 
 valid. Walaupun kodenya _mungkin_ baik-baik aja, kalau _compiler_ Rust tidak 
 punya informasi yang cukup buat merasa yakin, dia bakal menolak kode tersebut. 
-Di kasus-kasus seperti ini, Anda bisa memakai kode _unsafe_ buat ngasih tahu 
+Di kasus-kasus seperti ini, kita bisa memakai kode _unsafe_ buat ngasih tahu 
 _compiler_, “Percaya deh, aku tahu apa yang lagi aku lakuin.” Namun, 
-peringatan: Anda memakai _unsafe_ Rust dengan risiko Anda sendiri: kalau Anda 
+peringatan: kita memakai _unsafe_ Rust dengan risiko kita sendiri: kalau kita 
 memakai kode _unsafe_ dengan tidak benar, masalah-masalah bisa bermunculan 
 akibat tidak amannya memori, seperti proses _dereferencing_ pada _null pointer_.
 
 Alasan lain kenapa Rust punya sebuah alter ego yang _unsafe_ adalah karena *hardware* 
 komputer yang mendasarinya (underlying computer hardware) itu sifatnya memang 
-tidak aman (_inherently unsafe_). Kalau Rust tidak membiarkan Anda melakukan 
-operasi-operasi yang tidak aman, Anda tidak bakal bisa mengerjakan tugas-tugas 
-tertentu. Rust perlu mengizinkan Anda melakukan pemrograman sistem tingkat rendah 
+tidak aman (_inherently unsafe_). Kalau Rust tidak membiarkan kita melakukan 
+operasi-operasi yang tidak aman, kita tidak bakal bisa mengerjakan tugas-tugas 
+tertentu. Rust perlu mengizinkan kita melakukan pemrograman sistem tingkat rendah 
 (low-level systems programming), kayak berinteraksi secara langsung sama sistem 
-operasi atau bahkan menulis sistem operasi Anda sendiri. Bekerja dengan pemrograman 
+operasi atau bahkan menulis sistem operasi kita sendiri. Bekerja dengan pemrograman 
 sistem tingkat rendah adalah salah satu tujuan dari bahasa ini. Mari kita 
 eksplorasi apa aja yang bisa kita lakukan dengan _unsafe_ Rust dan gimana 
 cara melakukannya.
@@ -32,8 +32,8 @@ cara melakukannya.
 ### Unsafe Superpowers
 
 Buat beralih ke _unsafe_ Rust, gunakan keyword `unsafe` lalu mulai sebuah blok baru 
-buat menampung kode _unsafe_ tersebut. Ada lima hal yang bisa Anda lakukan di 
-_unsafe_ Rust yang tidak bisa Anda lakukan di Rust biasa (safe Rust), yang mana 
+buat menampung kode _unsafe_ tersebut. Ada lima hal yang bisa kita lakukan di 
+_unsafe_ Rust yang tidak bisa kita lakukan di Rust biasa (safe Rust), yang mana 
 kita sebut sebagai *unsafe superpowers*. Kekuatan super tersebut meliputi kemampuan 
 buat:
 
@@ -43,11 +43,11 @@ buat:
 1. Mengimplementasikan trait _unsafe_
 1. Mengakses field dari sebuah `union`
 
-Penting banget buat dipahami kalau `unsafe` tidak mematikan _borrow checker_ atau 
-menonaktifkan (disable) pengecekan keamanan Rust lainnya: kalau Anda memakai 
+Penting sekali buat dipahami kalau `unsafe` tidak mematikan _borrow checker_ atau 
+menonaktifkan (disable) pengecekan keamanan Rust lainnya: kalau kita memakai 
 sebuah referensi di dalam kode _unsafe_, dia bakal tetap dicek. Keyword `unsafe` 
-cuma ngasih Anda akses ke lima fitur ini yang kemudian tidak bakal dicek sama 
-_compiler_ buat keamanan memori. Anda bakal tetap dapat tingkat keamanan 
+cuma ngasih kita akses ke lima fitur ini yang kemudian tidak bakal dicek sama 
+_compiler_ buat keamanan memori. Kita bakal tetap dapat tingkat keamanan 
 tertentu di dalam sebuah blok _unsafe_.
 
 Selain itu, `unsafe` tidak berarti kalau kode di dalam blok tersebut pasti berbahaya 
@@ -57,9 +57,9 @@ sebagai programmer, Andalah yang bakal memastikan kalau kode di dalam blok
 
 Manusia itu bisa aja salah dan kesalahan (mistakes) emang bakal terjadi, tapi dengan 
 mewajibkan kelima operasi _unsafe_ ini buat berada di dalam blok-blok yang dianotasi 
-dengan `unsafe`, Anda bakal tahu kalau error apa pun yang berkaitan dengan keamanan 
+dengan `unsafe`, kita bakal tahu kalau error apa pun yang berkaitan dengan keamanan 
 memori itu pasti ada di dalam sebuah blok `unsafe`. Usahakan supaya blok `unsafe` 
-itu kecil; Anda bakal bersyukur nanti pas Anda lagi nyelidikin _bugs_ memori.
+itu kecil; kita bakal bersyukur nanti pas kita lagi nyelidikin _bugs_ memori.
 
 Buat mengisolasi kode _unsafe_ sebanyak mungkin, praktik terbaiknya adalah membungkus 
 (enclose) kode semacam itu di dalam sebuah abstraksi yang aman (safe abstraction) 
@@ -67,8 +67,8 @@ lalu menyediakan API yang aman, yang mana bakal kita bahas nanti di bab ini pas
 kita meneliti fungsi dan method _unsafe_. Beberapa bagian dari _standard library_ 
 diimplementasikan sebagai abstraksi yang aman di atas kode _unsafe_ yang udah diaudit. 
 Membungkus kode _unsafe_ di dalam sebuah abstraksi yang aman bakal mencegah 
-penggunaan `unsafe` agar tidak bocor (leaking out) ke semua tempat di mana Anda 
-atau *user* Anda mungkin pengen memakai fungsionalitas yang diimplementasikan dengan 
+penggunaan `unsafe` agar tidak bocor (leaking out) ke semua tempat di mana kita 
+atau *user* kita mungkin pengen memakai fungsionalitas yang diimplementasikan dengan 
 kode `unsafe` tersebut, karena memakai sebuah abstraksi yang aman itu sifatnya aman.
 
 Mari kita bahas masing-masing dari lima *unsafe superpowers* tersebut satu per satu. 
@@ -88,7 +88,7 @@ nilai baru) setelah ia di-dereferensi.
 
 Berbeda dari referensi dan _smart pointers_, _raw pointers_:
 
-- Diizinkan buat ngabaikan aturan _borrowing_ dengan membiarkan Anda punya baik 
+- Diizinkan buat ngabaikan aturan _borrowing_ dengan membiarkan kita punya baik 
   pointer _immutable_ maupun _mutable_, atau banyak pointer _mutable_ yang menunjuk 
   ke lokasi yang sama
 - Tidak dijamin bakal menunjuk ke memori yang valid
@@ -96,7 +96,7 @@ Berbeda dari referensi dan _smart pointers_, _raw pointers_:
 - Tidak mengimplementasikan pembersihan otomatis (automatic cleanup) apa pun
 
 Dengan memilih keluar (opting out) dari ditegakkannya jaminan-jaminan ini oleh 
-Rust, Anda bisa mengorbankan (give up) keamanan yang dijamin demi mendapatkan 
+Rust, kita bisa mengorbankan (give up) keamanan yang dijamin demi mendapatkan 
 performa yang lebih besar atau kemampuan buat berinteraksi sama bahasa pemrograman 
 lain atau *hardware* yang mana jaminan Rust tidak berlaku di situ.
 
@@ -113,7 +113,7 @@ dan yang _mutable_.
 
 Perhatikan bahwa kita tidak memasukkan keyword `unsafe` di kode ini. Kita bisa membikin 
 _raw pointers_ di dalam _safe code_ (kode yang aman); kita cuma tidak bisa 
-men-dereferensi _raw pointers_ di luar sebuah blok _unsafe_, kayak yang bakal Anda 
+men-dereferensi _raw pointers_ di luar sebuah blok _unsafe_, kayak yang bakal kita 
 lihat sebentar lagi.
 
 Kita udah membikin _raw pointers_ dengan memakai operator *raw borrow*: `&raw const num` 
@@ -132,7 +132,7 @@ perilaku yang tidak terdefinisi (undefined behavior): mungkin ada data di alamat
 tersebut atau mungkin tidak ada, _compiler_ mungkin bakal mengoptimasi kodenya 
 sehingga tidak ada akses memori yang terjadi, atau programnya mungkin bakal berhenti 
 (terminate) karena *segmentation fault*. Biasanya, tidak ada alasan yang bagus buat 
-menulis kode kayak gini, apalagi di kasus-kasus di mana Anda bisa memakai operator 
+menulis kode kayak gini, apalagi di kasus-kasus di mana kita bisa memakai operator 
 *raw borrow* sebagai gantinya, tapi hal ini tetap memungkinkan buat dilakukan.
 
 <Listing number="20-2" caption="Membikin sebuah raw pointer ke alamat memori sembarang">
@@ -170,16 +170,16 @@ _mutable_ dan pointer _immutable_ ke lokasi yang sama dan mengubah datanya lewat
 pointer _mutable_ tersebut, yang secara potensial bisa ngebikin sebuah *data race*. 
 Hati-hati ya!
 
-Dengan semua bahaya ini, kenapa Anda mau repot-repot memakai _raw pointers_? 
+Dengan semua bahaya ini, kenapa kita mau repot-repot memakai _raw pointers_? 
 Salah satu skenario penggunaan (use case) utamanya adalah saat berinteraksi 
-sama kode C, kayak yang bakal Anda lihat di bagian selanjutnya. Skenario 
-lainnya adalah pas Anda lagi ngebangun abstraksi yang aman yang mana si 
+sama kode C, kayak yang bakal kita lihat di bagian selanjutnya. Skenario 
+lainnya adalah pas kita lagi ngebangun abstraksi yang aman yang mana si 
 _borrow checker_ tidak bisa pahami. Kita bakal mengenalkan fungsi-fungsi 
 _unsafe_ lalu melihat sebuah contoh abstraksi aman yang memakai kode _unsafe_.
 
 ### Memanggil Fungsi atau Method Unsafe
 
-Jenis operasi kedua yang bisa Anda lakukan di dalam blok _unsafe_ adalah memanggil 
+Jenis operasi kedua yang bisa kita lakukan di dalam blok _unsafe_ adalah memanggil 
 fungsi-fungsi _unsafe_. Fungsi dan method _unsafe_ kelihatannya persis kayak 
 fungsi dan method biasa, tapi mereka punya tambahan `unsafe` sebelum sisa 
 definisinya. Keyword `unsafe` di konteks ini mengindikasikan bahwa fungsi 
@@ -207,9 +207,9 @@ Dengan blok `unsafe`, kita lagi menegaskan ke Rust kalau kita udah membaca dokum
 dari fungsinya, kita ngerti gimana cara memakainya dengan benar, dan kita udah 
 memverifikasi kalau kita mematuhi kontrak dari fungsi tersebut.
 
-Buat melakukan operasi _unsafe_ di dalam isi dari sebuah fungsi `unsafe`, Anda tetap 
+Buat melakukan operasi _unsafe_ di dalam isi dari sebuah fungsi `unsafe`, kita tetap 
 butuh memakai sebuah blok `unsafe`, sama seperti di dalam fungsi biasa, dan _compiler_ 
-bakal ngingetin (warn) Anda kalau Anda lupa. Ini ngebantu kita ngejaga supaya blok 
+bakal ngingetin (warn) kita kalau kita lupa. Ini ngebantu kita ngejaga supaya blok 
 `unsafe` itu sekecil mungkin, karena operasi _unsafe_ mungkin tidak diperlukan 
 di seluruh isi fungsi tersebut.
 
@@ -300,7 +300,7 @@ dan kita ngebikin sebuah _slice_ memakai pointer itu dan sisa jumlah item setela
 `mid` sebagai panjangnya.
 
 Fungsi `slice::from_raw_parts_mut` itu sifatnya _unsafe_ karena dia menerima sebuah 
-_raw pointer_ dan harus percaya kalau pointer ini beneran valid. Method `add` 
+_raw pointer_ dan harus percaya kalau pointer ini benar-benar valid. Method `add` 
 pada _raw pointers_ juga sifatnya _unsafe_ karena dia harus percaya kalau lokasi 
 *offset*-nya itu juga merupakan pointer yang valid. Oleh karena itu, kita harus menaruh 
 blok `unsafe` di sekeliling pemanggilan ke `slice::from_raw_parts_mut` dan `add` 
@@ -329,13 +329,13 @@ memori sembarang lalu membikin sebuah _slice_ yang panjangnya 10.000 item.
 </Listing>
 
 Kita tidak memiliki memori di lokasi sembarang ini, dan tidak ada jaminan kalau 
-_slice_ yang dibikin sama kode ini beneran berisi nilai `i32` yang valid. Mencoba buat 
+_slice_ yang dibikin sama kode ini benar-benar berisi nilai `i32` yang valid. Mencoba buat 
 memakai `values` seolah-olah dia adalah _slice_ yang valid bakal menghasilkan perilaku 
 yang tidak terdefinisi (undefined behavior).
 
 #### Memakai Fungsi `extern` Buat Memanggil Kode Eksternal
 
-Kadang-kadang kode Rust Anda mungkin perlu berinteraksi sama kode yang ditulis di bahasa 
+Kadang-kadang kode Rust kita mungkin perlu berinteraksi sama kode yang ditulis di bahasa 
 pemrograman lain. Buat keperluan ini, Rust punya keyword `extern` yang memfasilitasi 
 pembuatan dan penggunaan _Foreign Function Interface (FFI)_, yang mana adalah sebuah 
 cara bagi sebuah bahasa pemrograman buat mendefinisikan fungsi lalu memungkinkan 
@@ -383,8 +383,8 @@ di Listing 20-9.
 </Listing>
 
 Menandai sebuah fungsi sebagai `safe` tidak secara otomatis (inherently) membikin fungsinya 
-jadi aman ya! Sebaliknya, ini ibarat janji yang Anda buat ke Rust kalau dia itu aman. 
-Itu tetap jadi tanggung jawab Anda buat mastiin kalau janji itu ditepati!
+jadi aman ya! Sebaliknya, ini ibarat janji yang kita buat ke Rust kalau dia itu aman. 
+Itu tetap jadi tanggung jawab kita buat mastiin kalau janji itu ditepati!
 
 #### Memanggil Fungsi Rust dari Bahasa Lain
 
@@ -478,7 +478,7 @@ tinggi.
 
 Selain itu, _compiler_ secara default bakal melarang usaha apa pun buat ngebikin referensi ke 
 sebuah variabel statis yang _mutable_ lewat mekanisme _lint_ (peringatan kode) _compiler_. 
-Anda wajib secara eksplisit keluar (opt-out) dari perlindungan _lint_ tersebut dengan 
+Kita wajib secara eksplisit keluar (opt-out) dari perlindungan _lint_ tersebut dengan 
 nambahin anotasi `#[allow(static_mut_refs)]` atau ngakses variabel statis _mutable_ tersebut 
 lewat sebuah _raw pointer_ yang dibikin pakai salah satu dari operator *raw borrow*. Hal ini 
 termasuk juga kasus-kasus di mana referensi tersebut dibikin secara kasatmata, kayak pas dia 
@@ -486,7 +486,7 @@ dipakai di `println!` di dalam kode ini. Mewajibkan supaya referensi ke variabel
 yang _mutable_ harus dibikin lewat _raw pointers_ ngebantu ngebikin persyaratan 
 keamanannya jadi lebih terlihat jelas saat kita memakai mereka.
 
-Dengan data _mutable_ yang bisa diakses secara global, itu susah banget buat memastikan 
+Dengan data _mutable_ yang bisa diakses secara global, itu susah sekali buat memastikan 
 kalau tidak bakal ada *data races*, yang mana inilah alasan kenapa Rust menganggap variabel 
 statis _mutable_ itu sebagai _unsafe_. Kalau memungkinkan, jauh lebih baik buat memakai 
 teknik-teknik konkurensi dan _smart pointers_ yang *thread-safe* yang udah kita bahas 
@@ -532,27 +532,27 @@ sebuah `struct`, tapi cuma satu aja dari *field* yang dideklarasikan yang bisa d
 di dalam sebuah instance pada satu waktu tertentu. *Unions* biasanya dipakai buat 
 berinteraksi dengan *unions* yang ada di dalam kode C. Mengakses *field* dari *union* 
 itu _unsafe_ karena Rust tidak bisa ngejamin tipe dari data yang saat itu lagi 
-disimpan di dalam instance *union* tersebut. Anda bisa belajar lebih banyak soal *unions* 
+disimpan di dalam instance *union* tersebut. Kita bisa belajar lebih banyak soal *unions* 
 di [Rust Reference][unions].
 
 ### Memakai Miri Buat Mengecek Kode Unsafe
 
-Pas Anda lagi nulis kode _unsafe_, Anda mungkin pengen ngecek apakah kode yang udah 
-Anda tulis itu beneran aman dan udah betul (correct) atau tidak. Salah satu cara 
+Pas kita lagi nulis kode _unsafe_, kita mungkin pengen ngecek apakah kode yang udah 
+kita tulis itu benar-benar aman dan udah betul (correct) atau tidak. Salah satu cara 
 terbaik buat ngebuktiin itu adalah dengan memakai Miri, sebuah _tool_ resmi Rust buat 
 mendeteksi perilaku yang tidak terdefinisi (undefined behavior). Kalau _borrow checker_ 
 itu adalah sebuah _tool_ yang statis (_static_) yang bekerja pas _compile time_, Miri itu 
 adalah _tool_ yang dinamis (_dynamic_) yang bekerja pas _runtime_. Miri mengecek kode 
-Anda dengan cara menjalankan program Anda, atau seperangkat pengujiannya (_test suite_), 
-lalu mendeteksi kapan Anda melanggar aturan-aturan yang Miri pahami tentang gimana 
+kita dengan cara menjalankan program kita, atau seperangkat pengujiannya (_test suite_), 
+lalu mendeteksi kapan kita melanggar aturan-aturan yang Miri pahami tentang gimana 
 seharusnya Rust bekerja.
 
-Memakai Miri mewajibkan Anda punya instalasi Rust versi _nightly_ (yang mana kita obrolin 
-lebih banyak di [Lampiran G: Gimana Rust Dibuat dan “Nightly Rust”][nightly]). Anda bisa 
+Memakai Miri mewajibkan kita punya instalasi Rust versi _nightly_ (yang mana kita obrolin 
+lebih banyak di [Lampiran G: Gimana Rust Dibuat dan “Nightly Rust”][nightly]). Kita bisa 
 menginstal baik Rust versi _nightly_ sekaligus _tool_ Miri dengan mengetikkan perintah 
 `rustup +nightly component add miri`. Hal ini tidak bakal ngubah versi Rust apa yang 
-lagi dipakai sama project Anda; dia cuma nambahin _tool_ tersebut ke sistem Anda biar 
-Anda bisa memakainya pas Anda mau aja. Anda bisa menjalankan Miri di sebuah project dengan 
+lagi dipakai sama project kita; dia cuma nambahin _tool_ tersebut ke sistem kita biar 
+kita bisa memakainya pas kita mau aja. Kita bisa menjalankan Miri di sebuah project dengan 
 ngetik `cargo +nightly miri run` atau `cargo +nightly miri test`.
 
 Sebagai contoh betapa bergunanya ini, bayangin apa yang terjadi pas kita menjalankan 
@@ -571,31 +571,31 @@ Berkat Miri, sekarang kita jadi tahu kalau ada risiko terjadinya perilaku yang t
 terdefinisi, dan kita bisa mikirin gimana caranya ngebikin kodenya jadi aman. Di beberapa 
 kasus, Miri bahkan bisa ngasih saran gimana cara buat ngeberesin error-error tersebut.
 
-Miri tidak bisa menangkap semua hal yang mungkin keliru pas Anda nulis kode _unsafe_. 
+Miri tidak bisa menangkap semua hal yang mungkin keliru pas kita nulis kode _unsafe_. 
 Miri itu adalah sebuah _tool_ analisis yang dinamis, jadi dia cuma bisa nangkap 
-masalah pada kode yang emang beneran dijalankan. Itu artinya Anda perlu memakainya 
+masalah pada kode yang emang benar-benar dijalankan. Itu artinya kita perlu memakainya 
 barengan sama teknik-teknik pengujian (testing techniques) yang oke buat ningkatin rasa 
-percaya diri Anda terhadap kode _unsafe_ yang udah Anda tulis. Miri juga tidak 
-mencakup setiap kemungkinan yang ada yang bikin kode Anda jadi cacat (unsound).
+percaya diri kita terhadap kode _unsafe_ yang udah kita tulis. Miri juga tidak 
+mencakup setiap kemungkinan yang ada yang bikin kode kita jadi cacat (unsound).
 
-Dengan kata lain: Kalau Miri *emang* nangkap sebuah masalah, Anda jadi tahu kalau ada 
+Dengan kata lain: Kalau Miri *emang* nangkap sebuah masalah, kita jadi tahu kalau ada 
 sebuah _bug_, tapi cuma karena Miri *tidak* nangkap sebuah _bug_ itu tidak berarti kalau 
-tidak ada masalah di situ. Walaupun begitu, dia bisa nangkap banyak banget lho. Cobain 
+tidak ada masalah di situ. Walaupun begitu, dia bisa nangkap sangat banyak lho. Cobain 
 deh ngejalanin Miri di contoh-contoh kode _unsafe_ lain di bab ini dan lihat apa aja 
 yang dia bilang!
 
-Anda bisa belajar lebih lanjut soal Miri di [repositori GitHub-nya][miri].
+Kita bisa belajar lebih lanjut soal Miri di [repositori GitHub-nya][miri].
 
 ### Kapan Harus Memakai Kode Unsafe
 
 Memakai `unsafe` buat melakukan salah satu dari lima _superpowers_ yang baru aja kita bahas 
 itu bukanlah hal yang salah atau yang dilarang keras, tapi emang lebih _tricky_ (susah) buat 
 bikin kode `unsafe` itu jadi benar (correct) karena _compiler_ tidak bisa ngebantu buat 
-menjunjung tinggi keamanan memori. Pas Anda punya alasan buat memakai kode `unsafe`, 
-Anda bebas aja buat melakukannya, dan dengan adanya anotasi `unsafe` yang eksplisit itu malah 
-ngebikin Anda lebih gampang buat ngelacak sumber dari suatu masalah kalau sampai 
-masalah itu muncul nanti. Kapan pun Anda nulis kode _unsafe_, Anda bisa memakai Miri buat 
-ngebantu Anda jadi lebih yakin kalau kode yang udah Anda tulis itu beneran mematuhi 
+menjunjung tinggi keamanan memori. Pas kita punya alasan buat memakai kode `unsafe`, 
+kita bebas aja buat melakukannya, dan dengan adanya anotasi `unsafe` yang eksplisit itu malah 
+ngebikin kita lebih gampang buat ngelacak sumber dari suatu masalah kalau sampai 
+masalah itu muncul nanti. Kapan pun kita nulis kode _unsafe_, kita bisa memakai Miri buat 
+ngebantu kita jadi lebih yakin kalau kode yang udah kita tulis itu benar-benar mematuhi 
 aturan-aturan Rust.
 
 Buat penjelajahan yang jauh lebih dalam soal gimana cara kerja efektif dengan _unsafe_ Rust, 

@@ -1,9 +1,9 @@
 ## Cargo Workspaces
 
 Di Bab 12, kita udah bikin sebuah _package_ yang isinya satu _binary crate_ 
-sama satu _library crate_. Seiring berkembangnya project Anda, Anda mungkin 
-menemukan bahwa _library crate_ Anda terus jadi makin besar dan Anda mau 
-membagi _package_ Anda lebih jauh lagi jadi beberapa _library crates_. 
+sama satu _library crate_. Seiring berkembangnya project kita, kita mungkin 
+menemukan bahwa _library crate_ kita terus jadi makin besar dan kita mau 
+membagi _package_ kita lebih jauh lagi jadi beberapa _library crates_. 
 Cargo menawarkan fitur bernama _workspaces_ (ruang kerja) yang bisa membantu 
 mengelola beberapa _packages_ yang saling terkait yang dikembangkan secara 
 beriringan (in tandem).
@@ -68,7 +68,7 @@ definisi `[workspace]` yang ada di _Cargo.toml_ tingkat _workspace_, kayak gini:
 ```
 
 Pada titik ini, kita bisa mem-build _workspace_ ini dengan menjalankan 
-`cargo build`. File-file di direktori _add_ Anda seharusnya kelihatan 
+`cargo build`. File-file di direktori _add_ kita seharusnya kelihatan 
 seperti ini:
 
 ```text
@@ -123,7 +123,7 @@ ke dalam daftar `members`:
 {{#include ../listings/ch14-more-about-cargo/no-listing-02-workspace-with-two-crates/add/Cargo.toml}}
 ```
 
-Direktori _add_ Anda seharusnya sekarang punya direktori dan file berikut ini:
+Direktori _add_ kita seharusnya sekarang punya direktori dan file berikut ini:
 
 ```text
 ├── Cargo.lock
@@ -388,7 +388,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; fini
 Output ini menunjukkan kalau `cargo test` cuma menjalankan pengujian untuk 
 _crate_ `add_one` dan tidak menjalankan pengujian untuk _crate_ `adder`.
 
-Kalau Anda mempublikasikan _crates_ yang ada di dalam _workspace_ ke 
+Kalau kita mempublikasikan _crates_ yang ada di dalam _workspace_ ke 
 [crates.io](https://crates.io/), setiap _crate_ di dalam _workspace_ itu 
 harus dipublikasikan secara terpisah. Sama seperti `cargo test`, kita bisa 
 mempublikasikan satu _crate_ tertentu di dalam _workspace_ kita dengan memakai 
@@ -397,8 +397,8 @@ _flag_ `-p` dan menentukan nama dari _crate_ yang mau kita publikasikan.
 Sebagai latihan tambahan, coba tambahkan _crate_ `add_two` ke dalam _workspace_ 
 ini dengan cara yang sama seperti _crate_ `add_one`!
 
-Seiring project Anda bertambah besar, pertimbangkanlah buat memakai sebuah 
-_workspace_: ini memungkinkan Anda buat bekerja dengan komponen-komponen yang 
+Seiring project kita bertambah besar, pertimbangkanlah buat memakai sebuah 
+_workspace_: ini memungkinkan kita buat bekerja dengan komponen-komponen yang 
 lebih kecil dan lebih gampang dipahami ketimbang bekerja dengan satu gumpalan 
 kode (blob of code) yang super besar. Selain itu, menyimpan _crates_ di dalam 
 sebuah _workspace_ bisa bikin koordinasi antar _crates_ jadi lebih mudah kalau 

@@ -11,15 +11,15 @@ Selain itu, kenapa para penggemar _message-passing_ mewanti-wanti buat tidak
 memakai berbagi memori (_memory sharing_)?
 
 Di satu sisi, _channels_ (saluran) di bahasa pemrograman mana pun itu mirip 
-dengan kepemilikan tunggal (_single ownership_) karena begitu Anda mentransfer 
-sebuah nilai lewat _channel_, Anda tidak seharusnya memakai nilai itu lagi. 
+dengan kepemilikan tunggal (_single ownership_) karena begitu kita mentransfer 
+sebuah nilai lewat _channel_, kita tidak seharusnya memakai nilai itu lagi. 
 Konkurensi memori bersama (_shared-memory concurrency_) itu kayak kepemilikan 
 ganda (_multiple ownership_): banyak _threads_ bisa mengakses lokasi memori 
-yang sama di saat yang bersamaan. Seperti yang udah Anda lihat di Bab 15, di mana 
+yang sama di saat yang bersamaan. Seperti yang udah kita lihat di Bab 15, di mana 
 _smart pointers_ memungkinkan kepemilikan ganda, kepemilikan ganda bisa 
 nambahin kerumitan (complexity) karena pemilik-pemilik yang berbeda ini butuh 
 dikelola (managed). Sistem tipe (type system) dan aturan _ownership_ Rust 
-ngebantu banget buat bikin pengelolaan ini jadi benar. Sebagai contoh, mari 
+ngebantu sekali buat bikin pengelolaan ini jadi benar. Sebagai contoh, mari 
 kita lihat _mutexes_, salah satu dari struktur data konkurensi (_concurrency 
 primitives_) yang paling umum dipakai buat memori bersama.
 
@@ -34,10 +34,10 @@ adalah struktur data yang jadi bagian dari mutex yang melacak siapa yang
 saat ini punya akses eksklusif ke datanya. Oleh karena itu, mutex digambarkan 
 sebagai _penjaga_ (_guarding_) data yang dia pegang melalui sistem *locking* ini.
 
-Mutexes terkenal susah dipakai karena Anda harus ingat dua aturan ini:
+Mutexes terkenal susah dipakai karena kita harus ingat dua aturan ini:
 
-1. Anda harus mencoba mengambil (_acquire_) _lock_-nya sebelum memakai datanya.
-2. Pas Anda kelar sama data yang dijaga sama mutex tersebut, Anda harus 
+1. Kita harus mencoba mengambil (_acquire_) _lock_-nya sebelum memakai datanya.
+2. Pas kita kelar sama data yang dijaga sama mutex tersebut, kita harus 
    membuka kunci (_unlock_) datanya supaya _threads_ lain bisa mengambil _lock_ 
    itu.
 
@@ -50,9 +50,9 @@ Kalau ada panelis yang lupa ngasih mikrofonnya ke orang lain pas udah selesai,
 tidak bakal ada orang lain yang bisa ngomong. Kalau pengelolaan mikrofon bersama 
 ini jadi berantakan, panelnya tidak bakal berjalan sesuai rencana!
 
-Pengelolaan mutex bisa jadi susah banget buat dibikin benar, itulah kenapa banyak 
-orang jadi antusias banget sama _channels_. Namun, berkat sistem tipe dan 
-aturan _ownership_ di Rust, Anda tidak mungkin salah mengunci dan membuka kunci.
+Pengelolaan mutex bisa jadi susah sekali buat dibikin benar, itulah kenapa banyak 
+orang jadi antusias sekali sama _channels_. Namun, berkat sistem tipe dan 
+aturan _ownership_ di Rust, kita tidak mungkin salah mengunci dan membuka kunci.
 
 #### API dari `Mutex<T>`
 
@@ -169,7 +169,7 @@ kita banyak hal.
 {{#include ../listings/ch16-fearless-concurrency/listing-16-14/output.txt}}
 ```
 
-Wow, pesan error-nya panjang banget ya! Ini bagian penting yang perlu jadi 
+Wow, pesan error-nya panjang sekali ya! Ini bagian penting yang perlu jadi 
 fokus: `` `Rc<Mutex<i32>>` cannot be sent between threads safely ``. _Compiler_-nya 
 juga ngasih tahu kita apa alasannya: `` the trait `Send` is not implemented for
 `Rc<Mutex<i32>>` ``. Kita bakal ngomongin soal `Send` di bagian selanjutnya: dia 
@@ -194,16 +194,16 @@ situasi yang konkuren. Huruf _A_-nya singkatan dari _atomic_, yang artinya
 dia adalah tipe *atomically reference-counted* (penghitungan referensi secara 
 atomik). *Atomics* adalah jenis primitif konkurensi tambahan yang tidak bakal 
 kita bahas secara mendetail di sini: cek dokumentasi _standard library_ buat 
-[`std::sync::atomic`][atomic] buat detail lebih lanjut. Di titik ini, Anda 
+[`std::sync::atomic`][atomic] buat detail lebih lanjut. Di titik ini, kita 
 cuma perlu tahu kalau *atomics* bekerja kayak tipe primitif biasa tapi aman 
 buat dibagikan antar _threads_.
 
-Terus Anda mungkin penasaran kenapa tidak semua tipe primitif dibikin jadi 
+Terus kita mungkin penasaran kenapa tidak semua tipe primitif dibikin jadi 
 *atomic* dan kenapa tipe-tipe _standard library_ tidak diimplementasikan buat 
 memakai `Arc<T>` secara default. Alasannya adalah keamanan _thread_ (thread 
 safety) itu datang dengan penalti performa (performance penalty) yang mana 
-Anda cuma mau membayarnya saat Anda bener-bener butuh. Kalau Anda cuma ngelakuin 
-operasi pada nilai di dalam satu _thread_, kode Anda bisa berjalan lebih kencang 
+kita cuma mau membayarnya saat kita bener-bener butuh. Kalau kita cuma ngelakuin 
+operasi pada nilai di dalam satu _thread_, kode kita bisa berjalan lebih kencang 
 kalau dia tidak perlu memaksakan jaminan yang disediakan sama *atomics*.
 
 Mari kembali ke contoh kita: `Arc<T>` dan `Rc<T>` punya API yang sama, jadi 
@@ -231,13 +231,13 @@ Result: 10
 
 Kita berhasil! Kita menghitung dari 0 sampai 10, yang mungkin tidak kelihatan 
 terlalu mengesankan, tapi itu banyak ngajarin kita soal `Mutex<T>` dan keamanan 
-_thread_. Anda juga bisa memakai struktur program ini buat melakukan operasi 
+_thread_. Kita juga bisa memakai struktur program ini buat melakukan operasi 
 yang lebih rumit ketimbang cuma menaikkan nilai penghitung. Memakai strategi ini, 
-Anda bisa membagi perhitungan jadi bagian-bagian independen, memecah bagian-
+kita bisa membagi perhitungan jadi bagian-bagian independen, memecah bagian-
 bagian itu ke berbagai _threads_, lalu memakai `Mutex<T>` agar masing-masing 
 _thread_ bisa meng-update hasil akhirnya dengan bagian perhitungan mereka.
 
-Perhatikan bahwa kalau Anda ngelakuin operasi angka (numerical operations) yang 
+Perhatikan bahwa kalau kita ngelakuin operasi angka (numerical operations) yang 
 simpel, ada tipe yang lebih sederhana ketimbang tipe `Mutex<T>` yang disediakan 
 sama [modul `std::sync::atomic` di _standard library_][atomic]. Tipe-tipe ini 
 menyediakan akses yang aman, konkuren, dan atomik ke tipe-tipe primitif. Kita 
@@ -246,22 +246,22 @@ supaya kita bisa berkonsentrasi pada gimana `Mutex<T>` itu bekerja.
 
 ### Kesamaan Antara `RefCell<T>`/`Rc<T>` dan `Mutex<T>`/`Arc<T>`
 
-Anda mungkin nyadar kalau `counter` itu _immutable_ tapi kita bisa dapat sebuah 
+kita mungkin nyadar kalau `counter` itu _immutable_ tapi kita bisa dapat sebuah 
 referensi _mutable_ ke nilai di dalamnya; ini artinya `Mutex<T>` menyediakan 
 _interior mutability_ (mutabilitas interior), sama kayak keluarga `Cell`. Dengan 
 cara yang sama seperti kita memakai `RefCell<T>` di Bab 15 buat memungkinkan kita 
 memutasi isi di dalam sebuah `Rc<T>`, kita memakai `Mutex<T>` buat memutasi isi 
 di dalam sebuah `Arc<T>`.
 
-Detail lain yang perlu diperhatikan adalah Rust tidak bisa melindungi Anda dari 
-semua jenis *logic errors* (kutu logika) pas Anda memakai `Mutex<T>`. Ingat 
+Detail lain yang perlu diperhatikan adalah Rust tidak bisa melindungi kita dari 
+semua jenis *logic errors* (kutu logika) pas kita memakai `Mutex<T>`. Ingat 
 kembali dari Bab 15 kalau memakai `Rc<T>` punya risiko membikin _reference cycles_ 
 (siklus referensi), di mana dua nilai `Rc<T>` merujuk ke satu sama lain, yang 
 menyebabkan _memory leaks_. Serupa dengan hal itu, `Mutex<T>` punya risiko 
 membikin _deadlocks_ (jalan buntu). Hal ini terjadi pas suatu operasi butuh 
 mengambil dua *locks* dan dua _threads_ masing-masing udah ngambil salah satu dari 
 *locks* tersebut, yang menyebabkan mereka saling menunggu satu sama lain 
-selamanya. Kalau Anda tertarik sama _deadlocks_, coba bikin program Rust yang 
+selamanya. Kalau kita tertarik sama _deadlocks_, coba bikin program Rust yang 
 punya sebuah _deadlock_; terus cari tahu soal strategi mitigasi _deadlock_ buat 
 mutexes di bahasa pemrograman apa pun lalu cobalah mengimplementasikan strategi 
 itu di Rust. Dokumentasi API _standard library_ buat `Mutex<T>` dan `MutexGuard` 

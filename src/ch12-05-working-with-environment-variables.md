@@ -50,7 +50,7 @@ melihat pengujiannya berhasil di-compile lalu gagal.
 ### Mengimplementasikan Fungsi `search_case_insensitive`
 
 Fungsi `search_case_insensitive`, yang ditunjukkan di Listing 12-21, bakal 
-mirip banget sama fungsi `search`. Satu-satunya perbedaan adalah kita bakal 
+mirip sekali sama fungsi `search`. Satu-satunya perbedaan adalah kita bakal 
 mengubah `query` dan setiap `line` jadi huruf kecil (lowercase) agar tidak peduli 
 apa *casing* dari argumen inputnya, mereka bakal punya *casing* yang sama pas 
 kita mengecek apakah baris tersebut mengandung kuerinya.

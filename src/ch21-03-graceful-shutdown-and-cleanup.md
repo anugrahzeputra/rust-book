@@ -1,6 +1,6 @@
 ## Graceful Shutdown (Mati Secara Anggun) dan Cleanup (Bersih-bersih)
 
-Kode di Listing 21-20 itu beneran udah merespons ke _requests_ secara asinkron (asynchronously) melalui 
+Kode di Listing 21-20 itu benar-benar udah merespons ke _requests_ secara asinkron (asynchronously) melalui 
 penggunaan _thread pool_, sesuai sama apa yang kita rencanakan (intended). Tapi kita ngedapetin 
 beberapa pesan peringatan (warnings) soal *fields* `workers`, `id`, dan `thread` 
 yang nampaknya tidak kita pakai secara langsung, yang mana ngingetin (reminds) kita 
@@ -74,12 +74,12 @@ Namun masalahnya, momen di mana proses ini itu dibutuhkan (come up) _satu-satuny
 terjadi saat kita lagi nge-_drop_ si `Worker` aja kan. Konsekuensinya sebagai ganti rugi 
 (in exchange), kita jadinya mesti terus-terusan berurusan (deal with) sama tipe 
 `Option<thread::JoinHandle<()>>` di mana pun kita lagi nyoba ngakses `worker.thread`. 
-Penulisan bahasa Rust yang idiomatik itu emang cukup sering banget (quite a bit) memakai 
-`Option`, tapi pas Anda mulai nemuin diri Anda lagi asik ngebungkusin (wrapping) sesuatu yang mana 
-padahal Anda udah tahu (_know_) nilai itu tuh _selalu_ ada dan eksis (present) ke dalam 
+Penulisan bahasa Rust yang idiomatik itu emang cukup sering sekali (quite a bit) memakai 
+`Option`, tapi pas kita mulai nemuin diri kita lagi asik ngebungkusin (wrapping) sesuatu yang mana 
+padahal kita udah tahu (_know_) nilai itu tuh _selalu_ ada dan eksis (present) ke dalam 
 sebuah `Option` cuma murni dijadiin sekadar jalan pintas buat ngakalin (workaround) hal macem 
 gini, maka ini merupakan tanda ide yang bagus buat mulai nyari pendekatan alternatif 
-(alternative approaches) supaya bisa ngebikin kode Anda lebih rapi (cleaner) dan tidak 
+(alternative approaches) supaya bisa ngebikin kode kita lebih rapi (cleaner) dan tidak 
 gampang rawan error (less error-prone).
 
 Di kasus yang ini, sebenernya ada jalan alternatif yang lebih oke (better alternative): 
@@ -125,7 +125,7 @@ dan abis itu juga butuh satu ubahan di dalem perulangan (loop) si `Worker`.
 Pertama-tama kita bakal ngubah implementasi `drop` pada `ThreadPool` supaya dia secara eksplisit nge-_drop_ 
 si `sender` (pengirim) ini _sebelum_ dia nungguin para _threads_-nya pada kelar jalan. Listing 21-23 
 nunjukin rupa ubahan-ubahan ke `ThreadPool` tersebut buat secara eksplisit nge-_drop_ `sender`. Tidak kayak 
-yang terjadi di `thread`, di sini kita emang *beneran butuh* (_do_ need) memakai 
+yang terjadi di `thread`, di sini kita emang *benar-benar butuh* (_do_ need) memakai 
 `Option` biar kita bisa memindahkan (_move_) variabel `sender` keluar dari 
 `ThreadPool` dengan memanggil `Option::take`.
 
@@ -138,11 +138,11 @@ yang terjadi di `thread`, di sini kita emang *beneran butuh* (_do_ need) memakai
 </Listing>
 
 Tindakan men-_drop_ (dropping) `sender` ini otomatis bakal nutup (closes) *channel*-nya, yang mana mengindikasikan kalau 
-tidak bakal ada lagi pesan (messages) baru yang bakal dikirimin. Saat momen itu beneran terjadi, 
+tidak bakal ada lagi pesan (messages) baru yang bakal dikirimin. Saat momen itu benar-benar terjadi, 
 semua pemanggilan (_calls_) ke `recv` yang lagi dikerjain sama *instances* si `Worker` di dalam _infinite 
 loop_ (perulangan tiada henti)-nya bakal otomatis nge-return sebuah pesan error. Di Listing 21-24, 
 kita ngubah bagian perulangan `Worker` supaya dia mau keluar (exit the loop) dengan anggun (gracefully) 
-di dalam skenario kayak gitu (in that case), yang berarti _threads_-nya ini akhirnya beneran 
+di dalam skenario kayak gitu (in that case), yang berarti _threads_-nya ini akhirnya benar-benar 
 bisa kelar (finish) pas implementasi `drop` milik `ThreadPool` manggil `join` 
 ke mereka-mereka semua.
 
@@ -154,7 +154,7 @@ ke mereka-mereka semua.
 
 </Listing>
 
-Buat bisa ngelihat sendiri aksi kode (code in action) ini beneran berjalan, mari kita modifikasi (modify) `main` 
+Buat bisa ngelihat sendiri aksi kode (code in action) ini benar-benar berjalan, mari kita modifikasi (modify) `main` 
 supaya dia ini cuma nerima batas (accept only) dua *requests* aja sebelum akhirnya dia nutup 
 (shutting down) si server-nya dengan anggun (_gracefully_), kayak yang ditunjukin di Listing 21-25.
 
@@ -166,10 +166,10 @@ supaya dia ini cuma nerima batas (accept only) dua *requests* aja sebelum akhirn
 
 </Listing>
 
-Anda pastinya sangat tidak mau ngarep (_wouldn't want_) kalau sebuah web server betulan di dunia 
+kita pastinya sangat tidak mau ngarep (_wouldn't want_) kalau sebuah web server betulan di dunia 
 nyata tiba-tiba mati nutup sendiri (shut down) sesudah cuma ngelayanin dua buah _requests_ doang. 
 Tapi kan kode ini itu cuma murni (just demonstrates) dibikin buat pamer ngedemoin kalau kemampuan matikan proses 
-secara anggun (graceful shutdown) dan fitur bersih-bersihnya (cleanup) emang beneran udah bisa kerja 
+secara anggun (graceful shutdown) dan fitur bersih-bersihnya (cleanup) emang benar-benar udah bisa kerja 
 lancar beroperasi (in working order).
 
 Method `take` ini aslinya udah didefinisikan secara bawaan di dalem trait `Iterator` 
@@ -180,7 +180,7 @@ ujung batas akhir dari fungsi `main`, dan otomatis implementasi fungsi `drop` mi
 
 Silakan nyalakan kembali (start) si server ini pakai instruksi `cargo run`, terus cobain bikin tiga (three) buah _requests_ 
 masuk ke sana. Pemanggilan _request_ yang ketiga ini harusnya langsung ngebentur pesan error (should error), 
-dan terus di dalem layar terminal Anda itu Anda kudu ngelihat tulisan keluaran (output) 
+dan terus di dalem layar terminal kita itu kita kudu ngelihat tulisan keluaran (output) 
 yang lumayan kelihatan persis mirip-mirip (similar) kayak ini:
 
 <!-- manual-regeneration
@@ -212,7 +212,7 @@ Shutting down worker 2
 Shutting down worker 3
 ```
 
-Anda emang sangat mungkin ngelihat kalau rupa dari urutan-urutan (ordering) barisan teks _Worker_ ID 
+kita emang sangat mungkin ngelihat kalau rupa dari urutan-urutan (ordering) barisan teks _Worker_ ID 
 dan tulisan pesannya yang nampil ke layar ini agak beda-beda tatanannya. Kita 
 bisa perhatiin dengan jelas (can see) gimana dalemnya proses cara kerja kode ini dari bacaan pesannya 
 (messages) tersebut: *Instances* si `Worker` urutan 0 dan 3 ternyata beruntung dapet 
@@ -232,21 +232,21 @@ Coba teliti merhatikan (notice) adanya satu aspek detail perlakuan (_aspect_) ya
 (interesting) di balik serangkaian rentetan rupa spesifik proses eksekusi (execution) satu ini: di mana 
 si `ThreadPool` udah keburu kelar nge-_drop_ si `sender`, dan bahkan sebelum sempet ada *instances* 
 `Worker` mana aja yang nangkep ngerima kode error (received an error), kita malahan udah ngebikin status program kita ini buat maksa nyoba nggabung 
-(join) ke `Worker` urutan 0. Waktu momen itu ya, si `Worker` 0 beneran belum ada dapetin sinyal kabar tangkepan error 
-apa-apa (not yet gotten an error) yang mana berasal dari tarikan *recv*, jadinya ya beneran wajar aja sih kalau si otak pusat jalan *main thread*-nya ini terpaksa mandeg macet diem nge-blok di jalan 
+(join) ke `Worker` urutan 0. Waktu momen itu ya, si `Worker` 0 benar-benar belum ada dapetin sinyal kabar tangkepan error 
+apa-apa (not yet gotten an error) yang mana berasal dari tarikan *recv*, jadinya ya benar-benar wajar aja sih kalau si otak pusat jalan *main thread*-nya ini terpaksa mandeg macet diem nge-blok di jalan 
 (blocked), ngaso setia sembari nungguin si `Worker` 0 supaya ngerampungin pekerjaannya sampai tuntas (_finish_). 
 Eh pas lagi asik nunggu itu (In the meantime), si `Worker` 3 yang udah ketiban ngerima jatah mandat narik dapet 
 (received) satu butir kerjaan (_a job_) yang selanjutnya diikuti oleh riwayat sisa-sisa para _threads_ sekaliannya yang ikutan kebagian serentak seragam dapet nerima cipratan pesan eror (error). 
 Terus nah pas begitu si `Worker` 0 kelar tuntas ngerjain jatah lapaknya (finished), si otak tengahnya (_main thread_) ini lantas lanjut ngecoba 
 nungguin antrean jejeran gerbong serombongan sisa komplotan (the rest) punggawa *instances* `Worker` ini biar pada cepetan (_to finish_) juga ikutan kelar nutup lapaknya. Pada pas 
-tibanya waktu masa (at that point) tersebut, eh ternyata semuanya tanpa basa-basi emang udah beneran pada 
+tibanya waktu masa (at that point) tersebut, eh ternyata semuanya tanpa basa-basi emang udah benar-benar pada 
 tuntas cabut ngeluarin diri (exited) berhamburan dari daleman siklus lingkar putaran (loops) rute hidup mereka itu lalu udah berhenti total dari segala aktivitas hidup (_stopped_).
 
 Selamat ya (Congrats)! Kita bener-bener udah sanggup nyampe di titik purna ngerampungin _project_ ini secara utuh (completed); 
 kita sekarang ini udah sah punyain (_have_) sepenggal program _web server_ murni kelas cetek mendasar (_basic_) yang aslinya juga 
-udah bisa jalan gagah memanfaatkan pengerahan tenaga tatanan sekelompok balok (_thread pool_) demi sanggup ngeresponi secara sigap lalu melayani sambutan balik secara asinkron tak serentak (_asynchronously_). Kita udah sangat terbukti mampu beneran 
+udah bisa jalan gagah memanfaatkan pengerahan tenaga tatanan sekelompok balok (_thread pool_) demi sanggup ngeresponi secara sigap lalu melayani sambutan balik secara asinkron tak serentak (_asynchronously_). Kita udah sangat terbukti mampu benar-benar 
 melancarkan (_perform_) atraksi sebuah tarian purna pemutusan nafas nyawa _graceful shutdown_ terhadap si komponen server tersebut, 
-yang mana beneran menuntaskan lalu ngebersihin angkat tuntas ngurus sisaan barang bongkaran kotoran riwayat sampah kelakuan (cleans up) riwayat para seantero rentetan _threads_ 
+yang mana benar-benar menuntaskan lalu ngebersihin angkat tuntas ngurus sisaan barang bongkaran kotoran riwayat sampah kelakuan (cleans up) riwayat para seantero rentetan _threads_ 
 di ruang bilik _pool_ ini.
 
 Nih ditaruh rupa segenap rincian barisan kode final seutuhnya (full code) secara utuh komplit di sini sebagai referensi pedoman (_reference_) ya:
@@ -268,7 +268,7 @@ Nih ditaruh rupa segenap rincian barisan kode final seutuhnya (full code) secara
 </Listing>
 
 Kita emang nyatanya masih sangat bisa sih buat ngerjain (_could do more_) lebih jauh dan memodifikasi lebih heboh hal-hal lainnya lagi di tempat ini lho! 
-Kalau seumpamanya emang hasrat di hati emang Anda kepengen (want to) buat sudi terus merutinkan niat maju ngelanjut (continue) nambahin memoles (_enhancing_) gubahan kerangka arsitektur project ini jadi makin keren lagi mantep ke depannya, ini di bawah disediain list segelintir barisan rupa corak deretan bayangan pencerahan curhatan ide (some ideas) racikan kreasi mantap:
+Kalau seumpamanya emang hasrat di hati emang kita kepengen (want to) buat sudi terus merutinkan niat maju ngelanjut (continue) nambahin memoles (_enhancing_) gubahan kerangka arsitektur project ini jadi makin keren lagi mantep ke depannya, ini di bawah disediain list segelintir barisan rupa corak deretan bayangan pencerahan curhatan ide (some ideas) racikan kreasi mantap:
 
 - Lengkapin dan imbuhin rentetan sekelumit tambalan isi dari dokumentasi tambahan _(more documentation)_ buat struct `ThreadPool` beserta metode-metode rentetan _method_ `public` miliknya juga ya.
 - Coba isengin rakit bikinin sisipin sederet rentetan program tes asinkron (tests) buat nguji kemantapan jalan kelakuan isi _fungsionalitas_ (functionality) jeroan library-nya ini.
@@ -278,11 +278,11 @@ Kalau seumpamanya emang hasrat di hati emang Anda kepengen (want to) buat sudi t
 
 ## Ringkasan (Summary)
 
-Mantap (Well done)! Anda udah berhasil nyampe tuntas tembus tamat nyentuh ujung akhir pucuk paling buntut sampul ujung (end) dari seri halaman buku ini! Kita semua dari 
-diri kami di sini ini secara pribadi kepengen bener banget pingin ngelempar sepatah kata berterima kasih sedalam-dalamnya buat ngaturin wujud hormat salam 
-terima kasih tulus buat panjenengan-panjenengan semua yang udah ikhlas (thank you for) ngabisin waktu ngikut jalan jejer iring bersamai (joining) kita-kita nyusurin merambat rute panjang pelesiran perjalanan (tour) petualangan liburan berburu pesona Rust ini sedari titik garis pinggir batas mula dulu. Kini emang pastinya seutuhnya (now) Anda ini udah sepenuhnya dirasa matang dan bener-bener dirasa dipastikan udah sangat siap sanggup sedia (_ready to_) langsung nge-gass terjang 
-nerapin ngimplementasiin sendiri kreasi murni orisinil pribadi gagasan wujud gubahan deretan gagasan tatanan project rintisan (_projects_) program rill asli bikinan sendiri punya Anda yang berbasis ngusung 
+Mantap (Well done)! Kita udah berhasil nyampe tuntas tembus tamat nyentuh ujung akhir pucuk paling buntut sampul ujung (end) dari seri halaman buku ini! Kita semua dari 
+diri kami di sini ini secara pribadi kepengen bener sekali pingin ngelempar sepatah kata berterima kasih sedalam-dalamnya buat ngaturin wujud hormat salam 
+terima kasih tulus buat panjenengan-panjenengan semua yang udah ikhlas (thank you for) ngabisin waktu ngikut jalan jejer iring bersamai (joining) kita-kita nyusurin merambat rute panjang pelesiran perjalanan (tour) petualangan liburan berburu pesona Rust ini sedari titik garis pinggir batas mula dulu. Kini emang pastinya seutuhnya (now) kita ini udah sepenuhnya dirasa matang dan bener-bener dirasa dipastikan udah sangat siap sanggup sedia (_ready to_) langsung nge-gass terjang 
+nerapin ngimplementasiin sendiri kreasi murni orisinil pribadi gagasan wujud gubahan deretan gagasan tatanan project rintisan (_projects_) program rill asli bikinan sendiri punya kita yang berbasis ngusung 
 bendera teknologi sistem Rust lalu sekalian sudi dan rela rela buat ngeringanin naruh bantu campur turut menaruh campur tenaga ulur ngasih derma tangan ngebantu nambahin andil campur gotong berderma (_help with_) berkontribusi di gubahan wujud program garapan rintisan _projects_ sumbangsih kreasi racikan buatan anak punggawa temen sejawat *people's projects* (orang-orang) pahlawan tetangga sanak rupa saudara kita di sekitar sana. Harus dimasukin paksa (_Keep in mind_) diranap di simpen lekat ingatan tanam patri ke dalem nalar benak kepala ingat-ingat simpan resapin ya 
 di ingatan (mind) dalem bawah sadar otak memori paten benak kepalamu ini andaikata (that) ini tuh sesungguhnya nyata terang 
 bersinar nyata terang benderang niscaya terbentang terbentang mekar membentang subur emang masih menyisa (there is a) terhuni rupa sepetak jajaran luas 
-gerombolan wadah kerumunan kelompok perhimpunan _welcoming community_ (komunitas yang sangat terbuka nyambut ramah dan sedia hangat menjamu rupa tangan senyum terbuka gembira lebar dada tulus nyambut seneng asri hangat peluk) persaudaraan ikatan erat rupa serumpun bangsa perkumpulan perserikatan komplotan jejaring _other Rustaceans_ (kalangan para pengabdi programmer pemuja aliran seiman setia pejuang pendekar kode penyuka aliran kepercayaan kasta Rust ksatria lain-lainnya sesama punggawa yang sealiran) lainnya di pelosok buana pelosok sana luar sekitar pojokan pelosok dunia sana ini yang tak ada bosannya tak kan bakal pernah nyerah sudi ikhlas niscaya aslinya emang _would love to_ (pada seneng rela hati bakal cinta mati gemar nyenengin cinta ngebet pengen gemar dan hobi pake cinta bahagia hepi beneran girang tulus girang rela asyik seru sumringah demen kepingin riang berhati tulus bakal doyan bakal suka bakal sayang dan sangat girang sekali teramat rindu sangat ingin mau rela) ikhlas turun nolong bantu menyambut nyuapin nyuapin kasih (_help you with_) membina mandu memayungi mendampingin mandorin nyodor tangan mbopong mbimbing nolong Anda-anda pada ikhlas terjun dan andil nimbrung bantuin mberesin dan nyikat beresin mengurus sedia ngadepin dan ngeberesin (_any challenges_) seberapa parah gawatnya semua aneka segudang rupa kendala aral ragam himpitan halang aneka lika rupa jurang duri kesulitan ujian badai cobaan halangan ragam perkara problema jerat tikungan batu cadas tantangan rintang terjalan problem himpitan perkara ganjalan segenap segala seberat sedempet serepot rupa kendala seisi sebentang onak seisi segala segenap (any) ragam masalah kendala benturan apa jua sekalipun belaka apa pun bentuknya rupa aja yang di jalan nanti kebetulan emang rupa nyata riil fakta nyatanya _you encounter_ (Anda tabrak kepentok dapati tabrak papasi bersua sandung hantam ketatap kebentur derita alami jumpa dapet tebas terjang lalui pergokin tempuh alami libas gilas temui tabrak lewati hantam rasakan langgar cicipin terjang tatap derita lintasi rasai cicip rasain hadapi cicip deritain hadapi hadapi) ke-tubruk kepentok bersua melintang terlintas nyandung hadap temui hadapi sandung Anda di belantara sepanjang masa-masa pelayaran peruntungan jalan pendakian jalur petualang perjalanan lintas jalur rute jelajah ngeluyur (journey) pengembaraan karir kiprah rekam pelesiran perjalanan _Rust_ (kancah rute perjalanan karir Rust) asuhan panjenengan Anda seiring maju langkah laju menapaki jejak berjejak Anda maju panjang menjejak merentas jauh berjalan ini di waktu ke detik harinya nanti menjejak (your Rust journey).
+gerombolan wadah kerumunan kelompok perhimpunan _welcoming community_ (komunitas yang sangat terbuka nyambut ramah dan sedia hangat menjamu rupa tangan senyum terbuka gembira lebar dada tulus nyambut seneng asri hangat peluk) persaudaraan ikatan erat rupa serumpun bangsa perkumpulan perserikatan komplotan jejaring _other Rustaceans_ (kalangan para pengabdi programmer pemuja aliran seiman setia pejuang pendekar kode penyuka aliran kepercayaan kasta Rust ksatria lain-lainnya sesama punggawa yang sealiran) lainnya di pelosok buana pelosok sana luar sekitar pojokan pelosok dunia sana ini yang tak ada bosannya tak kan bakal pernah nyerah sudi ikhlas niscaya aslinya emang _would love to_ (pada seneng rela hati bakal cinta mati gemar nyenengin cinta ngebet pengen gemar dan hobi pake cinta bahagia hepi benar-benar girang tulus girang rela asyik seru sumringah demen kepingin riang berhati tulus bakal doyan bakal suka bakal sayang dan sangat girang sekali teramat rindu sangat ingin mau rela) ikhlas turun nolong bantu menyambut nyuapin nyuapin kasih (_help you with_) membina mandu memayungi mendampingin mandorin nyodor tangan mbopong mbimbing nolong kita-kita pada ikhlas terjun dan andil nimbrung bantuin mberesin dan nyikat beresin mengurus sedia ngadepin dan ngeberesin (_any challenges_) seberapa parah gawatnya semua aneka segudang rupa kendala aral ragam himpitan halang aneka lika rupa jurang duri kesulitan ujian badai cobaan halangan ragam perkara problema jerat tikungan batu cadas tantangan rintang terjalan problem himpitan perkara ganjalan segenap segala seberat sedempet serepot rupa kendala seisi sebentang onak seisi segala segenap (any) ragam masalah kendala benturan apa jua sekalipun belaka apa pun bentuknya rupa aja yang di jalan nanti kebetulan emang rupa nyata riil fakta nyatanya _you encounter_ (kita tabrak kepentok dapati tabrak papasi bersua sandung hantam ketatap kebentur derita alami jumpa dapet tebas terjang lalui pergokin tempuh alami libas gilas temui tabrak lewati hantam rasakan langgar cicipin terjang tatap derita lintasi rasai cicip rasain hadapi cicip deritain hadapi hadapi) ke-tubruk kepentok bersua melintang terlintas nyandung hadap temui hadapi sandung kita di belantara sepanjang masa-masa pelayaran peruntungan jalan pendakian jalur petualang perjalanan lintas jalur rute jelajah ngeluyur (journey) pengembaraan karir kiprah rekam pelesiran perjalanan _Rust_ (kancah rute perjalanan karir Rust) asuhan panjenengan kita seiring maju langkah laju menapaki jejak berjejak kita maju panjang menjejak merentas jauh berjalan ini di waktu ke detik harinya nanti menjejak (your Rust journey).

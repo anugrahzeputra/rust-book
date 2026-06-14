@@ -12,7 +12,7 @@ Sebelum kita masuk ke detail soal modul dan _paths_, di sini kita nyediain
 referensi cepet soal gimana cara kerja modul, _paths_, keyword `use`, sama 
 keyword `pub` di _compiler_, dan gimana kebanyakan _developer_ ngatur kode 
 mereka. Kita bakal ngebahas contoh-contoh dari tiap aturan ini di sepanjang bab 
-ini, tapi tempat ini cocok banget buat dijadiin pengingat soal gimana modul itu 
+ini, tapi tempat ini cocok sekali buat dijadiin pengingat soal gimana modul itu 
 jalan.
 
 - **Mulai dari _crate root_**: Pas nge-compile sebuah crate, _compiler_ pertama 
@@ -178,6 +178,6 @@ kita bilang kalau modul A itu anaknya (_child_) modul B dan modul B itu induknya
 modul implisit yang namanya `crate`.
 
 Pohon modul mungkin ngingetin kita sama pohon direktori sistem file di komputer 
-kita; ini perbandingan yang pas banget! Kayak direktori di sistem file, kita 
+kita; ini perbandingan yang pas sekali! Kayak direktori di sistem file, kita 
 pake modul buat ngatur kode kita. Dan kayak file di dalem direktori, kita perlu 
 cara buat nemuin modul kita.

@@ -11,7 +11,7 @@ perubahan besar dengan frekuensi yang lebih jarang; sedangkan Rust merilis
 pembaruan-pembaruan kecil lebih sering. Setelah sekian lama, semua perubahan 
 kecil ini pada akhirnya bakal menumpuk. Tapi kalau dilihat dari satu rilis ke rilis 
 yang lain, kadang bisa jadi susah buat menengok ke belakang dan bilang, “Wow, di 
-antara Rust 1.10 dan Rust 1.31, Rust ternyata udah berubah banyak banget!”
+antara Rust 1.10 dan Rust 1.31, Rust ternyata udah berubah sangat banyak!”
 
 Setiap tiga tahun sekali, tim Rust memproduksi sebuah _edition_ (edisi) baru buat 
 Rust. Setiap edisi merangkul semua fitur yang sudah berhasil mendarat menjadi 

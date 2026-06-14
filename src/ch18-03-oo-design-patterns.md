@@ -44,7 +44,7 @@ tetap berupa _draft_ yang belum di-_publish_.
 
 ### Percobaan Object-Oriented yang Tradisional
 
-Ada banyak banget cara buat menata struktur kode buat menyelesaikan masalah yang 
+Ada sangat banyak cara buat menata struktur kode buat menyelesaikan masalah yang 
 sama, masing-masing dengan *trade-offs* (kekurangan/kelebihan) yang beda. 
 Implementasi di bagian ini memakai gaya _object-oriented_ yang lebih tradisional, 
 yang mana bisa ditulis di Rust, tapi tidak memanfaatkan beberapa dari kekuatan 
@@ -73,7 +73,7 @@ mau ngebolehin teks buat ditambahin ke postingan blog itu. Kalau kita nyoba ngam
 konten (content) dari postingan itu langsung, sebelum adanya *approval*, kita tidak 
 seharusnya dapat teks apa pun karena postingannya masih berupa _draft_. Kita udah 
 nambahin `assert_eq!` di kode ini buat tujuan demonstrasi aja. Pengujian *unit test* 
-yang cakep banget buat ini adalah dengan menegaskan (assert) kalau postingan blog 
+yang cakep sekali buat ini adalah dengan menegaskan (assert) kalau postingan blog 
 _draft_ mengembalikan string kosong dari method `content`, tapi kita tidak bakal 
 nulis _tests_ buat contoh ini.
 
@@ -106,7 +106,7 @@ perilaku yang wajib dimiliki sama semua _state objects_ buat `Post`.
 
 Terus, `Post` bakal menampung sebuah _trait object_ berupa `Box<dyn State>` di dalam 
 sebuah `Option<T>` di sebuah field _private_ bernama `state` buat naruh si 
-_state object_. Anda bakal ngelihat kenapa `Option<T>` ini dibutuhkan sebentar lagi.
+_state object_. Kita bakal ngelihat kenapa `Option<T>` ini dibutuhkan sebentar lagi.
 
 <Listing number="18-12" file-name="src/lib.rs" caption="Definisi dari struct `Post` dan fungsi `new` yang ngebikin instance `Post` baru, trait `State`, dan struct `Draft`">
 
@@ -306,7 +306,7 @@ dari referensi pinjaman (borrowed reference) `&self` dari parameter fungsinya.
 Terus kita memanggil method `unwrap`, yang mana kita tahu pasti tidak bakal pernah 
 menyebabkan _panic_ karena kita tahu method-method pada `Post` memastikan kalau `state` 
 bakal selalu berisi nilai `Some` saat method-method itu selesai dijalankan. Ini 
-adalah salah satu kasus yang kita obrolin di [“Kasus Di Mana Anda Punya Lebih 
+adalah salah satu kasus yang kita obrolin di [“Kasus Di Mana kita Punya Lebih 
 Banyak Informasi Daripada Compiler”][more-info-than-rustc] di Bab 9, di mana kita 
 tahu pasti kalau nilai `None` itu mustahil, meskipun _compiler_ tidak mampu buat 
 memahami hal itu.
@@ -349,10 +349,10 @@ dalam _state objects_ ketimbang bertebaran (scattered) ke mana-mana di dalam `Po
 
 > ### Kenapa Tidak Pake Enum Aja?
 >
-> Anda mungkin bingung dan nanya-nanya kenapa kita tidak pakai sebuah `enum` aja buat 
+> kita mungkin bingung dan nanya-nanya kenapa kita tidak pakai sebuah `enum` aja buat 
 > berbagai macam kemungkinan _state_ postingan tersebut sebagai varian-variannya. 
 > Itu emang salah satu solusi yang mungkin; cobain aja terus bandingin hasil akhirnya 
-> buat ngelihat mana yang lebih Anda suka! Satu kekurangan dari memakai enum adalah 
+> buat ngelihat mana yang lebih kita suka! Satu kekurangan dari memakai enum adalah 
 > di setiap tempat yang ngecek nilai dari enum itu, kita bakal butuh ekspresi `match` 
 > atau sejenisnya buat menangani setiap kemungkinan varian yang ada. Ini bisa jadi 
 > jauh lebih berulang-ulang (repetitive) ketimbang solusi yang memakai _trait 
@@ -380,7 +380,7 @@ Dengan _state pattern_, method-method di `Post` dan tempat-tempat di mana kita m
 perlu nambahin satu struct baru lalu mengimplementasikan _trait methods_ pada struct 
 baru itu di satu tempat aja.
 
-Implementasi yang memakai _state pattern_ ini gampang banget buat diperluas buat 
+Implementasi yang memakai _state pattern_ ini gampang sekali buat diperluas buat 
 nambahin lebih banyak fungsionalitas. Buat ngelihat sendiri seberapa simpelnya 
 memelihara (maintaining) kode yang pakai _state pattern_, coba deh beberapa 
 saran ini:
@@ -417,7 +417,7 @@ yang mirip-mirip di `Post`. Kedua method itu memakai `Option::take` dengan field
 `state` milik `Post`, dan kalau `state` itu isinya `Some`, mereka mendelegasikannya 
 ke implementasi nilai yang dibungkus tersebut buat method yang sama lalu menge-set 
 nilai baru dari field `state` dengan hasil panggilannya. Kalau kita punya 
-banyak banget method di `Post` yang ngikutin pola ini, kita mungkin bakal 
+sangat banyak method di `Post` yang ngikutin pola ini, kita mungkin bakal 
 pertimbangin buat mendefinisikan sebuah _macro_ buat ngebuang pengulangan ini 
 (lihat [“Macros”][macros] di Bab 20).
 
@@ -552,14 +552,14 @@ dari postingan yang belum di-_publish_, bakal ketahuan jauh-jauh sebelum kodenya
 berhasil masuk ke _production_.
 
 Cobalah beberapa tugas yang disarankan di awal bagian ini pada _crate_ `blog` 
-setelah memakai desain yang ada di Listing 18-21 buat melihat apa pendapat Anda 
+setelah memakai desain yang ada di Listing 18-21 buat melihat apa pendapat kita 
 soal desain dari versi kode yang ini. Perhatikan kalau beberapa dari tugas 
 tersebut mungkin emang udah terselesaikan secara natural di desain yang ini.
 
 Kita udah melihat kalau walaupun Rust itu mampu mengimplementasikan desain pola 
 _object-oriented_, pola-pola lain, kayak nge-_encode_ _state_ ke dalam sistem tipe, 
 juga tersedia dan bisa diimplementasikan di Rust. Pola-pola ini punya kumpulan 
-_trade-offs_ yang beda-beda. Walaupun Anda mungkin udah familier banget sama 
+_trade-offs_ yang beda-beda. Walaupun kita mungkin udah familier sekali sama 
 pola-pola _object-oriented_, memikirkan kembali (rethinking) masalahnya buat 
 memanfaatkan fitur-fitur dari Rust bisa ngasih banyak keuntungan, seperti mencegah 
 munculnya _bugs_ tertentu saat _compile time_. Pola-pola _object-oriented_ tidak bakal 
@@ -569,13 +569,13 @@ _object-oriented_ lainnya.
 
 ## Ringkasan
 
-Terlepas dari apakah Anda mikir kalau Rust itu adalah sebuah bahasa yang 
-_object-oriented_ atau bukan setelah baca bab ini, Anda sekarang udah tahu kalau 
-Anda bisa memakai _trait objects_ buat dapetin beberapa fitur ala _object-oriented_ 
-di Rust. _Dynamic dispatch_ bisa ngasih kode Anda sedikit keluwesan (flexibility) 
-yang harus dibayar dengan sedikit pinalti di performa _runtime_. Anda bisa memakai 
+Terlepas dari apakah kita mikir kalau Rust itu adalah sebuah bahasa yang 
+_object-oriented_ atau bukan setelah baca bab ini, kita sekarang udah tahu kalau 
+kita bisa memakai _trait objects_ buat dapetin beberapa fitur ala _object-oriented_ 
+di Rust. _Dynamic dispatch_ bisa ngasih kode kita sedikit keluwesan (flexibility) 
+yang harus dibayar dengan sedikit pinalti di performa _runtime_. Kita bisa memakai 
 keluwesan ini buat mengimplementasikan pola-pola _object-oriented_ yang bisa 
-ngebantu kode Anda supaya lebih gampang dipelihara (maintainability). Rust juga punya 
+ngebantu kode kita supaya lebih gampang dipelihara (maintainability). Rust juga punya 
 fitur lain, kayak _ownership_, yang tidak dipunyai sama bahasa-bahasa 
 _object-oriented_ pada umumnya. Sebuah pola _object-oriented_ tidak bakal selalu 
 jadi cara yang paling oke buat memanfaatkan kekuatan dari Rust, tapi dia jelas 

@@ -179,7 +179,7 @@ bagian pertama menampilkan detail alasan setiap pengujian yang gagal. Di kasus
 ini, kita mendapat detail bahwa `tests::another` gagal karena terjadi _panic_ 
 dengan pesan `Make this test fail` di baris 17 pada file _src/lib.rs_. Bagian 
 berikutnya mendaftarkan cuma nama-nama dari semua pengujian yang gagal, yang 
-mana sangat berguna saat ada banyak pengujian dan banyak banget output dari 
+mana sangat berguna saat ada banyak pengujian dan sangat banyak output dari 
 pengujian yang gagal. Kita bisa memakai nama pengujian yang gagal itu untuk 
 menjalankan hanya pengujian tersebut agar lebih gampang men-_debug_-nya; kita 
 bakal membahas lebih lanjut soal cara-cara menjalankan pengujian di bagian 
@@ -291,7 +291,7 @@ Cara yang sangat umum buat memverifikasi fungsionalitas adalah dengan menguji
 kesamaan antara hasil dari kode yang diuji dengan nilai yang kita harapkan bakal 
 dikembalikan oleh kode tersebut. Kita bisa saja melakukannya memakai macro 
 `assert!` dengan memasukkan ekspresi yang memakai operator `==`. Tapi, karena 
-ini adalah bentuk pengujian yang sering banget dipakai, _standard library_ 
+ini adalah bentuk pengujian yang sering sekali dipakai, _standard library_ 
 menyediakan dua macro—`assert_eq!` dan `assert_ne!`—buat melakukan pengujian 
 ini dengan lebih praktis. Kedua macro ini membandingkan dua argumen buat melihat 
 apakah mereka sama (_equality_) atau tidak sama (_inequality_). Mereka juga bakal 
@@ -341,7 +341,7 @@ gagal, dan pesannya memberi tahu kita kalau penegasan yang gagal adalah
 `left == right` beserta apa nilai `left` dan `right` yang didapatkan. Pesan ini 
 ngebantu kita buat mulai melakukan _debugging_: argumen `left`, di mana kita 
 menaruh hasil pemanggilan `add_two(2)`, itu ternyata `5`, padahal argumen 
-`right` adalah `4`. Kita bisa bayangin kalau informasi ini bakal kepake banget 
+`right` adalah `4`. Kita bisa bayangin kalau informasi ini bakal kepake sekali 
 terutama kalau ada banyak pengujian yang lagi jalan.
 
 Perhatikan bahwa di beberapa bahasa dan _test frameworks_ (kerangka pengujian), 
