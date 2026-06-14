@@ -2,25 +2,27 @@
 
 _oleh Steve Klabnik, Carol Nichols, dan Chris Krycho, beserta kontribusi dari Komunitas Rust_
 
-pada versi ini, kita asumsikan bahwa Kita menggunakan Rust 1.85.0 (terbit 17-02-2025)
-atau setelahnya dengan `edisi = "2025"` pada file Cargo.toml dari semua proyek untuk 
-mengatur dan menggunakan idiom Rust edisi 2024 pada mereka. Lihat pada  [bagian “Instalasi”
-pada Halaman 1][install]<!-- ignore --> untuk menginstalasi atau memperbaharui Rust.
+Versi teks ini mengasumsikan Anda menggunakan Rust 1.90.0 (rilis 18-09-2025) 
+atau yang lebih baru dengan `edition = "2024"` di dalam file *Cargo.toml* pada 
+semua proyek untuk mengonfigurasi mereka agar menggunakan idiom Edisi Rust 2024. 
+Lihat [bagian “Instalasi” di Bab 1][install]<!-- ignore --> untuk instruksi 
+pemasangan atau pembaruan Rust, dan lihat [Lampiran E][appendix-e]<!-- ignore --> 
+untuk informasi mengenai edisi.
 
-Format HTML untuk versi buku ini dapat dilihat secara _online_ pada url berikut
-[https://doc.rust-lang.org/stable/book/](https://doc.rust-lang.org/stable/book/)
-dan offline (dengan menggunakan instalasi Rust dengan `rustup`; dan membukanya 
-dengan `rustup doc --book` to open.)
+Format HTML tersedia secara online di 
+[https://doc.rust-lang.org/stable/book/](https://doc.rust-lang.org/stable/book/) 
+dan offline pada instalasi Rust yang dilakukan dengan `rustup`; jalankan 
+`rustup doc --book` untuk membukanya.
 
-Beberapa [terjemahan] yang dibuat oleh komunitas juga tersedia.
+Beberapa [terjemahan] komunitas juga tersedia.
 
-Buku ini (versi Indonesia) juga tersedia di [Format Buku oleh No Starch
-Press][nsprust].
+Teks ini tersedia dalam [format cetak dan ebook dari No Starch Press][nsprust].
 
 [install]: ch01-01-installation.html
-[nsprust]: https://nostarch.com/rust-programming-language-2nd-edition
+[appendix-e]: appendix-05-editions.html
+[nsprust]: https://nostarch.com/rust-programming-language-3rd-edition
 [terjemahan]: appendix-06-translation.html
 
-> **🚨 Ingin belajar secara interaktif? Silakan coba versi yg berbeda
-> dari Buku Rust, dg fitur: kuis, pewarnaan, visualisasi, dan
-> banyak lainnya**: <https://rust-book.cs.brown.edu>
+> **🚨 Ingin pengalaman belajar yang lebih interaktif? Silakan coba versi yang 
+> berbeda dari Buku Rust, dengan fitur: kuis, sorotan, visualisasi, dan 
+> lainnya**: <https://rust-book.cs.brown.edu>

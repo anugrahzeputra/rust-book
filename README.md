@@ -23,13 +23,13 @@ Lihat bagian [releases] untuk mengunduh kode dari semua daftar kode yang muncul 
 Membangun buku ini membutuhkan [mdBook], idealnya versi yang sama dengan yang digunakan rust-lang/rust di [file ini][rust-mdbook]. Cara mendapatkannya:
 
 [mdBook]: https://github.com/rust-lang/mdBook
-[rust-mdbook]: https://github.com/rust-lang/rust/blob/master/src/tools/rustbook/Cargo.toml
+[rust-mdbook]: https://github.com/rust-lang/rust/blob/HEAD/src/tools/rustbook/Cargo.toml
 
 ```bash
 $ cargo install mdbook --locked --version <version_num>
 ```
 
-Buku ini juga menggunakan dua plugin mdbook yang merupakan bagian dari repositori ini. Jika Anda tidak menginstalnya, Anda akan melihat peringatan saat membangun dan outputnya tidak akan terlihat benar, tetapi Anda tetap bisa membangun bukunya. Untuk menggunakan plugin tersebut, jalankan:
+Buku ini juga menggunakan dua plugin mdbook yang merupakan bagian dari repositori ini. Jika kita tidak menginstalnya, kita akan melihat peringatan saat membangun dan outputnya tidak akan terlihat benar, tetapi kita tetap bisa membangun bukunya. Untuk menggunakan plugin tersebut, jalankan:
 
 ```bash
 $ cargo install --locked --path packages/mdbook-trpl --force

@@ -13,10 +13,7 @@ kami ngirim hasil editan (edits) ke pihak No Starch. **Tolong jangan submit *pul
 yang ngerubah file-file di dalem direktori `nostarch` ya, PR semacam itu bakal langsung 
 kami tutup (closed).**
 
-Kami memakai [`rustfmt`][rustfmt] buat nerapin gaya pemformatan standar (standard 
-formatting) ke kode-kode Rust yang ada di dalam repo ini, dan kami juga memakai 
-[`dprint`][dprint] buat nerapin pemformatan serupa buat kode sumber Markdown sekaligus 
-kode-kode non-Rust lainnya di project ini.
+Kita menggunakan [`rustfmt`][rustfmt] untuk menerapkan gaya pemformatan standar (standard formatting) pada kode Rust di dalam repo ini, dan kita juga menggunakan [`dprint`][dprint] untuk menerapkan pemformatan serupa pada source Markdown sekaligus kode non-Rust lainnya di proyek ini.
 
 [rustfmt]: https://github.com/rust-lang/rustfmt
 [dprint]: https://dprint.dev

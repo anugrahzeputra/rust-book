@@ -37,10 +37,10 @@ yang pantas buat Anda.
 
 Daftar _derivable traits_ (trait yang bisa di-_derive_) yang disediain di 
 lampiran ini itu tidaklah komprehensif: _libraries_ lain bisa aja ngimplementasiin 
-`derive` buat trait mereka sendiri, ngebikin daftar trait yang bisa Anda pakai 
+`derive` buat trait mereka sendiri, ngebikin daftar trait yang bisa kita pakai 
 dengan `derive` itu bener-bener jadi tanpa batas (open-ended). Mengimplementasikan 
 `derive` ini melibatkan pemakaian _procedural macro_, yang mana udah dibahas di 
-bagian [“Macros”][macros] di Bab 20.
+bagian [“Custom `derive` Macros”][custom-derive-macros]<!-- ignore --> di Bab 20.
 
 ### `Debug` Buat Output Programmer
 
@@ -53,11 +53,7 @@ tujuan *debugging* (pemeriksaan error), supaya Anda dan programmer lainnya yang
 lagi makek tipe Anda tersebut bisa menginspeksi *instance* tersebut pas ada di 
 satu titik tertentu di program pas lagi dieksekusi.
 
-Trait `Debug` diwajibkan (required), misalnya, saat kita pengen makai macro `assert_eq!`. 
-Macro ini bakal mencetak nilai-nilai dari *instances* yang diberikan kepadanya 
-sebagai argumen kalau penegasan kesamaannya (equality assertion) gagal supaya 
-para programmer bisa lihat dengan jelas alasan kenapa kedua instance itu tidak 
-sama (weren't equal).
+Trait `Debug` diwajibkan, misalnya, saat kita menggunakan macro `assert_eq!`. Macro ini akan mencetak nilai-nilai dari *instances* yang diberikan kepadanya sebagai argumen jika *equality assertion* gagal sehingga para programmer bisa melihat dengan jelas alasan mengapa kedua *instance* tersebut tidak sama.
 
 ### `PartialEq` dan `Eq` Buat Perbandingan Kesamaan (Equality Comparisons)
 
@@ -65,11 +61,7 @@ Trait `PartialEq` ngasih Anda kemungkinan buat ngebandingin *instances* dari seb
 buat mengecek apakah mereka itu sama atau tidak, dan juga memfungsikan pemakaian 
 operator `==` dan `!=`.
 
-Nge-_derive_ `PartialEq` bakal mengimplementasikan method `eq`. Pas `PartialEq` di-_derive_ 
-pada _structs_, dua instances dianggap sama hanya jika _semua_ bidang (_fields_)-nya sama, 
-dan kedua instances itu bakal dianggap tidak sama (not equal) kalau ada bidang apa pun 
-yang tidak sama. Saat di-_derive_ pada _enums_, masing-masing varian bakal dianggap sama 
-dengan varian dirinya sendiri dan dianggap tidak sama dengan varian-varian yang lainnya.
+Nge-_derive_ `PartialEq` bakal mengimplementasikan method `eq`. Pas `PartialEq` di-_derive_ pada _structs_, dua instances dianggap sama hanya jika _semua_ fields-nya sama, dan kedua instances itu bakal dianggap tidak sama kalau ada field apa pun yang tidak sama. Saat di-_derive_ pada _enums_, masing-masing varian bakal dianggap sama dengan dirinya sendiri dan tidak sama dengan varian lainnya.
 
 Trait `PartialEq` diwajibkan, misalnya, pas lagi memakai macro `assert_eq!`, 
 yang mana dia perlu bisa ngebandingin dua buah instances dari suatu tipe buat 
@@ -100,8 +92,8 @@ mengembalikan sebuah `Option<Ordering>` yang mana isinya bakal berupa `None` kal
 nilai-nilai yang dikasih itu ternyata gagal memproduksi sebuah urutan (ordering). 
 Contoh dari sebuah nilai yang gagal memproduksi urutan, sekalipun sebagian besar nilai di 
 tipe tersebut aslinya bisa dibandingin, adalah nilai *not-a-number* (`NaN`) pada *floating 
-point*. Manggil `partial_cmp` memakai angka floating-point mana pun dicampur dengan nilai 
-`NaN` pasti bakal mengembalikan `None`.
+point*. Manggil `partial_cmp` memakai angka *floating-point* mana pun dicampur dengan nilai 
+`NaN` *floating-point* pasti bakal mengembalikan `None`.
 
 Saat di-_derive_ pada _structs_, `PartialOrd` ngebandingin dua buah instances dengan 
 cara ngebandingin setiap nilai di dalam tiap *fields*-nya berdasarkan dengan urutan kemunculan 
@@ -129,11 +121,11 @@ dari nilai-nilai tersebut.
 
 ### `Clone` dan `Copy` Buat Menduplikasi Nilai (Duplicating Values)
 
-Trait `Clone` membiarkan Anda secara eksplisit ngebikin _deep copy_ (salinan mendalam) dari 
-sebuah nilai, dan di mana proses duplikasi ini juga bisa jadi ngelibatin pengeksekusian 
-(running) kode-kode tambahan dan penyalinan data *heap*. Silakan lihat [“Variabel dan 
-Data Berinteraksi dengan Clone”][variables-and-data-interacting-with-clone] di Bab 4 
-buat informasi lebih jauh soal `Clone`.
+Trait `Clone` membiarkan kita secara eksplisit ngebikin _deep copy_ (salinan mendalam) dari 
+sebuah nilai, dan proses duplikasi ini juga bisa jadi ngelibatin pengeksekusian 
+(running) kode apa pun dan penyalinan data *heap*. Silakan lihat bagian [“Variabel dan 
+Data Berinteraksi dengan Clone”][variables-and-data-interacting-with-clone]<!-- ignore --> 
+di Bab 4 buat informasi lebih jauh soal `Clone`.
 
 Nge-_derive_ `Clone` bakal mengimplementasikan method `clone`, yang mana saat diimplementasikan 
 buat keseluruhan tipe, dia bakal memanggil `clone` juga secara beruntun pada masing-masing 
@@ -148,9 +140,9 @@ dan wajib punya hak milik (own) buat instances yang ada di dalemnya, makanya si 
 ini bakal manggil method `clone` buat setiap _item_ yang ada. Dengan demikian, tipe yang 
 disimpan di dalam _slice_ tersebut wajib mengimplementasikan `Clone`.
 
-Trait `Copy` membiarkan Anda buat menduplikasi sebuah nilai cuma dengan cara meng-copy *bits* 
+Trait `Copy` membiarkan kita buat menduplikasi sebuah nilai cuma dengan cara meng-copy *bits* 
 yang ada di dalam memori _stack_ aja; jadinya tidak perlu ada pengeksekusian kode 
-tambahan apa-apa di sini. Lihat [“Stack-Only Data: Copy”][stack-only-data-copy] 
+tambahan apa-apa di sini. Lihat bagian [“Stack-Only Data: Copy”][stack-only-data-copy]<!-- ignore --> 
 di Bab 4 buat informasi lebih jauh soal `Copy`.
 
 Trait `Copy` ini sama sekali tidak mendefinisikan method apa pun karena tujuannya itu buat 
@@ -159,11 +151,7 @@ asumsi mutlak bahwa tidak ada eksekusi kode acak apa pun yang berjalan selama pr
 Dengan cara kayak gini, semua programmer bisa berasumsi dengan aman (assume) kalau aksi 
 meng-*copy* sebuah nilai yang punya trait ini bakal kerasa cepet banget (very fast).
 
-Anda bisa nge-_derive_ `Copy` pada tipe apa pun yang mana semua elemen komponennya 
-itu udah mengimplementasikan `Copy`. Tipe yang udah mengimplementasikan `Copy` 
-juga wajib mutlak mengimplementasikan `Clone`, karena sebuah tipe yang mengimplementasikan 
-`Copy` otomatis udah punya implementasi buat `Clone` yang sepele (trivial implementation) yang mana dia 
-menunaikan tugas yang sama persis kayak si `Copy` tersebut.
+Kita bisa nge-_derive_ `Copy` pada tipe apa pun yang mana semua elemen komponennya itu udah mengimplementasikan `Copy`. Tipe yang udah mengimplementasikan `Copy` juga wajib mutlak mengimplementasikan `Clone`, karena sebuah tipe yang mengimplementasikan `Copy` otomatis udah punya implementasi buat `Clone` yang sepele (_trivial implementation_) yang menunaikan tugas yang sama persis kayak `Copy` tersebut.
 
 Trait `Copy` itu jarang banget diwajibkan secara eksplisit; tapi tipe-tipe yang 
 mengimplementasikan `Copy` punya privilese ketersediaan buat dioptimasi (optimizations 
@@ -198,13 +186,7 @@ tentu artinya semua fields atau bagian-bagian nilai di dalam tipe tersebut juga 
 (must also) buat udah mengimplementasikan `Default` biar tipe utamanya bisa nge-_derive_ 
 trait `Default`.
 
-Fungsi `Default::default` ini umumnya sering dipakai digabungin barengan sama sintaks pembaruan struct 
-(_struct update syntax_) yang pernah kita obrolin di [“Ngebikin Instances dari Instances Lain dengan 
-Struct Update Syntax”][creating-instances-from-other-instances-with-struct-update-syntax] 
-di Bab 5. Anda bisa mengkustomisasi beberapa *fields* tertentu aja dari sebuah struct 
-dan sesudahnya itu mengatur (set) lalu memakai nilai _default_ bawaannya buat ngisi 
-sisa bidang-bidang (rest of the fields) yang belum diisi dengan cara memakai kode 
-timbuhan `..Default::default()`.
+Fungsi `Default::default` ini umumnya sering dipakai digabungin barengan sama sintaks pembaruan struct (_struct update syntax_) yang pernah kita obrolin di bagian [“Ngebikin Instances dari Instances Lain dengan Struct Update Syntax”][creating-instances-from-other-instances-with-struct-update-syntax]<!-- ignore --> di Bab 5. Kita bisa mengkustomisasi beberapa *fields* tertentu aja dari sebuah struct dan sesudahnya itu mengatur (set) lalu memakai nilai _default_ bawaannya buat ngisi sisa bidang-bidang (rest of the fields) yang belum diisi dengan cara memakai `..Default::default()`.
 
 Trait `Default` diwajibkan saat Anda memakai method `unwrap_or_default` pada *instances* dari 
 tipe `Option<T>`, contohnya. Kalau nilai `Option<T>`-nya ternyata adalah `None`, method 
@@ -214,4 +196,4 @@ tipe `Option<T>`, contohnya. Kalau nilai `Option<T>`-nya ternyata adalah `None`,
 [creating-instances-from-other-instances-with-struct-update-syntax]: ch05-01-defining-structs.html#creating-instances-from-other-instances-with-struct-update-syntax
 [stack-only-data-copy]: ch04-01-what-is-ownership.html#stack-only-data-copy
 [variables-and-data-interacting-with-clone]: ch04-01-what-is-ownership.html#variables-and-data-interacting-with-clone
-[macros]: ch20-05-macros.html#macros
+[custom-derive-macros]: ch20-05-macros.html#custom-derive-macros

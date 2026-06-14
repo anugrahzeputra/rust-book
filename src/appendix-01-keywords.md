@@ -3,8 +3,8 @@
 Daftar berikut ini berisi *keywords* (kata kunci) yang direservasi buat 
 penggunaan saat ini maupun penggunaan di masa depan oleh bahasa Rust. Oleh 
 karena itu, kata-kata ini tidak bisa dipakai sebagai _identifiers_ (pengidentifikasi) 
-(terkecuali dipakai sebagai *raw identifiers* seperti yang bakal kita obrolin di 
-bagian “[Raw Identifiers][raw-identifiers]”). Yang dimaksud _identifiers_ adalah 
+(terkecuali dipakai sebagai *raw identifiers*, seperti yang bakal kita obrolin di 
+bagian [“Raw Identifiers”][raw-identifiers]<!-- ignore -->). _Identifiers_ adalah 
 nama-nama fungsi, variabel, parameter, field struct, modul, _crates_, konstanta, 
 _macros_, nilai statis, atribut, tipe, _traits_, atau _lifetimes_.
 
@@ -15,60 +15,60 @@ _macros_, nilai statis, atribut, tipe, _traits_, atau _lifetimes_.
 Berikut adalah daftar *keywords* yang saat ini sedang dipakai, beserta 
 penjelasan fungsionalitasnya.
 
-- `as` - melakukan _casting_ (pengubahan tipe) primitif, menghilangkan 
+- **`as`**: melakukan _casting_ (pengubahan tipe) primitif, menghilangkan 
   ambiguitas trait spesifik yang menampung sebuah item, atau mengganti nama 
   item di dalam statement `use`
-- `async` - mengembalikan sebuah `Future` ketimbang memblokir _thread_ saat ini
-- `await` - menahan eksekusi sampai hasil dari sebuah `Future` sudah siap
-- `break` - keluar dari sebuah perulangan (loop) secara langsung
-- `const` - mendefinisikan item konstanta atau *raw pointers* konstanta
-- `continue` - lanjut ke iterasi perulangan berikutnya
-- `crate` - di dalam _module path_, ini merujuk ke akar _crate_ (crate root)
-- `dyn` - penyaluran dinamis (dynamic dispatch) ke sebuah _trait object_
-- `else` - jalan alternatif (_fallback_) untuk struktur *control flow* `if` 
+- **`async`**: mengembalikan sebuah `Future` ketimbang memblokir _thread_ saat ini
+- **`await`**: menahan eksekusi sampai hasil dari sebuah `Future` sudah siap
+- **`break`**: keluar dari sebuah perulangan (loop) secara langsung
+- **`const`**: mendefinisikan item konstanta atau *raw pointers* konstanta
+- **`continue`**: lanjut ke iterasi perulangan berikutnya
+- **`crate`**: di dalam _module path_, ini merujuk ke akar _crate_ (crate root)
+- **`dyn`**: penyaluran dinamis (dynamic dispatch) ke sebuah _trait object_
+- **`else`**: jalan alternatif (_fallback_) untuk struktur *control flow* `if` 
   dan `if let`
-- `enum` - mendefinisikan sebuah enumerasi
-- `extern` - menautkan (link) sebuah fungsi atau variabel eksternal
-- `false` - nilai literal salah (false) pada Boolean
-- `fn` - mendefinisikan sebuah fungsi atau tipe dari _function pointer_
-- `for` - perulangan (loop) melewati item-item dari sebuah iterator, 
+- **`enum`**: mendefinisikan sebuah enumerasi
+- **`extern`**: menautkan (link) sebuah fungsi atau variabel eksternal
+- **`false`**: nilai literal salah (false) pada Boolean
+- **`fn`**: mendefinisikan sebuah fungsi atau tipe dari _function pointer_
+- **`for`**: perulangan (loop) melewati item-item dari sebuah iterator, 
   mengimplementasikan sebuah trait, atau menentukan _higher-ranked lifetime_
-- `if` - percabangan berdasarkan hasil dari ekspresi kondisional
-- `impl` - mengimplementasikan fungsionalitas bawaan (inherent) atau fungsionalitas trait
-- `in` - bagian dari sintaks perulangan `for`
-- `let` - mengikat (_bind_) sebuah variabel
-- `loop` - perulangan (loop) tanpa syarat
-- `match` - mencocokkan sebuah nilai terhadap _patterns_ (pola-pola)
-- `mod` - mendefinisikan sebuah modul
-- `move` - membuat _closure_ mengambil alih kepemilikan (ownership) atas semua 
+- **`if`**: percabangan berdasarkan hasil dari ekspresi kondisional
+- **`impl`**: mengimplementasikan fungsionalitas bawaan (inherent) atau fungsionalitas trait
+- **`in`**: bagian dari sintaks perulangan `for`
+- **`let`**: mengikat (_bind_) sebuah variabel
+- **`loop`**: perulangan (loop) tanpa syarat
+- **`match`**: mencocokkan sebuah nilai terhadap _patterns_ (pola-pola)
+- **`mod`**: mendefinisikan sebuah modul
+- **`move`**: membuat _closure_ mengambil alih kepemilikan (ownership) atas semua 
   nilai yang ditangkapnya (captures)
-- `mut` - menandakan mutabilitas pada referensi, *raw pointers*, atau _pattern bindings_
-- `pub` - menandakan visibilitas publik pada field struct, blok `impl`, atau modul
-- `ref` - mengikat berdasarkan referensi
-- `return` - mengembalikan nilai dari fungsi
-- `Self` - _type alias_ untuk tipe yang sedang kita definisikan atau implementasikan
-- `self` - subjek dari _method_ atau modul saat ini
-- `static` - variabel global atau _lifetime_ yang berlangsung selama keseluruhan 
+- **`mut`**: menandakan mutabilitas pada referensi, *raw pointers*, atau _pattern bindings_
+- **`pub`**: menandakan visibilitas publik pada field struct, blok `impl`, atau modul
+- **`ref`**: mengikat berdasarkan referensi
+- **`return`**: mengembalikan nilai dari fungsi
+- **`Self`**: _type alias_ untuk tipe yang sedang kita definisikan atau implementasikan
+- **`self`**: subjek dari _method_ atau modul saat ini
+- **`static`**: variabel global atau _lifetime_ yang berlangsung selama keseluruhan 
   eksekusi program
-- `struct` - mendefinisikan sebuah struktur
-- `super` - modul induk (parent module) dari modul saat ini
-- `trait` - mendefinisikan sebuah trait
-- `true` - nilai literal benar (true) pada Boolean
-- `type` - mendefinisikan _type alias_ atau _associated type_
-- `union` - mendefinisikan [union][union]; hanya menjadi keyword saat dipakai 
+- **`struct`**: mendefinisikan sebuah struktur
+- **`super`**: modul induk (parent module) dari modul saat ini
+- **`trait`**: mendefinisikan sebuah trait
+- **`true`**: nilai literal benar (true) pada Boolean
+- **`type`**: mendefinisikan _type alias_ atau _associated type_
+- **`union`**: mendefinisikan [union][union]<!-- ignore -->; hanya menjadi keyword saat dipakai 
   di dalam deklarasi _union_
-- `unsafe` - menandakan kode, fungsi, trait, atau implementasi yang tidak aman
-- `use` - membawa *symbols* ke dalam _scope_; menentukan tangkapan pasti (precise captures) 
+- **`unsafe`**: menandakan kode, fungsi, trait, atau implementasi yang tidak aman
+- **`use`**: membawa *symbols* ke dalam _scope_; menentukan tangkapan pasti (precise captures) 
   untuk batasan _generic_ dan _lifetime_
-- `where` - menandakan klausa yang membatasi (constrain) sebuah tipe
-- `while` - perulangan bersyarat berdasarkan hasil dari sebuah ekspresi
+- **`where`**: menandakan klausa yang membatasi (constrain) sebuah tipe
+- **`while`**: perulangan bersyarat berdasarkan hasil dari sebuah ekspresi
 
 [union]: ../reference/items/unions.html
 
 ### Keywords yang Direservasi buat Penggunaan di Masa Depan
 
 Keywords berikut ini belum punya fungsionalitas apa pun, tapi sudah direservasi 
-oleh Rust buat potensi pemakaian di masa depan.
+oleh Rust buat potensi pemakaian di masa depan:
 
 - `abstract`
 - `become`

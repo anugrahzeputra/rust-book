@@ -7,18 +7,18 @@ peringatan, sebuah _linter_ (pemeriksa kode), dan juga seputar cara integrasi de
 
 ### Pemformatan Otomatis dengan `rustfmt`
 
-Alat `rustfmt` merombak dan memformat ulang (reformats) kode Anda sedemikian 
-rupa sehingga dia mengikuti gaya kode standar dari komunitas. Banyak proyek-proyek 
-kolaboratif memakai `rustfmt` demi ngebantu mencegah terjadinya perdebatan 
-seputar gaya penulisan kode mana yang seharusnya dipakai pas lagi nulis kode Rust: 
-intinya, semua orang memformat kode mereka seragam memakai alat ini.
+Alat `rustfmt` merombak dan memformat ulang (reformats) kode kita sedemikian 
+rupa sehingga mengikuti gaya kode standar dari komunitas. Banyak proyek 
+kolaboratif memakai `rustfmt` untuk membantu mencegah terjadinya perdebatan 
+seputar gaya penulisan kode mana yang seharusnya dipakai saat menulis kode Rust: 
+intinya, semua orang memformat kode mereka secara seragam memakai alat ini.
 
-Instalasi Rust secara bawaan (_default_) sudah menyertakan `rustfmt`, jadi Anda 
-seharusnya saat ini sudah punya program `rustfmt` dan `cargo-fmt` di sistem Anda. 
+Instalasi Rust secara bawaan (_default_) sudah menyertakan `rustfmt`, jadi kita 
+seharusnya saat ini sudah punya program `rustfmt` dan `cargo-fmt` di sistem kita. 
 Dua perintah ini pada dasarnya serupa dengan `rustc` dan `cargo` di mana `rustfmt` 
-ngasih Anda opsi pengaturan yang lebih mendetail dan `cargo-fmt` paham aturan main 
-konvensi dari sebuah project yang memakai Cargo. Buat memformat project Cargo 
-apa pun, silakan ketik perintah berikut:
+memberikan opsi pengaturan yang lebih mendetail dan `cargo-fmt` memahami konvensi 
+dari sebuah proyek yang memakai Cargo. Untuk memformat proyek Cargo apa pun, 
+silakan ketik perintah berikut:
 
 ```console
 $ cargo fmt
@@ -31,10 +31,7 @@ silakan baca [dokumentasinya di sini][rustfmt].
 
 ### Perbaiki Kode Anda dengan `rustfix`
 
-Alat bantu `rustfix` sudah disertakan bareng instalasi Rust dan dia bisa secara 
-otomatis membetulkan pesan peringatan _compiler_ yang punya rute perbaikan yang jelas. 
-Anda kemungkinan besar sudah pernah melihat pesan peringatan dari _compiler_ 
-sebelumnya. Sebagai contoh, perhatikan kode berikut ini:
+Alat bantu `rustfix` sudah disertakan bareng instalasi Rust dan bisa secara otomatis membetulkan pesan peringatan _compiler_ yang punya rute perbaikan yang jelas untuk masalah tersebut, yang kemungkinan besar merupakan apa yang kita inginkan. Kita kemungkinan besar sudah pernah melihat pesan peringatan dari _compiler_ sebelumnya. Sebagai contoh, perhatikan kode berikut ini:
 
 <span class="filename">Nama File: src/main.rs</span>
 
@@ -88,15 +85,16 @@ fn main() {
 Sekarang variabel `x` sudah tidak bisa diubah (_immutable_), dan pesan peringatan 
 itu sudah tidak muncul lagi.
 
-Anda juga bisa memanfaatkan perintah `cargo fix` buat ngebantu mengurus masa transisi 
-kode Anda di antara edisi-edisi (_editions_) Rust yang berbeda-beda. Perkara seputar 
-*editions* ini diulas di [Lampiran E][editions].
+Kita juga bisa memanfaatkan perintah `cargo fix` buat ngebantu mengurus masa transisi 
+kode kita di antara edisi-edisi (*editions*) Rust yang berbeda-beda. Perkara seputar 
+*editions* ini diulas di [Lampiran E][editions]<!--
+ignore -->.
 
 ### Lints (Peringatan Tambahan) yang Lebih Beragam Memakai Clippy
 
 Alat Clippy adalah sebuah koleksi _lints_ (aturan pemeriksa kode) yang bertugas 
-menganalisis kode Anda sehingga Anda bisa menangkap kesalahan umum dan meningkatkan 
-kualitas kode Rust Anda. Clippy sudah disertakan di dalam standar instalasi Rust.
+menganalisis kode kita sehingga kita bisa menangkap kesalahan umum dan meningkatkan 
+kualitas kode Rust kita. Clippy sudah disertakan di dalam standar instalasi Rust.
 
 Buat menjalankan _lints_ Clippy pada sembarang project Cargo, silakan ketik perintah 
 berikut:
