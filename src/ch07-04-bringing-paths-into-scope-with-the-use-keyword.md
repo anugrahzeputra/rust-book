@@ -176,6 +176,8 @@ nambahin baris ini ke _Cargo.toml_:
 
 <!-- When updating the version of `rand` used, also update the version of
 `rand` used in these files so they all match:
+
+* ch01-01-installation.md
 * ch02-00-guessing-game-tutorial.md
 * ch14-03-cargo-workspaces.md
 -->
@@ -195,8 +197,8 @@ terus nyediain `rand` buat project kita.
 Terus, buat bawa definisi `rand` ke dalem scope package kita, kita nambahin 
 baris `use` yang dimulai dari nama crate-nya, `rand`, dan nge-list item-item 
 yang mau kita bawa ke dalem scope. Inget kan di [“Menghasilkan Angka Random”][rand] 
-di Bab 2, kita bawa trait `Rng` ke dalem scope terus manggil fungsi 
-`rand::thread_rng`:
+di Bab 2, kita bawa item-item di modul `rand::prelude` ke dalem scope terus 
+manggil fungsi `rand::rng`:
 
 ```rust,ignore
 {{#rustdoc_include ../listings/ch02-guessing-game-tutorial/listing-02-03/src/main.rs:ch07-04}}

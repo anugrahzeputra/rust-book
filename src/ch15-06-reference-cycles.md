@@ -21,7 +21,7 @@ di Listing 15-25.
 <Listing number="15-25" file-name="src/main.rs" caption="Definisi sebuah cons list yang menampung sebuah `RefCell<T>` supaya kita bisa memodifikasi apa yang ditunjuk oleh varian `Cons`">
 
 ```rust
-{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-25/src/main.rs}}
+{{#rustdoc_include ../listings/ch15-smart-pointers/listing-15-25/src/main.rs:here}}
 ```
 
 </Listing>

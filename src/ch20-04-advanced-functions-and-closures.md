@@ -4,7 +4,7 @@ Bagian ini mengeksplorasi beberapa fitur tingkat lanjut yang berkaitan dengan
 fungsi dan _closures_, termasuk _function pointers_ (pointer fungsi) dan 
 mengembalikan _closures_.
 
-### Function Pointers
+### Function Pointers (Pointer Fungsi)
 
 Kita udah ngebahas gimana caranya mengoper _closures_ ke fungsi-fungsi; kita juga 
 bisa mengoper fungsi biasa ke fungsi-fungsi lho! Teknik ini sangat berguna pas 

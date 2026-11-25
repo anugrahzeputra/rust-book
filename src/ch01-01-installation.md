@@ -21,7 +21,7 @@ dengan isi buku ini.
 >
 > Pada bab ini dan keseluruhan buku, kita akan ditunjukkan beberapa perintah yg
 > digunakan pada terminal. Baris yg seharusnya kita masukkan di terminal semua
-> diawali dengan `$`. kita tidak perlu mengetikkan karakter `$`; Itu adalah penanda
+> diawali dengan `$`. Kita tidak perlu mengetikkan karakter `$`; itu adalah penanda
 > baris perintah yg ditampilkan untuk menunjukkan awal dari tiap perintah.
 > Baris yg tidak dimulai dengan `$` biasanya menampilkan output dari perintah
 > sebelumnya. Sebagai tambahan, contoh khusus PowerShell akan menggunakan `>`
@@ -157,10 +157,18 @@ atau sudah mengunduh dependensi tersebut sebelumnya. Untuk mengunduh dependensi
 lebih dulu, kita bisa menjalankan perintah berikut. (Nantinya kita akan menjelaskan 
 apa itu `cargo` dan apa fungsi dari setiap perintah ini secara lebih rinci.)
 
+<!-- When updating the version of `rand` used, also update the version of
+`rand` used in these files so they all match:
+
+* ch02-00-guessing-game-tutorial.md
+* ch07-04-bringing-paths-into-scope-with-the-use-keyword.md
+* ch14-03-cargo-workspaces.md
+-->
+
 ```console
 $ cargo new get-dependencies
 $ cd get-dependencies
-$ cargo add rand@0.8.5 trpl@0.2.0
+$ cargo add rand@0.10.1 trpl@0.2.0
 ```
 
 Perintah ini akan menyimpan hasil unduhan paket-paket tersebut di cache sehingga 

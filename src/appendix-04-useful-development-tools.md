@@ -33,7 +33,7 @@ silakan baca [dokumentasinya di sini][rustfmt].
 
 Alat bantu `rustfix` sudah disertakan bareng instalasi Rust dan bisa secara otomatis membetulkan pesan peringatan _compiler_ yang punya rute perbaikan yang jelas untuk masalah tersebut, yang kemungkinan besar merupakan apa yang kita inginkan. Kita kemungkinan besar sudah pernah melihat pesan peringatan dari _compiler_ sebelumnya. Sebagai contoh, perhatikan kode berikut ini:
 
-<span class="filename">Nama File: src/main.rs</span>
+<span class="filename">Nama file: src/main.rs</span>
 
 ```rust
 fn main() {
@@ -73,7 +73,7 @@ $ cargo fix
 Saat kita melihat isi file _src/main.rs_ lagi, kita bakal melihat kalau `cargo fix` 
 telah membetulkan kodenya:
 
-<span class="filename">Nama File: src/main.rs</span>
+<span class="filename">Nama file: src/main.rs</span>
 
 ```rust
 fn main() {

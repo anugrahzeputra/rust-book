@@ -8,7 +8,7 @@ Repositori ini berisi kode sumber dari buku "The Rust Programming Language".
 
 [nostarch]: https://nostarch.com/rust-programming-language-2nd-edition
 
-kita juga bisa membaca buku ini secara gratis online. Silakan lihat buku yang disertakan dengan rilis Rust [stable], [beta], atau [nightly] terbaru. Perlu diketahui bahwa masalah pada versi-versi tersebut mungkin sudah diperbaiki di repositori ini, karena rilis-rilis tersebut jarang diperbarui.
+Kita juga bisa membaca buku ini secara gratis online. Silakan lihat buku yang disertakan dengan rilis Rust [stable], [beta], atau [nightly] terbaru. Perlu diketahui bahwa masalah pada versi-versi tersebut mungkin sudah diperbaiki di repositori ini, karena rilis-rilis tersebut jarang diperbarui.
 
 [stable]: https://doc.rust-lang.org/stable/book/
 [beta]: https://doc.rust-lang.org/beta/book/

@@ -217,7 +217,7 @@ Satu ekspresi terakhir yang punya tipe `!` adalah sebuah `loop`:
 {{#rustdoc_include ../listings/ch20-advanced-features/no-listing-10-loop-returns-never/src/main.rs:here}}
 ```
 
-Di sini, _loop_ tersebut tidak pernah berakhir, jadi nilai dari ekspresinya 
+Di sini, _loop_ tersebut tidak pernah berakhir, jadi tipe dari ekspresinya 
 adalah `!`. Namun, ini tidak bakal benar kalau seandainya kita memasukkan 
 `break`, karena perulangan tersebut bakal dihentikan pas dia mencapai `break`.
 

@@ -89,7 +89,7 @@ _compiler_ bakal ngasih sebuah peringatan.
 </Listing>
 
 Rust komplain kalau tidak masuk akal buat memakai `let...else` dengan sebuah 
-_pattern_ yang _irrefutable_:
+_pattern_ yang _irrefutable_ karena `else`-nya tidak bakal pernah tercapai:
 
 ```console
 {{#include ../listings/ch19-patterns-and-matching/listing-19-10/output.txt}}

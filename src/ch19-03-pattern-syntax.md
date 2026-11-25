@@ -283,7 +283,7 @@ masing field di dalam sebuah struct, secara terpisah dari satu sama lain.
 
 ### Mengabaikan Nilai di dalam sebuah Pattern
 
-kita udah melihat kalau kadang-kadang itu sangat berguna buat mengabaikan nilai-
+Kita udah melihat kalau kadang-kadang itu sangat berguna buat mengabaikan nilai-
 nilai di dalam sebuah _pattern_, kayak misalnya di arm terakhir dari sebuah `match`, 
 buat ngedapetin _catch-all_ yang tidak benar-benar ngelakuin apa-apa tapi tetep 
 mempertimbangkan (account for) semua kemungkinan nilai yang tersisa. Ada beberapa 

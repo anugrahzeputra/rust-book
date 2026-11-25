@@ -210,7 +210,7 @@ adalah _closures_ yang bakal menangkap lingkungan (environment) mereka.
 Untuk contoh ini, kita bakal memakai method `filter` yang menerima sebuah 
 _closure_. _Closure_ ini mengambil item dari iterator lalu mengembalikan sebuah 
 `bool`. Kalau _closure_-nya mengembalikan `true`, nilainya bakal diikutsertakan 
-dalam iterasi yang dihasilkan oleh `filter`. Kalau _closure_-nya mengembalikan 
+dalam iterator yang dihasilkan oleh `filter`. Kalau _closure_-nya mengembalikan 
 `false`, nilainya tidak bakal diikutsertakan.
 
 Di Listing 13-16, kita memakai `filter` bersama sebuah _closure_ yang menangkap 

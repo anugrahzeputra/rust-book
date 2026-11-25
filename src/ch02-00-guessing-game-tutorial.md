@@ -338,6 +338,8 @@ jalan:
 
 <!-- When updating the version of `rand` used, also update the version of
 `rand` used in these files so they all match:
+
+* ch01-01-installation.md
 * ch07-04-bringing-paths-into-scope-with-the-use-keyword.md
 * ch14-03-cargo-workspaces.md
 -->
@@ -349,17 +351,18 @@ jalan:
 ```
 
 Di file _Cargo.toml_, apa pun yang ngikutin sebuah header adalah bagian dari 
-section itu sampe section lain mulai. Di `[dependencies]` kita ngasih tau Cargo 
+section itu sampe section lain mulai. Di `[dependencies]`, kita ngasih tau Cargo 
 external crates mana aja yang diperluin project kita dan versi mana yang kita 
 butuhin. Dalam hal ini, kita nentuin `rand` crate dengan penentu versi semantik 
-`0.8.5`. Cargo ngerti [Semantic Versioning][semver] (kadang disebut _SemVer_), 
-yaitu standar buat nulis nomor versi. Penentu `0.8.5` sebenernya singkatan dari 
-`^0.8.5`, yang artinya versi apa pun yang minimal 0.8.5 tapi di bawah 0.9.0.
+`0.10.1`. Cargo ngerti [Semantic Versioning][semver]<!-- ignore --> (kadang 
+disebut _SemVer_), yaitu standar buat nulis nomor versi. Penentu `0.10.1` 
+sebenernya singkatan dari `^0.10.1`, yang artinya versi apa pun yang minimal 
+0.10.1 tapi di bawah 0.11.0.
 
-Cargo nganggep versi-versi ini punya public API yang kompatibel sama versi 0.8.5, 
-dan spesifikasi ini mastiin kita dapet patch release terbaru yang tetep bisa 
-di-compile sama kode di bab ini. Versi 0.9.0 atau yang lebih baru nggak dijamin 
-punya API yang sama kayak contoh-contoh yang kita pake.
+Cargo nganggep versi-versi ini punya public API yang kompatibel sama versi 
+0.10.1, dan spesifikasi ini mastiin kita dapet patch release terbaru yang tetep 
+bisa di-compile sama kode di bab ini. Versi 0.11.0 atau yang lebih baru nggak 
+dijamin punya API yang sama kayak contoh-contoh yang kita pake.
 
 Sekarang, tanpa ngerubah kode apa pun, yuk kita build project-nya, kayak yang 
 ditunjukin di Listing 2-2.
@@ -374,25 +377,20 @@ cargo build -->
 
 ```console
 $ cargo build
-  Updating crates.io index
-   Locking 15 packages to latest Rust 1.85.0 compatible versions
-    Adding rand v0.8.5 (available: v0.9.0)
- Compiling proc-macro2 v1.0.93
- Compiling unicode-ident v1.0.17
- Compiling libc v0.2.170
- Compiling cfg-if v1.0.0
- Compiling byteorder v1.5.0
- Compiling getrandom v0.2.15
- Compiling rand_core v0.6.4
- Compiling quote v1.0.38
- Compiling syn v2.0.98
- Compiling zerocopy-derive v0.7.35
- Compiling zerocopy v0.7.35
- Compiling ppv-lite86 v0.2.20
- Compiling rand_chacha v0.3.1
- Compiling rand v0.8.5
- Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
-  Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.48s
+    Updating crates.io index
+     Locking 8 packages to latest Rust 1.96.0 compatible versions
+  Downloaded rand_core v0.10.1
+  Downloaded chacha20 v0.10.1
+  Downloaded rand v0.10.1
+  Downloaded 3 crates (162.9KiB) in 0.59s
+   Compiling libc v0.2.186
+   Compiling rand_core v0.10.1
+   Compiling getrandom v0.4.3
+   Compiling cfg-if v1.0.4
+   Compiling chacha20 v0.10.1
+   Compiling rand v0.10.1
+   Compiling guessing_game v0.1.0 (file:///projects/guessing_game)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.03s
 ```
 
 </Listing>
@@ -442,7 +440,7 @@ bisa pake lagi apa yang udah dia download dan compile sebelumnya.
 Cargo punya mekanisme yang mastiin kita bisa rebuild artifact yang sama tiap 
 kali kita atau orang lain build kode kita: Cargo cuma bakal pake versi 
 dependensi yang kita tentuin sampe kita bilang sebaliknya. Misalnya, katakanlah 
-minggu depan versi 0.8.6 dari `rand` crate keluar, dan versi itu isinya bug fix 
+minggu depan versi 0.10.2 dari `rand` crate keluar, dan versi itu isinya bug fix 
 penting, tapi ada juga regresi yang bikin kode kita rusak. Buat handle ini, 
 Rust bikin file _Cargo.lock_ pas pertama kali kita jalanin `cargo build`, jadi 
 sekarang kita punya file ini di direktori _guessing_game_.
@@ -452,41 +450,43 @@ yang cocok sama kriterianya terus nulis versi itu ke file _Cargo.lock_. Pas kita
 build project-nya nanti, Cargo bakal liat kalau file _Cargo.lock_ ada terus 
 bakal pake versi yang ditentuin di situ bukannya cari-cari versi lagi. Ini bikin 
 kita punya reproducible build secara otomatis. Dengan kata lain, project kita 
-bakal tetep di versi 0.8.5 sampe kita eksplisit buat upgrade, berkat file 
+bakal tetep di versi 0.10.1 sampe kita eksplisit buat upgrade, berkat file 
 _Cargo.lock_. Karena file _Cargo.lock_ itu penting buat reproducible builds, 
-filenya sering kali dimasukan ke source control barengan sama kode project lainnya.
+filenya sering kali dimasukkan ke source control barengan sama kode project lainnya.
 
 #### Update Crate buat Dapet Versi Baru
 
 Pas kita _emang_ mau update sebuah crate, Cargo nyediain perintah `update`, 
 yang bakal cuekin file _Cargo.lock_ terus cari tau semua versi terbaru yang 
 cocok sama spesifikasi kita di _Cargo.toml_. Cargo terus bakal nulis versi itu 
-ke file _Cargo.lock_. Dalam hal ini, Cargo cuma bakal nyari versi yang lebih 
-gede dari 0.8.5 dan kurang dari 0.9.0. Kalau `rand` crate udah ngerilis dua 
-versi baru 0.8.6 dan 0.9.0, kita bakal liat output kayak gini pas jalanin 
-`cargo update`:
+ke file _Cargo.lock_. Selain itu, secara default, Cargo cuma bakal nyari versi 
+yang lebih gede dari 0.10.1 dan kurang dari 0.11.0. Kalau `rand` crate udah 
+ngerilis dua versi baru 0.10.2 dan 0.999.0, kita bakal liat output kayak gini 
+pas jalanin `cargo update`:
 
 <!-- manual-regeneration
 cd listings/ch02-guessing-game-tutorial/listing-02-02/
 cargo update
-assuming there is a new 0.8.x version of rand; otherwise use another update
+assuming there is a new version of rand; otherwise use another update
 as a guide to creating the hypothetical output shown here -->
 
 ```console
 $ cargo update
     Updating crates.io index
-     Locking 1 package to latest Rust 1.85.0 compatible version
-    Updating rand v0.8.5 -> v0.8.6 (available: v0.9.0)
+     Locking 1 package to latest Rust 1.96.0 compatible version
+    Updating rand v0.10.1 -> v0.10.2 (available: v0.999.0)
 ```
 
-Cargo cuekin rilis 0.9.0. Di titik ini, kita juga bakal nyadar ada perubahan 
+Cargo cuekin rilis 0.999.0. Di titik ini, kita juga bakal nyadar ada perubahan 
 di file _Cargo.lock_ yang nyatet kalau versi `rand` crate yang sekarang kita 
-pake itu 0.8.6. Buat pake `rand` versi 0.9.0 atau versi mana pun di seri 
-0.9._x_, kita harus update file _Cargo.toml_-nya jadi kayak gini:
+pake itu 0.10.2. Buat pake `rand` versi 0.999.0 atau versi mana pun di seri 
+0.999._x_, kita harus update file _Cargo.toml_-nya jadi kayak gini (jangan 
+beneran ngelakuin perubahan ini soalnya contoh-contoh berikutnya nganggep kita 
+pake `rand` 0.10):
 
 ```toml
 [dependencies]
-rand = "0.9.0"
+rand = "0.999.0"
 ```
 
 Lain kali kita jalanin `cargo build`, Cargo bakal update registry crate yang 
@@ -511,28 +511,30 @@ adalah update _src/main.rs_, kayak yang ditunjukin di Listing 2-3.
 
 </Listing>
 
-Pertama kita tambahin baris `use rand::Rng;`. Trait `Rng` nentuin methods yang 
-diimplementasiin sama random number generators, dan trait ini harus ada di 
-scope biar kita bisa pake methods itu. Bab 10 bakal bahas traits lebih detail.
+Pertama kita tambahin baris `use rand::prelude::*;`. Modul `prelude` berisi 
+bagian-bagian yang paling sering dipake dari `rand` crate, dan `use` bikin 
+item-item itu tersedia di scope program kita.
 
 Selanjutnya, kita nambahin dua baris di tengah. Di baris pertama, kita manggil 
-fungsi `rand::thread_rng` yang ngasih kita random number generator tertentu 
-yang bakal kita pake: yang lokal buat thread eksekusi saat ini dan dikasih 
-seed sama sistem operasi. Terus kita manggil method `gen_range` pada random 
-number generator-nya. Method ini didefinisiin sama trait `Rng` yang kita bawa 
-ke scope lewat statement `use rand::Rng;`. Method `gen_range` ngambil ekspresi 
-range sebagai argumen terus nge-generate angka random di dalem range itu. Jenis 
-ekspresi range yang kita pake di sini bentuknya `start..=end` dan inklusif 
-(termasuk) batas bawah sama batas atasnya, jadi kita perlu nulis `1..=100` 
-buat minta angka antara 1 sampe 100.
+fungsi `rand::rng` yang ngasih kita random number generator tertentu yang bakal 
+kita pake: yang lokal buat thread eksekusi saat ini dan dikasih seed sama 
+sistem operasi. Terus kita manggil method `random_range` pada random number 
+generator-nya. Method ini didefinisiin sama trait `RngExt` yang jadi bagian 
+dari modul `rand::prelude` yang kita bawa ke scope lewat statement `use 
+rand::prelude::*;`. Method `random_range` ngambil ekspresi range sebagai argumen 
+terus nge-generate angka random di dalem range itu. Jenis ekspresi range yang 
+kita pake di sini bentuknya `start..=end` dan inklusif (termasuk) batas bawah 
+sama batas atasnya, jadi kita perlu nulis `1..=100` buat minta angka antara 1 
+sampe 100.
 
-> Catatan: Kita nggak bakal tau gitu aja trait mana yang harus dipake sama 
-> method dan fungsi mana yang harus dipanggil dari sebuah crate, makanya tiap 
-> crate punya dokumentasi yang isinya instruksi buat pake crate itu. Fitur keren 
-> lainnya dari Cargo adalah jalanin perintah `cargo doc --open` bakal build 
-> dokumentasi yang disediain sama semua dependensi kita secara lokal terus buka 
-> di browser. Kalau kita penasaran sama fitur lainnya di `rand` crate, misalnya, 
-> jalanin `cargo doc --open` terus klik `rand` di sidebar sebelah kiri.
+> Catatan: Kita nggak bakal tau gitu aja apa aja yang harus dibawa ke scope 
+> sama method dan fungsi mana yang harus dipanggil dari sebuah crate, makanya 
+> tiap crate punya dokumentasi yang isinya instruksi buat pake crate itu. Fitur 
+> keren lainnya dari Cargo adalah jalanin perintah `cargo doc --open` bakal 
+> build dokumentasi yang disediain sama semua dependensi kita secara lokal terus 
+> buka di browser. Kalau kita penasaran sama fitur lainnya di `rand` crate, 
+> misalnya, jalanin `cargo doc --open` terus klik `rand` di sidebar sebelah 
+> kiri.
 
 Baris baru yang kedua nyetak secret number-nya. Ini berguna pas kita lagi 
 ngembangin programnya biar bisa dites, tapi nanti kita hapus di versi final. 
@@ -571,7 +573,10 @@ You guessed: 5
 ```
 
 Kita harusnya dapet angka random yang beda-beda, dan semuanya harusnya angka 
-antara 1 sampe 100. Mantap!
+antara 1 sampe 100. Kalau kita dapet warning, aman kok buat dicuekin. Kalau 
+kita dapet error, pastiin kita udah nulis `rand = "0.10.1"` di *Cargo.toml* 
+karena versi `rand` di masa depan mungkin punya API yang beda, tapi versi apa 
+pun di seri `0.10` harusnya bisa jalan sama kode di bab ini.
 
 ## Membandingkan Tebakan dengan Secret Number
 
@@ -790,7 +795,7 @@ You win!
 Please input your guess.
 quit
 
-thread 'main' panicked at src/main.rs:28:47:
+thread 'main' (6694925) panicked at src/main.rs:28:47:
 Please type a number!: ParseIntError { kind: InvalidDigit }
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 ```

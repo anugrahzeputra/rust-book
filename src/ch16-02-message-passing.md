@@ -275,7 +275,7 @@ Got: thread
 Got: you
 ```
 
-kita mungkin bakal melihat nilai-nilainya dalam urutan yang berbeda, 
+Kita mungkin bakal melihat nilai-nilainya dalam urutan yang berbeda, 
 tergantung dari sistem yang kita pakai. Inilah yang membikin konkurensi 
 jadi hal yang menarik sekaligus sulit. Kalau kita eksperimen sama 
 `thread::sleep`, ngasih dia nilai yang beda-beda di berbagai _threads_ 

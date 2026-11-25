@@ -18,7 +18,7 @@ Kita menggunakan [`rustfmt`][rustfmt] untuk menerapkan gaya pemformatan standar 
 [rustfmt]: https://github.com/rust-lang/rustfmt
 [dprint]: https://dprint.dev
 
-kita pada umumnya otomatis punya `rustfmt` yang sudah terpasang (installed) andaikata 
+Kita pada umumnya otomatis punya `rustfmt` yang sudah terpasang (_installed_) andaikata 
 kita udah memasang komponen _toolchain_ Rust; tapi kalau misal kita ternyata belum 
 punya salinan aplikasi `rustfmt`, kita bisa menambahkan perkakas ini dengan menjalankan 
 perintah berikut:
@@ -44,86 +44,66 @@ perintah `dprint fmt <path to file>`. Mayoritas teks _editors_ pada umumnya juga
 punya dukungan bawaan (*native*) maupun fitur ekstensi tambahan untuk `rustfmt` dan 
 sekaligus `dprint`.
 
-## Mengecek Ketersediaan Perbaikan (Checking for Fixes)
+## Mengecek Perbaikan yang Sudah Ada (Checking for Fixes)
 
-Sirkulasi buku ini ngebuntut di atas gerbong jadwal _release trains_ (kereta perilisan) Rust. 
-Oleh karena itu, kalau kita kebetulan menjumpai ada sebuah masalah mampang di link 
-https://doc.rust-lang.org/stable/book, besar kemungkinan masalah tersebut mungkin emang 
-udah lebih dulu diberesin (fixed) dan nangkring dengan status beres di *branch* `main` dari repo 
-ini, tapi cuma aja status perbaikannya ini emang belum resmi mbrojol ngelewatin silsilah rute 
-nightly -> beta -> stable doang. Jadi mohon dicek terlebih dahulu ya isi dahan *branch* 
-`main` di repo ini sebelum keburu ngebuka lemparan _issue_ (laporan).
+Buku ini mengikuti jadwal rilis (_release trains_) Rust. Karena itu, jika kita 
+menemukan masalah di https://doc.rust-lang.org/stable/book, masalah tersebut 
+mungkin sudah diperbaiki di *branch* `main` pada repo ini, hanya saja 
+perbaikannya belum melewati jalur nightly -> beta -> stable. Silakan cek 
+*branch* `main` di repo ini sebelum melaporkan *issue* baru.
 
-Ngintip catatan _history_ (riwayat) buat suatu _file_ tertentu secara spesifik juga bisa 
-ngasih suguhan ekstra info (more information) seputar ngasih kejelasan entah apakah dan 
-gimana rute status sebuah *issue* tersebut udah diberesin atau belum kalau umpamanya 
-kita emang lagi penasaran nyari tahu soal itu (trying to figure that out).
+Melihat riwayat (_history_) untuk berkas tertentu juga bisa memberi informasi 
+lebih lanjut tentang apakah suatu masalah sudah diperbaiki atau belum jika kita 
+sedang mencoba menelusurinya.
 
-Dimohon juga untuk rajin-rajin nyempatin diri buat nyari menelusuri (*search*) tumpukan 
-*issues* sama PR (Pull Requests) yang statusnya masih kebuka (_open_) maupun yang udah ketutup 
-(_closed_) sebelum keburu nge-_report_ ngelaporin sebuah *issue* baru atau ngebuka PR baru 
-(_opening a new PR_).
+Mohon cari juga di *issues* (yang terbuka maupun tertutup) dan *PR* (yang 
+terbuka maupun tertutup) sebelum melaporkan *issue* baru atau membuka *PR* baru.
 
 ## Lisensi (Licensing)
 
-Repositori ini bernaung di bawah payung bendera lisensi yang sama persis kayak si Rust itu 
-sendiri, yaitu MIT/Apache2. Kita bisa nemuin salinan lengkap draf utuh dari teks kedua lisensi 
-tersebut di balik berkas file-file `LICENSE-*` yang terpajang di repo ini.
+Repositori ini berada di bawah lisensi yang sama dengan Rust sendiri, yaitu 
+MIT/Apache2. Kita bisa menemukan teks lengkap masing-masing lisensi di dalam 
+berkas `LICENSE-*` di repositori ini.
 
 ## Pedoman Perilaku (Code of Conduct)
 
-Project Rust emang punya pakem [sebuah pedoman perilaku](http://rust-lang.org/policies/code-of-conduct) 
-(_code of conduct_) yang tegas ngatur perilaku di semua sub-proyek (sub-projects), di mana hal 
-tersebut pastinya juga ikutan mencakup repo yang satu ini. Tolong amat dihargai dan direspek ya!
+Proyek Rust memiliki [pedoman perilaku](http://rust-lang.org/policies/code-of-conduct) 
+yang berlaku untuk semua sub-proyek, termasuk repositori ini. Mohon hormati 
+pedoman tersebut!
 
 ## Ekspektasi (Expectations)
 
-Mengingat bahwa versi draf buku ini itu [dicetak][nostarch] (printed), dan 
-mengingat bahwa kami ini punya niat sungguh-sungguh buat sebisa mungkin ngejaga isi konten 
-versi _online_ buku ini supaya tetep sinkron sejajar sedekat mungkin bareng isi konten dari versi 
-cetaknya andaikata memungkinkan (when possible), proses dan penanganan (_address_) terhadap 
-urutan laporan *issue* maupun tumpukan *pull request* yang kita lempar barangkali bisa 
-saja memakan tempo kelang waktu pengerjaan yang rasanya agak sedikit kelewat jauh lebih lama (_longer_) 
-dari yang sewajarnya biasa kita tungguin.
+Karena buku ini [dicetak][nostarch], dan karena kami ingin menjaga versi 
+_online_ buku ini sedekat mungkin dengan versi cetaknya jika memungkinkan, 
+proses penanganan *issue* atau *pull request* kita mungkin memakan waktu lebih 
+lama dari biasanya.
 
 [nostarch]: https://nostarch.com/rust-programming-language-2nd-edition
 
-Sejauh ini yang udah-udah, kami biasanya milih menggelar agenda sirkulasi perombakan 
-skala raksasa gede-gedean (larger revision) supaya sengaja pas selaras nge-pas bareng 
-_coincide_ beririsan seiringan nyambut dengan peluncuran momentum pergantian musim wujud [Rust Editions](https://doc.rust-lang.org/edition-guide/). 
-Nah, pada jeda senggang sela waktu yang menyempil di antara musim-musim revisi raksasa tersebut (between those larger revisions), 
-kami murni cuma bakal ngelakuin aksi pembenahan ralat error-error (correcting errors) sepele. 
-Jadinya misal andaikata emang tumpukan *issue* atau draf *pull request* ajuan kita ini isinya emang 
-bukan murni strictly (*strictly*) perihal ngebenerin status murni _error_ (fixing an error), laporannya 
-ini besar peluangnya emang mungkin cuma dibiarin aja bakal ngendon diantrikan di pojok bangku penantian 
-sampai masa datangnya waktu kelak (next time) pas giliran sirkulasi momentum jadwal kami balik lagi terjun berjibaku ngerjain edisi (_larger revision_) revisi raksasa yang berikutnya: kasaran perhitungannya sih ya (_expect_) 
-bisa makan tempo waktu (on the order of) sampe kisaran sekian bilangan deretan bulan atau malah mungkin memakan hitungan deretan angka sekelas tahunan (years). Kami amat sanjung haturin apresiasi banyak-banyak (_Thank you_) 
-terima kasih atas asupan ekstra porsi sabarnya kita (your patience)!
+Sejauh ini, kami melakukan revisi besar bersamaan dengan peluncuran 
+[Rust Editions](https://doc.rust-lang.org/edition-guide/). Di sela-sela revisi 
+besar tersebut, kami hanya memperbaiki kesalahan (error). Jika *issue* atau 
+*pull request* kita bukan murni perbaikan error, kemungkinan besar baru akan 
+ditangani saat kami mengerjakan revisi besar berikutnya: perkiraan waktunya 
+bisa berbulan-bulan atau bertahun-tahun. Terima kasih atas kesabaran kita!
 
 ## Butuh Bantuan Tambahan (Help wanted)
 
-Seandainya kalau kebetulan (If) kita ini emang lagi pada iseng nyari celah pintu-pintu (*ways to help*) 
-buat bisa ikut nimbrung mampir bantu andil (help) tapi tanpa ngewajibin tanpa ada andil pengerahan campur urusan repot ngabisin ngetik apalagi buat (_don't involve_) 
-kudu ngolah melahap ngebaca plus nulis bahan bacaan asupan _reading or writing_ dalam takaran kargo porsi raksasa (large amounts), silakan coba tengok kunjungi mampir nengok (_check out_) 
-daftar kepingan [*open issues* (laporan bermasalah) yang nangkring dibelay disematin label nama tempelan mampang berjuluk E-help-wanted][help-wanted]. 
-Isi borok kerjaannya ini sih aslinya bisa-bisa aja sekadar porsi benerin naskah teks (small fixes to the text), bongkar-bongkar dikit asupan kode Rust, 
-ngoprek porsi rupa *frontend code*, ataupun bongkar benahin kode gubahan *shell scripts* yang 
-pada gilirannya emang amat bakal ngebantu asupan kelancaran kita buat makin ngebikin rute proses kami kelak bisa (_help us_) ikutan jadi kerasa makin gesit efisien, 
-atau senggaknya minimal ngasih bumbu tambahan pencerahan polesan (_enhance the book_) buat makin memoles mantap muka penampilan performa buku ini sedikit 
-banyak di salah satu ragam arah dimensinya (in some way)!
+Jika kita mencari cara untuk membantu yang tidak melibatkan banyak membaca atau 
+menulis, lihat [*open issues* dengan label E-help-wanted][help-wanted]. Ini bisa 
+berupa perbaikan kecil pada teks, kode Rust, kode *frontend*, atau *shell 
+scripts* yang membantu kami bekerja lebih efisien atau meningkatkan kualitas 
+buku ini dengan cara tertentu!
 
 [help-wanted]: https://github.com/rust-lang/book/issues?q=is%3Aopen+is%3Aissue+label%3AE-help-wanted
 
 ## Terjemahan-terjemahan (Translations)
 
-Kami bakal sangat suka dan seneng amat menyambut (love) bantuan asupan tenaga lu dalam ikutan menggarap proyek nerjemahin (translating) buku ini! 
-Silakan baca ulasan detail di [Translations] (label terjemahan) andai kata pengen ikutan nimbrung ambil andil nyemplung mutusin nimbrung (_to join in_) bareng barisan gubahan rute pergerakan pengerahan karya pengerjaan usaha tatanan upaya (efforts) tsb 
-yang mana sampai waktu ini sekarang ini (currently) emang nyatanya lagi tengah pada gencar asyik berproses berjalan diproses digarap (_in progress_). 
-Silakan buat (Open) laporan _issue_ yang baru kalau sudi kepengen (to start) ngewujud mangkas awal proses penggarapan pengerjaan ke edisi draf bahasa yang murni (working on a new language) bener-bener emang baru! 
-Kami emang saat ini masih (_waiting on_) pada posisi tengah dalam status tahap setia nyimak sambil diem narik nungguin perihal rupa sokongan [_mdbook support_] resmi 
-demi nampung mengakomodasi urusan seputar perlakuan beragam _multiple languages_ (ratusan aneka rupa variasi rupa bahasa sekaligus) ini 
-sebelum nantinya kami nekat baru berani bergegas main asal nggabung-ngegabungin campur rute proses peleburan (_merge any in_), 
-tapi sungguh pun silakan amat merasa leluasa bebas gembira bebas mardeka bae buat memulainya kok (_feel free to start_)!
+Kami sangat senang menerima bantuan kita dalam menerjemahkan buku ini! Lihat 
+label [Translations] untuk bergabung dengan upaya terjemahan yang sedang 
+berjalan. Buka *issue* baru untuk mulai mengerjakan bahasa baru! Kami sedang 
+menunggu [dukungan mdbook][mdbook support] untuk multibahasa sebelum 
+menggabungkannya, tetapi silakan mulai saja!
 
 [Translations]: https://github.com/rust-lang/book/issues?q=is%3Aopen+is%3Aissue+label%3ATranslations
 [mdbook support]: https://github.com/rust-lang/mdBook/issues/5

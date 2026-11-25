@@ -118,7 +118,8 @@ ngindeks sekumpulan koleksi (collection).
 > Buat handle kemungkinan _overflow_ secara eksplisit, kita bisa pake keluarga 
 > method yang dikasih standard library buat tipe numerik primitif:
 >
-> - Wrap di semua mode pake method `wrapping_*`, kayak `wrapping_add`.
+> - Wrap di semua mode kompilasi pake method `wrapping_*`, kayak 
+>   `wrapping_add`.
 > - Balikin nilai `None` kalau ada _overflow_ pake method `checked_*`.
 > - Balikin nilainya sama Boolean yang nunjukin apakah ada _overflow_ pake 
 >   method `overflowing_*`.
@@ -307,7 +308,7 @@ Array namanya `a` bakal isinya `5` elemen yang semuanya bakal di-set ke nilai
 `3` pas awal. Ini sama aja kayak nulis `let a = [3, 3, 3, 3, 3];` tapi dengan 
 cara yang lebih singkat.
 
-##### Akses Elemen Array
+#### Akses Elemen Array
 
 Array itu satu potongan memori tunggal dengan ukuran yang udah tau dan tetap 
 yang bisa dialokasikan di stack. Kita bisa akses elemen array pake _indexing_, 
@@ -323,7 +324,7 @@ Di contoh ini, variabel namanya `first` bakal dapet nilai `1` karena itu nilai
 di indeks `[0]` di array-nya. Variabel namanya `second` bakal dapet nilai `2` 
 dari indeks `[1]` di array-nya.
 
-##### Akses Elemen Array Nggak Valid
+#### Akses Elemen Array Nggak Valid
 
 Yuk kita liat apa yang terjadi kalau kita nyoba akses elemen array yang 
 ngelewatin akhir dari array-nya. Katakanlah kita jalanin kode ini, mirip kayak 

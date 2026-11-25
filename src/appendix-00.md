@@ -1,4 +1,4 @@
 # Lampiran
 
-Bagian-bagian berikut berisi materi referensi yang mungkin berguna bagi Kita dalam perjalanan
-Rust Kita.
+Bagian-bagian berikut berisi materi referensi yang mungkin berguna bagi kita dalam perjalanan
+Rust kita.

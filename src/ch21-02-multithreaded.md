@@ -472,7 +472,7 @@ dimasukin ke dalam situ.
 Pas kita jalanin perintah `cargo check` lagi, dia harusnya berhasil (succeed).
 
 <!-- Old headings. Do not remove or links may break. -->
-<a id ="a-worker-struct-responsible-for-sending-code-from-the-threadpool-to-a-thread"></a>
+<a id="a-worker-struct-responsible-for-sending-code-from-the-threadpool-to-a-thread"></a>
 
 #### Ngirimin Kode dari Dalam `ThreadPool` ke Sebuah Thread
 
@@ -724,35 +724,25 @@ ini deh.
 
 </Listing>
 
-Sehabis kita selesai kelar bikin (_creating_) *instance* dari sebuah `Job` yang baru yang 
-berbekalkan `closure` yang kebetulan kita raup (get) dan kita panen dari parameter di fungsi `execute` ini, 
-kita akhirnya ngirimin si *job* ini merosot lurus menuju saluran (*channel*) komunikasi nglewatin _sending end_ 
-(ujung buat ngirim) si `sender` ini. Di situ kita itu emang manggil `unwrap` pas lagi manggil method `send` buat 
-antisipasi seandainya pengirimannya itu entah kenapa jadi gagal (_fails_). Hal macam error ini 
-sebenernya emang masih ada peluang kejadian (_might happen_), apalagi kalau misalnya contohnya, 
-kita itu nyetop secara paksa (stop) biar semua _threads_ kita ini berhenti melakukan semua pekerjaan dan ngejalanin eksekusinya, 
-yang mana artinya si ujung penerimanya (_receiving end_) tersebut udah pasti juga ikutan 
-mandeg (stopped) alias udah tidak nerima pesen (_messages_) baru lagi. Sampai dengan menit saat 
-ini sih, emang jujurnya kita ini masih belum nyiapin fitur apa pun buat bisa 
-berhentiin (stop) segerombolan _threads_ ini dari ngejalanin eksekusi programnya: _threads_ 
-yang udah jalan milik kita ini masih bakal terus melenggang jalan narik ngegas pol gas terus beroperasi 
-(continue executing) sekuat lama umur (as long as) *pool* milik kita ini juga masih dibiarin buat tetep *exist*. 
-Satu-satunya alasan kenapa kita dengan berani masang (use) fitur `unwrap` di situ adalah karena 
-berbekal jaminan (_know_) dari diri kita sendiri kalau skenario kemungkinan gagalnya (_failure case_) ini sebenernya emang 
-benar-benar secara harfiah tidak bakal pernah terwujud kejadian sama sekali, tapi ya sayangnya si 
-_compiler_ ini mana ngerti kalau di kenyataannya kelakuan ini itu tidak bakal pernah berbuat salah macam itu (doesn't know that).
+Setelah ngebikin instance `Job` baru memakai `closure` yang kita dapet di 
+`execute`, kita ngirimin pekerjaan (_job_) tersebut melewati ujung pengirim 
+(_sending end_) dari _channel_. Kita manggil `unwrap` pada `send` buat jaga-jaga 
+kalau pengirimannya gagal. Hal ini bisa aja kejadian kalau, misalnya, kita 
+nyetop semua _threads_ kita supaya berhenti berjalan, yang artinya ujung 
+penerimanya (_receiving end_) juga udah berhenti nerima pesan-pesan baru. Buat 
+saat ini, kita emang belum bisa nyetop _threads_ kita dari berjalan: _threads_ 
+kita bakal terus berjalan selama _pool_-nya masih ada. Alasan kita memakai 
+`unwrap` adalah karena kita tahu kasus gagalnya tidak bakal terjadi, tapi si 
+_compiler_ tidak tahu soal itu.
 
-Tapi kita ini juga belum benar-benar beres juga nih kerjaannya! Di dalam bagian _Worker_ itu, si `closure` 
-kepunyaan kita ini yang tadinya dioper ke dalem `thread::spawn` kan emang tugas utamanya dia itu _cuma_ 
-lagi ngerujuk (meminjam referensi/*references*) doang kan ke si ujung penerima (_receiving end_) milik si saluran itu. 
-Padahal yang bener-bener kita harapkan di sini adalah, kita ngebutuhin sekali supaya 
-si `closure` ini benar-benar bisa berputar dan berkeliling di dalam *loop* buat selama-lamanya (forever), 
-nanyain dan malakin (asking) si ujung penerima *channel* ini mulu nanyain apaan dia ini lagi dapet kerjaan _job_ 
-sambil setelahnya dia benar-benar ngejalanin isi dari si pekerjaan (*running the job*) ini langsung abis dia kebetulan berhasil 
-ngedapetin satu *job*. Makanya, mari kita lakuin rombakan perubahan barusan yang ada kelihatan nyempil di 
-Listing 21-20 tersebut ke dalam dalem fungsi `Worker::new` ini.
+Tapi kerjaan kita belum kelar nih! Di dalam `Worker`, _closure_ kita yang dioper 
+ke `thread::spawn` masih _cuma merujuk_ ke ujung penerima dari _channel_ aja. 
+Sebaliknya, kita pengen _closure_ ini terus muter di dalam *loop* selamanya, 
+nanyain ujung penerima _channel_ buat dapetin pekerjaan (_job_) dan langsung 
+ngejalanin pekerjaan itu pas dapet. Mari kita bikin perubahan yang ditunjukin 
+di Listing 21-20 ke dalam `Worker::new`.
 
-<Listing number="21-20" file-name="src/lib.rs" caption="Menerima dan juga sekaligus ngejalanin berbagai rupa jobs di dalam isi dari thread instance `Worker` tersebut">
+<Listing number="21-20" file-name="src/lib.rs" caption="Menerima dan ngejalanin jobs di dalam thread milik instance `Worker`">
 
 ```rust,noplayground
 {{#rustdoc_include ../listings/ch21-web-server/listing-21-20/src/lib.rs:here}}
@@ -760,38 +750,28 @@ Listing 21-20 tersebut ke dalam dalem fungsi `Worker::new` ini.
 
 </Listing>
 
-Di sini, hal pertama yang kita lakuin duluan itu adalah manggil `lock` dari si *receiver* 
-tadi tujuannya buat mengakuisisi atau merebut dan narik status si *mutex* ini, dan 
-baru abis narik status aman itu barulah kita berani manggil `unwrap` biar nantinya kodenya bisa otomatis njerit panik (panic) 
-atas segala bentukan macam rupa kesalahan (_errors_) yang mungkin keluar. Merebut (Acquiring) status kunci 
-(lock) itu pada aslinya sangat mungkin berpeluang buat jadi gagal berantakan kalau ternyata di balik bayangan layar, 
-kondisi status (state) dari dalem the *mutex*-nya ini udah keburu kejebak berubah menjadi beracun keracunan (poisoned state). 
-Kondisi beracun ini bisa terjadi kalau ternyata ada utas (*thread*) yang lainnya yang entah 
-salah apa dari mana dia tiba-tiba malahan udah milih panik meledak berantakan (panicked) tapi saat itu dia ini masih ngantongin status 
-kuncinya (holding the lock) ini alih-alih melepaskan kunci tersebut (releasing the lock) sebelum matinya. 
-Kalau kita lagi apes kejebak situasi (situation) yang semacam begini, maka tindakan manggil method `unwrap` biar si utasan (_thread_) kita 
-yang ini juga ikut-ikutan njerit panik ikutan hancur adalah langkah jalur yang emang diakui emang udah bener (_correct action_) 
-buat dikerjain. Silakan santai aja luangin bebasin dan rombak sendiri ini semua ngubah (*change*) bentuk `unwrap` ini 
-biar jadinya makek format dari `expect` yang disisipin makek pesan galat kesalahan (*error message*) 
-yang mungkin agak lebih masuk kerasa ngena bunyinya gampang dimengerti sama kuping (meaningful to you) 
-sendiri aja tidak masalah.
+Di sini, pertama-tama kita manggil `lock` pada `receiver` buat dapetin 
+(_acquire_) mutex-nya, lalu kita manggil `unwrap` buat _panic_ kalau ada error 
+apa pun. Ngambil sebuah _lock_ bisa gagal kalau mutex-nya lagi dalam keadaan 
+_poisoned_ (beracun), yang bisa kejadian kalau ada _thread_ lain yang 
+_panic_ pas lagi megang _lock_ tersebut bukannya ngelepasin _lock_-nya. Di 
+situasi kayak gini, manggil `unwrap` supaya _thread_ ini ikut _panic_ adalah 
+tindakan yang tepat buat dilakuin. Kita bebas kok kalau mau ngeganti `unwrap` 
+ini jadi `expect` dengan pesan error yang lebih bermakna buat kita.
 
-Kalau ternyata kita mulus-mulus aja sukses mulus kebagian ngunci gembok (*got the lock*) ke gembok *mutex* ini, 
-maka baru di saat itu kita bisa ikutan berani nekat manggil si perintah `recv` biar bisa nangkep nerima (_receive_) satu balok _Job_ (Pekerjaan) dari si *channel* saluran komunikasi pipa tersebut. 
-Sebuah sematan paku tempelan `unwrap` yang nangkring di bagian pucuk paling terakhir ini 
-bener-bener membantu kita berjalan tegar dan melewati (_moves past_) nerjang segala bentuk halangan segala kelakuan aneh error macam apa aja yang 
-kebetulan mungkin aja tetiba nongol dari sini, error model macem ginian bisa aja pada nongol mencuat (_occur_) umpamanya di mana si utas _thread_ 
-yang mana lagi sibuk-sibuknya naruh (holding) megangin ujung *sender*-nya ini ternyata tetiba udah keburu modar matikan paksa nutup jalan (_shut down_) ngedahuluin si penerimanya. 
-Yang ini sebenernya jalan nalar kerjanya emang nyerempet mirip-mirip (similar) nian loh percis dengan cara 
-fungsi metode `send` yang mana bakal pasti berontak ngebalik (returns) pesan `Err` semisal si utas sang *receiver*-nya yang ini malah mati berantakan nutup mendadak dari depan.
+Kalau kita berhasil dapet _lock_ pada mutex tersebut, kita manggil `recv` buat 
+nerima sebuah `Job` dari _channel_-nya. Satu `unwrap` terakhir di sini juga 
+bakal ngelewatin error apa pun, yang bisa muncul kalau _thread_ yang megang 
+_sender_ udah dimatiin, mirip kayak gimana method `send` ngebalikin `Err` kalau 
+_receiver_-nya mati.
 
-Panggilan metode lurus menuju si baris `recv` ini sifatnya membikin laju proses berhentinya kodenya jadi terblokir nunggu (_blocks_), makanya ini 
-menimbulkan efek di mana kalau andai kata aja ternyata eh emang belum nongol dateng kerjaan _job_ satu biji doang pun di depan matanya saat itu (_no job yet_), maka di ujung akhir-akhirnya ini sih utas *_thread_ yang lagi kerja saat ini (current thread) jadinya ya mau gimanapun bakal terus bengong nganggur nungguin nge-drop nunggu nunggu anteng (wait) sampe sebuah *job* bener-bener kelar udah nyampe hadir keluar di depannya. Struct si `Mutex<T>` pada intinya inilah si sosok kuncian yang menjamin mastiin pasti (ensures) ke semuanya ke kita kalau emang disisihkan pada sebuah jeda satu waktu yang spesifik 
-tertentu (at a time) bener-bener bakal pasti cuma bakal disidang dan diberika akses ke cuma satu doang *_thread_* punya *Worker* (_only one Worker thread_) yang dikasih dan dibolehin ijin buat nyoba manggil-manggil mau *request* nanyain apaan ada *job* (pekerjaan) 
-atau gaknya ke *channel* tadi.
+Pemanggilan ke `recv` bersifat memblokir (_blocks_), jadi kalau belum ada 
+pekerjaan (_job_), _thread_ yang lagi jalan bakal nungguin sampai ada pekerjaan 
+yang tersedia. `Mutex<T>` mastiin kalau cuma satu _thread_ `Worker` aja dalam 
+satu waktu yang nyoba minta sebuah pekerjaan.
 
-Tadaa, selamat loh! *Thread pool* bikinan kita pada detik jaman tulisan ini dibikin sebenernya udah pada posisi sukses jalan ngacir lanjay ngebut dengan mulus (working state)! 
-Majuin cobain aja suruh tes dengan nge-running `cargo run` sekalian lu buat dikit _requests_ ngetes jalannya juga ya:
+_Thread pool_ kita sekarang udah beneran jalan! Coba jalanin pake `cargo run` 
+terus bikin beberapa _requests_:
 
 <!-- manual-regeneration
 cd listings/ch21-web-server/listing-21-20
@@ -838,35 +818,30 @@ Worker 0 got a job; executing.
 Worker 2 got a job; executing.
 ```
 
-Sukses mulus (Success)! Kita sekarang ngenalin kalau kita emang akhirnya sukses benar-benar punyain sebuah bentuk 
-sejati dari sebuah _thread pool_ murni yang mengeksekusi koneksi-koneksi yang singgah dari depan ini 
-ngejalanin proses eksekusinya berbarengan asinkron tidak usah gantian satu-satu lgi secara sinkron (_asynchronously_). 
-Emang kenyataannya kagak bakal pernah (_never_) ada riwayat kejadian di mana lebih dari jumlah sekian empet (_four_) potong _threads_ ini 
-di-lahirkan (created) pas lagi ngejalanin kode di depannya ini. Jaminan ini ngegaransi ke seisi segenap 
-bangsa sistem (_our system_) kita ke semuanya tidak bakal pernah sekalipun ikutan panik mabuk jadi kepanasan (_overloaded_) 
-bahkan bilamana semisal jikalau aja mesin server kita itu dikeroyok dikirim hujan dideras rentetan gelombang 
-panah ngerima *request* super bertubi-tubi seabreg rupa yang pada berjejer dateng masuk (_receives a lot of requests_). 
-Andaikata emang bener lho kita sampe sengaja jahil iseng-iseng kita nge-_request_ secara spesifik (make a request) 
-ke alamat lintasan jalur (_path_) tujuan kita ini di _/sleep_, maka server kita yang satu ini emang bakal teteupan 
-tetep tegak berdiri bisa santai terus dengan gampangnya bisa ngelayanin ngeresponi (serve) panggilan para rentetan requests yang lainnya 
-gara-gara dia tinggal nyuruh _thread_ *Worker* lain yang emang dari kemaren emang nganggur buat sekalian ikutan terjun ngerjain bantu manggil fungsi *tasks* tersebut.
+Berhasil! Sekarang kita udah punya sebuah _thread pool_ yang mengeksekusi 
+koneksi secara asinkron (_asynchronously_). Tidak bakal ada lebih dari empat 
+_threads_ yang dibikin, jadi sistem kita tidak bakal kewalahan (_overloaded_) 
+kalau servernya nerima banyak sekali _requests_. Kalau kita ngelakuin 
+_request_ ke _/sleep_, servernya tetap bakal bisa ngelayanin _requests_ lain 
+dengan nyuruh _thread_ lain yang ngejalanin mereka.
 
-> Catatan: Andai kata lu maksa nekat ngebuka *path* rute link URL tujuan yang ditaruh di dalem rute khusus jebakan si _/sleep_ ini di dalem banyakan (multiple) jajaran tumpukan sekian puluhan (multiple) *browser windows* secara bareng-bareng langsung sekaligus jebred dalam waktu sekerdipan mata bebarengan (_simultaneously_), kita mungkina aja kelewatan bingung kepancing ngerasa panik dan nyangka kok kelihatannya dia ngeladenin ngememuat nge-load-nya ganti-gantian dengan selang pelan durasi santai (_time intervals_) per *five-second* (selang *lima deik*) sekali padahal kita udah makek *pool* multithread. Aslinya benar-benar sebagian (_some_) tipe dari program jenis peramban _web browsers_ jaman di luar sekarang (today) emang emang punya perilaku ngeksekusi kelakuan ganjil ngerapihin nge-barisin numpuk antrian deretan dari satu deretan *requests*-nya yang asalnya identik dan modelnya bener-bener punya *endpoint* rute kembar sama persis ganjil secara sengaja satu per satu berurut bergantian (sequentially), ya murni semata-mata itu gara-gara (reasons) sekadar buat tujuan urusan nge-*caching*. Intinya pembatasan kebodohan macem (_limitation_) begini ini mah samsek seutuhnya _tidak_ diakibatin bersumber murni disebabkan (_not caused by_) ulah dari kelakuan kinerja web server yang kita lagi pada bikin ini.
+> Catatan: Kalau kita ngebuka _/sleep_ di beberapa jendela browser secara 
+> bersamaan, halamannya mungkin bakal dimuat satu per satu tiap interval lima 
+> detik. Beberapa web browser mengeksekusi beberapa _requests_ yang sama persis 
+> secara berurutan demi alasan _caching_. Keterbatasan ini bukan disebabkan 
+> oleh web server kita.
 
-Saat-saat momen sekarang yang ini emang kelihatannya pas rasanya emang waktu jeda yang enak (good time) 
-buat minggir mingser ambil napas ngaso sebentar ngecoba ngebayangin nyimak (pause and consider) ngebandingin 
-gimanakah jeroannya raut muka model rancangan tatanan bentukan kode-kodean barisan yang pada nangkring mentereng 
-sedari di dalem bingkai bingkisan kotak *Listings 21-18, 21-19*, dan ujungnya juga di selipan *21-20* ini 
-seumpamanya bentuk mereka itu dibikin pada agak berbeda sedikit andaikata kta beralih ngeganti jalan pikir buat emang lebih 
-memilih (using) tatanan asinkron bernama `futures` ketimbang bertahan kukuh cuma memakai fungsional model *closure* doang buat emang 
-membedah ngerjain mengeksekusi semua rupa tugas (work) tersebut. Bagian tipe-tipe spesifik manakah (what types) di sana yang pada 
-bakal ngalamin ubah ganti baju (_would change_)? Kayak manakah (how) emangnya *signatures* aslinya dari _method_ (_method signatures_)-nya ini 
-kudu ikutan berubah drastis diganti-ganti mingser ke sana-kemari, seandainya emang emang perlu perombakan bener-bener (if at all)? Sisi pinggiran belah pecahan (_parts of the code_) manakah sih 
-yang bakal tetep dibiarin aman bertahan (stay) anteng kagak perlu ikutan ngalamin diobok-obok perubahan (_the same_)?
+Ini waktu yang pas buat berhenti sejenak dan mikirin gimana bedanya kode di 
+Listing 21-18, 21-19, dan 21-20 kalau kita memakai _futures_ ketimbang 
+_closure_ buat pekerjaan yang mau dilakuin. Tipe apa aja yang bakal berubah? 
+Gimana bedanya _method signatures_-nya, kalau memang ada? Bagian kode mana aja 
+yang bakal tetap sama?
 
-Abis panjang lebar berpuas-puas dirimu beres nuntasin masa masa ngulik ngebaca bahan di pelajaran soal tata krama kelakuan dari jenis gubahan struktur kelakuan *loop* dari bentuk model _`while let`_ ini yang kita kulik balik pas ngerampungin bab-bab awal di antara Bab 17 dan sembari selip di tengah-tengahnya Bab 19 pula, otak di kepala dirimu barangkali mulai berbisik kepikiran lari membatin (you might be wondering) kenapa yak pantesan kok kita *nggak* langsung main sabet milih aja buat mutusin secara kilat nekat naruh masang serangkaian urutan kode eksekusi milik utas _thread_ khusus si _Worker_ kita (Worker thread code) yang seolah nampak rupa cantiknya kayak yang sempet ngintip kepajang di dalem pajangan galeri *Listing 21-21*.
+Setelah belajar soal perulangan `while let` di Bab 17 dan Bab 19, kita mungkin 
+penasaran kenapa kita nggak nulis kode _thread_ `Worker` kayak yang ditunjukin 
+di Listing 21-21.
 
-<Listing number="21-21" file-name="src/lib.rs" caption="Alternatif rancangan rupa implementasi buat kode eksekusi dari si `Worker::new` yang coba-coba ngandelin `while let`">
+<Listing number="21-21" file-name="src/lib.rs" caption="Alternatif implementasi `Worker::new` memakai `while let`">
 
 ```rust,ignore,not_desired_behavior
 {{#rustdoc_include ../listings/ch21-web-server/listing-21-21/src/lib.rs:here}}
@@ -874,9 +849,26 @@ Abis panjang lebar berpuas-puas dirimu beres nuntasin masa masa ngulik ngebaca b
 
 </Listing>
 
-Jujur emang barisan rombongan susunan set perabot alat tempur kode-kodean ini mah emang aslinya (this code compiles and runs) pantes sukses bisa di-*compile* lalu berhasil sukses diajak buat *running* nyala-nyala aja aslinya asalkan dipanggil mah tanpa cacat, akan tetapi (_but_) sayangnya kelakuannya dia tidak bakal sanggup membikin lalu menyetorkan membuahkan asilnya tingkah prilaku eksekusi pola ngantri tata perlintasan multi _threading_ yang aslinya sembenernya emang jujur jadi inceran idam-idaman (*desired threading behavior*) sasaran awal milik hajat (_desired_) diri kita: gara-gara ujung-ujungnya ya ntar sebuah *request* yang super lelet lambat (*a slow request*) jalannya bakal cuman ngehasilkan _requests_ yang berentet di antrean lain di belakangnya yang tetep ngadat mandek mandeg antri merana kudu terpaksa harus disuruh _wait_ menunggu dan antri ngurut memanjang barisan kebagian jatah jadwal biar mereka bisa dieksekusi dikelarin dibereskan dan diproses (processed). Perkara alasan dibalik _reason_ kejanggalan ginian ini tergolong ada sedari kelakuan halus _subtle_: bahwa sesungguhnya susunan wujud si struct _Mutex_ ini emang takditakdirkan emang tidak dikasih *public method* (*metode publik*) khusus sengaja dikasih nama panggilan buat fitur nge-*unlock* karena nyatanya status penguasa kunci miliknya kepemilikan jatah buat kuncian rahasia tersebut ini aslinya udah emang *based on* terikat mutlak dikunci ditentuin dari seberapa panjang seberapa bentar siklus riwayat hidup umur *lifetime* umurnya si benda keramat bertipe perlindungan yang menyandang identitas `MutexGuard<T>` yang mana sosok tersebut disisipkan rapi di perut selimut isi *LockResult<MutexGuard<T>>* yang emang udah jadi kodrat nasib jatah tugas buat metode dari fitur bernama *`lock`* buat dia setorkan ngeluarin dia (returns) pas selesai beres dia dipanggil beroperasi jalan. Menjelang masa kompilasi (*at compile time*), sosok mandor tukang sensor pinjeman `borrow checker` inilah yang selanjutnya ganti berjaga bakal dengan telitinya bisa memelototi lalu memberlakukan narapain menegakkan menembakkan _enforce the rule_ maklumat seputar tata kaidah yang ngegarisbawahi kalau setiap butir selongsong _resource_ (sumber daya) yang tadinya ketat diselimuti diborgol ketat (guarded) diawasi pelindungan di belakang benteng pelindung sebuah palang gembok berjenis _Mutex_ itu niscaya haram statusnya diharamkan (_cannot be accessed_) sama sekali dilarang terjamah alias tidak bakal mempan dibolehin buat bisa diutak-atik (diakses) oleh siapapun pun kalau seumpamanya status kita saat di kejadian eksekusi saat itu kondisinya lagi belom emang kita megang lalu punya si *lock* stempel kuncinya ini di tangan (unless we hold the lock). Masalahnya adalah, penerapan (_implementation_) kode yang bergaya ngasal semacam ini berisiko nimbul-nimbulin bahaya efek di mana wujud kuncian (`lock`) dari yang mestinya diserahin kembali ini ternyata masih dipaksa kudu bertahan kepeluk tertahan kepegang erat-erat tertahan di genggaman (_being held_) jauh memakan durasi yang kepanjangan sangat jauh di luar dari maksud jadwal normal target awal selesainya tugas aslinya seandainya (intended if we aren't mindful) andaikata otak pikiran kita belom ngerasa gih hati-hati nyadari seputaran *mindful* ngeh dan perduli buat memandang mikirin masalah masa waktu jeda _lifetime_ (lama waktu) dari _MutexGuard<T>_ tersebut.
+Kode ini emang bisa di-compile dan dijalanin, tapi nggak ngasilin perilaku 
+_threading_ yang kita pengen: sebuah _request_ yang lambat tetap bakal bikin 
+_requests_ lain harus nunggu buat diproses. Alasannya agak halus: struct 
+`Mutex` nggak punya method `unlock` publik karena kepemilikan _lock_-nya 
+bergantung pada _lifetime_ dari `MutexGuard<T>` di dalam 
+`LockResult<MutexGuard<T>>` yang dibalikin sama method `lock`. Pas waktu 
+kompilasi, _borrow checker_ bisa menegakkan aturan kalau sumber daya yang 
+dijaga sama `Mutex` tidak bisa diakses kecuali kita lagi megang _lock_-nya. 
+Namun, implementasi kayak gini juga bisa bikin _lock_ kepegang lebih lama dari 
+yang kita niatkan kalau kita nggak hati-hati sama _lifetime_ dari 
+`MutexGuard<T>`.
 
-Sepetak bentuk kodingan susunan naskah dari balok kode di balikan dalem ruang gubahan *Listing 21-20* yang menumpukan tumpuannya di dalam bentuk susunan gaya pemakaian dari format pemanggilan dari perkenalan lajur baris berupa panggilan *`let job = receiver.lock().unwrap().recv().unwrap();`* benar-benar jalan bekerja karena aslinya dengan membiasakan manggil (_with `let`_), rupa jenis semua ragam dari kumpulan serpihan serentetan aneka serabut serangkaian sosok rentetan sekian harga biji *temporary values* nilai-nilai angka dadakan instan bayangan yang kebetulan aja sementara disisipin (_temporary values_) dipakai sengaja dipakai di daleman seonggok kumpulan bongkahan _expression_ tersebut yang ada bertumpuk mojok mentereng ngendon mangkal terparkir mejeng di perbatasan tapal batas perlintasan di ruas sisi lajur paling _right-hand side_ pojokan sebelah barisan pinggiran sisi seberang belahan sisi arah sebelah kanannya dari batasan silang palang lintasan lambang sama dengan (the equal sign) bakal emang nasibnya dengan sadar seketika cepatnya dalam detik waktu itu juga (immediately dropped) dimusnahin diputus di-drop hilang tak bersisa ditiadakan pas waktu (when) persis saat barisan deretan panggilan milik sang _let statement_ ini nemuin garis ajalnya dan kelar nyampe berakhir tamat ngakhirin garis _ends_ nasib eksekusinya. Beda malang apes nasib halnya, si konstruksi kelakuan si panggilan buat `while let` (dan tak pelak kelakuan yang kembar sama juga melekat pada panggilan buat deretan panggilan di struktur perlintasan buat konstruksi barisan kelakuan *`if let`* dan juga konstruksi yang ngerujuk seputaran kelakuan _`match`_) sifat kodrat aslinya pantang dan sejatinya anti dan juga (does not) tidak pernah sekalipun membuang secara sepihak memusnahkan (*drop*) barang bawaannya beruba wujud barang rakitan nilai-nilai aneka rentetan sosok figur *temporary values* angka naskah serpihan bawaan serba sementaranya (_temporary values_) sisaan tersebut sebelum rentetan eksekusinya ini benar-benar merayap tuntas tiba berjalan sampai ngejejak sukses nutup berhasil (_until the end of_) merambat tiba menapaki penghujung purna tutup gawang palang blok kodenya (_the associated block_). Merujuk narasi skenario paparan kejadian malang perbandingan percontohan yang tergambar pas nongkrong mojok di sela daleman sketsa yang terbingkai rapi di sela *Listing 21-21* ini tadi, sosok batang kuncian yang ditugasin gembok gerbang (`lock`) tetep ajeg kepaksa bakal awet mangkal terkunci (_remains held_) nangkring mengunci selagi sepanjang (*for the duration of*) di sepanjang rentetan durasi berlangsungnya kelakuan waktu (*the call to*) lamanya rentang periode pas fungsi tugas sang  _`job()`_ tersebut lagi ngejalanin rutinitas gawang di dalam masa rutinitasnya buat menunaikan (_call to_) ngejalanin seisi jeroan badan pemanggilan tugas kerjanya tsb., niscaya memunculkan satu hal arti rupa artian yang maknanya adalah emang pada saat detik-detik nasib gembok lagi kehalang nutup rupa begini maka segenap sekompi pasukan komplotan deretan gerombolan *_Worker instances_* yang *other* (para punggawa lainnya) bakal pastinya pada terpojok tak kan sanggup alias buntu dilarang masuk narik _cannot receive jobs_ alias tidak ada satu pun mereka yang bakal sukses nerima narik sisa gilir antrian tugas sisa deretan job sisanya tsb.
+Kode di Listing 21-20 yang memakai `let job = 
+receiver.lock().unwrap().recv().unwrap();` bisa jalan karena dengan `let`, 
+nilai sementara (_temporary values_) apa pun yang dipakai di ekspresi sebelah 
+kanan tanda sama dengan langsung di-_drop_ seketika pas statement `let`-nya 
+berakhir. Sebaliknya, `while let` (serta `if let` dan `match`) nggak nge-_drop_ 
+nilai sementara sampai akhir dari blok kodenya. Di Listing 21-21, _lock_-nya 
+tetap kepegang selama pemanggilan `job()` berlangsung, yang artinya instance 
+`Worker` lainnya nggak bisa nerima pekerjaan.
 
 [creating-type-synonyms-with-type-aliases]: ch20-03-advanced-types.html#creating-type-synonyms-with-type-aliases
 [integer-types]: ch03-02-data-types.html#integer-types

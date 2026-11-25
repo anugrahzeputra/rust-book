@@ -9,7 +9,7 @@ Rust, kita bisa masuk ke seluk beluk (nitty-gritty) dari traits ini.
 
 <a id="specifying-placeholder-types-in-trait-definitions-with-associated-types"></a>
 
-### Associated Types
+### Associated Types (Tipe Terkait)
 
 _Associated types_ (tipe terkait) menghubungkan sebuah _placeholder_ (tempat 
 pengganti) tipe dengan sebuah trait sedemikian rupa sehingga definisi method 

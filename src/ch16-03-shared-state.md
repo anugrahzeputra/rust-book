@@ -246,7 +246,7 @@ supaya kita bisa berkonsentrasi pada gimana `Mutex<T>` itu bekerja.
 
 ### Kesamaan Antara `RefCell<T>`/`Rc<T>` dan `Mutex<T>`/`Arc<T>`
 
-kita mungkin nyadar kalau `counter` itu _immutable_ tapi kita bisa dapat sebuah 
+Kita mungkin nyadar kalau `counter` itu _immutable_ tapi kita bisa dapat sebuah 
 referensi _mutable_ ke nilai di dalamnya; ini artinya `Mutex<T>` menyediakan 
 _interior mutability_ (mutabilitas interior), sama kayak keluarga `Cell`. Dengan 
 cara yang sama seperti kita memakai `RefCell<T>` di Bab 15 buat memungkinkan kita 

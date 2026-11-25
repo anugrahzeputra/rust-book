@@ -225,6 +225,8 @@ _add_one/Cargo.toml_ supaya kita bisa memakai _crate_ `rand` di dalam _crate_
 
 <!-- When updating the version of `rand` used, also update the version of
 `rand` used in these files so they all match:
+
+* ch01-01-installation.md
 * ch02-00-guessing-game-tutorial.md
 * ch07-04-bringing-paths-into-scope-with-the-use-keyword.md
 -->
@@ -250,9 +252,9 @@ copy output below; the output updating script doesn't handle subdirectories in p
 ```console
 $ cargo build
     Updating crates.io index
-  Downloaded rand v0.8.5
+  Downloaded rand v0.10.1
    --snip--
-   Compiling rand v0.8.5
+   Compiling rand v0.10.1
    Compiling add_one v0.1.0 (file:///projects/add/add_one)
 warning: unused import: `rand`
  --> add_one/src/lib.rs:1:5
@@ -260,7 +262,7 @@ warning: unused import: `rand`
 1 | use rand;
   |     ^^^^
   |
-  = note: `#[warn(unused_imports)]` on by default
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
 
 warning: `add_one` (lib) generated 1 warning (run `cargo fix --lib -p add_one` to apply 1 suggestion)
    Compiling adder v0.1.0 (file:///projects/add/adder)

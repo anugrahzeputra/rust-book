@@ -27,7 +27,7 @@ Memakai definisi ini, Rust itu berorientasi objek: _structs_ dan _enums_ punya
 data, dan blok `impl` menyediakan _methods_ pada _structs_ dan _enums_ tersebut. 
 Meskipun _structs_ dan _enums_ yang dilengkapi _methods_ tidak _disebut_ sebagai 
 objek, mereka menyediakan fungsionalitas yang sama, menurut definisi objek dari 
-the Gang of Four.
+Gang of Four.
 
 ### Encapsulation yang Menyembunyikan Detail Implementasi
 

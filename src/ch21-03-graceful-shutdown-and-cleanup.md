@@ -166,22 +166,19 @@ supaya dia ini cuma nerima batas (accept only) dua *requests* aja sebelum akhirn
 
 </Listing>
 
-kita pastinya sangat tidak mau ngarep (_wouldn't want_) kalau sebuah web server betulan di dunia 
-nyata tiba-tiba mati nutup sendiri (shut down) sesudah cuma ngelayanin dua buah _requests_ doang. 
-Tapi kan kode ini itu cuma murni (just demonstrates) dibikin buat pamer ngedemoin kalau kemampuan matikan proses 
-secara anggun (graceful shutdown) dan fitur bersih-bersihnya (cleanup) emang benar-benar udah bisa kerja 
-lancar beroperasi (in working order).
+Kita pastinya sangat tidak mau ngarep kalau sebuah web server betulan di dunia 
+nyata tiba-tiba mati nutup sendiri sesudah cuma ngelayanin dua buah _requests_ doang. 
+Tapi kan kode ini itu cuma dibikin buat nunjukin kalau kemampuan matikan proses 
+secara anggun (_graceful shutdown_) dan bersih-bersih (_cleanup_) emang udah bisa 
+jalan dengan bener.
 
-Method `take` ini aslinya udah didefinisikan secara bawaan di dalem trait `Iterator` 
-yang mana dia berfungsi ngebatesin (limits) _iteration_ tersebut supaya paling banter (_at most_) dia 
-itu cuma muter buat ngerjain dua item pertama (first two items) doang. Terus, si `ThreadPool` ini jadinya 
-bakal terpaksa dihempaskan keluar dari _scope_ (go out of scope) pada momen titik paling 
-ujung batas akhir dari fungsi `main`, dan otomatis implementasi fungsi `drop` miliknya bakal segera dioperasikan (will run).
+Method `take` didefinisiin di dalam trait `Iterator` dan ngebatasin iterasi 
+paling banyak cuma dua item pertama aja. Terus, si `ThreadPool` bakal keluar 
+dari _scope_ di akhir fungsi `main`, dan implementasi `drop` bakal jalan.
 
-Silakan nyalakan kembali (start) si server ini pakai instruksi `cargo run`, terus cobain bikin tiga (three) buah _requests_ 
-masuk ke sana. Pemanggilan _request_ yang ketiga ini harusnya langsung ngebentur pesan error (should error), 
-dan terus di dalem layar terminal kita itu kita kudu ngelihat tulisan keluaran (output) 
-yang lumayan kelihatan persis mirip-mirip (similar) kayak ini:
+Silakan nyalain servernya pakai `cargo run` dan bikin tiga _requests_. _Request_ 
+yang ketiga harusnya error, dan di terminal kita harusnya ngelihat output yang 
+mirip kayak gini:
 
 <!-- manual-regeneration
 cd listings/ch21-web-server/listing-21-25
@@ -212,44 +209,29 @@ Shutting down worker 2
 Shutting down worker 3
 ```
 
-kita emang sangat mungkin ngelihat kalau rupa dari urutan-urutan (ordering) barisan teks _Worker_ ID 
-dan tulisan pesannya yang nampil ke layar ini agak beda-beda tatanannya. Kita 
-bisa perhatiin dengan jelas (can see) gimana dalemnya proses cara kerja kode ini dari bacaan pesannya 
-(messages) tersebut: *Instances* si `Worker` urutan 0 dan 3 ternyata beruntung dapet 
-nyaplok ngerjain (_got_) kedua belah *requests* rentetan awal. Terus si server ini mulai ngadat berhenti dan ogah ngerima 
-(stopped accepting) adanya sambungan koneksi (_connections_) yang baru pas tepat habis selesai 
-ngurus koneksi yang ke-dua tadi, dan si implementasi metode `Drop` yang nempel pada si `ThreadPool` pun 
-langsung gas tancap jalan (_starts executing_) duluan padahal faktanya si `Worker` 3 aja malahan belom kelar nyalain (even starts) 
-pekerjaannya. Kejadian di-`drop`-nya (dropping) `sender` ini langsung tanpa tedeng aling-aling melepaskan putus (_disconnects_) 
-sambungan jembatan tali komunikasi ke semua penjuru *instances* si `Worker` 
-lalu lantang nyuruh ngomando ngasih tahu (tells) mereka biar pada mingser bubar barisan nutup layanan (shut down). 
-Tiap *instances* `Worker` masing-masing terus nyaut nge-print sebuah *message* saat tali 
-mereka terputus dilepas (disconnect), dan abis beres itu semua, si _thread pool_ tadi gantian secara mandiri bergegas manggil 
-method `join` lurus dengan satu-satunya niat mau diem duduk setia menunggu (wait) supaya 
-setiap barisan satu per satu dari `Worker` _thread_ kelar (_finish_) ngerampungin pekerjaannya.
+Kita mungkin bakal ngelihat urutan ID `Worker` dan pesan yang dicetak agak beda. 
+Kita bisa lihat cara kerja kode ini dari pesan-pesannya: instance `Worker` 0 dan 
+3 kebagian dua _requests_ pertama. Server berhenti nerima koneksi setelah 
+koneksi kedua, dan implementasi `Drop` pada `ThreadPool` mulai jalan bahkan 
+sebelum `Worker 3` mulai ngejalanin pekerjaannya. Nge-_drop_ `sender` langsung 
+memutus semua instance `Worker` dan nyuruh mereka buat mati. Masing-masing 
+instance `Worker` nyetak pesan pas koneksi mereka terputus, lalu _thread pool_ 
+manggil `join` buat nungguin tiap _thread_ `Worker` selesai.
 
-Coba teliti merhatikan (notice) adanya satu aspek detail perlakuan (_aspect_) yang lumayan kerasa asik unik 
-(interesting) di balik serangkaian rentetan rupa spesifik proses eksekusi (execution) satu ini: di mana 
-si `ThreadPool` udah keburu kelar nge-_drop_ si `sender`, dan bahkan sebelum sempet ada *instances* 
-`Worker` mana aja yang nangkep ngerima kode error (received an error), kita malahan udah ngebikin status program kita ini buat maksa nyoba nggabung 
-(join) ke `Worker` urutan 0. Waktu momen itu ya, si `Worker` 0 benar-benar belum ada dapetin sinyal kabar tangkepan error 
-apa-apa (not yet gotten an error) yang mana berasal dari tarikan *recv*, jadinya ya benar-benar wajar aja sih kalau si otak pusat jalan *main thread*-nya ini terpaksa mandeg macet diem nge-blok di jalan 
-(blocked), ngaso setia sembari nungguin si `Worker` 0 supaya ngerampungin pekerjaannya sampai tuntas (_finish_). 
-Eh pas lagi asik nunggu itu (In the meantime), si `Worker` 3 yang udah ketiban ngerima jatah mandat narik dapet 
-(received) satu butir kerjaan (_a job_) yang selanjutnya diikuti oleh riwayat sisa-sisa para _threads_ sekaliannya yang ikutan kebagian serentak seragam dapet nerima cipratan pesan eror (error). 
-Terus nah pas begitu si `Worker` 0 kelar tuntas ngerjain jatah lapaknya (finished), si otak tengahnya (_main thread_) ini lantas lanjut ngecoba 
-nungguin antrean jejeran gerbong serombongan sisa komplotan (the rest) punggawa *instances* `Worker` ini biar pada cepetan (_to finish_) juga ikutan kelar nutup lapaknya. Pada pas 
-tibanya waktu masa (at that point) tersebut, eh ternyata semuanya tanpa basa-basi emang udah benar-benar pada 
-tuntas cabut ngeluarin diri (exited) berhamburan dari daleman siklus lingkar putaran (loops) rute hidup mereka itu lalu udah berhenti total dari segala aktivitas hidup (_stopped_).
+Perhatiin satu aspek menarik dari eksekusi kali ini: `ThreadPool` udah nge-_drop_ 
+`sender`, dan sebelum ada `Worker` yang nerima error, kita udah nyoba nge-`join` 
+`Worker 0`. `Worker 0` belum dapet error dari `recv`, jadi _main thread_ terblokir, 
+nungguin `Worker 0` kelar. Sementara itu, `Worker 3` nerima satu pekerjaan lalu 
+semua _threads_ nerima error. Pas `Worker 0` udah kelar, _main thread_ nungguin 
+sisa instance `Worker` buat selesai. Di titik itu, semuanya udah keluar dari 
+_loop_ mereka dan berhenti.
 
-Selamat ya (Congrats)! Kita bener-bener udah sanggup nyampe di titik purna ngerampungin _project_ ini secara utuh (completed); 
-kita sekarang ini udah sah punyain (_have_) sepenggal program _web server_ murni kelas cetek mendasar (_basic_) yang aslinya juga 
-udah bisa jalan gagah memanfaatkan pengerahan tenaga tatanan sekelompok balok (_thread pool_) demi sanggup ngeresponi secara sigap lalu melayani sambutan balik secara asinkron tak serentak (_asynchronously_). Kita udah sangat terbukti mampu benar-benar 
-melancarkan (_perform_) atraksi sebuah tarian purna pemutusan nafas nyawa _graceful shutdown_ terhadap si komponen server tersebut, 
-yang mana benar-benar menuntaskan lalu ngebersihin angkat tuntas ngurus sisaan barang bongkaran kotoran riwayat sampah kelakuan (cleans up) riwayat para seantero rentetan _threads_ 
-di ruang bilik _pool_ ini.
+Selamat! Kita udah berhasil nyelesaiin project ini; kita udah punya web server 
+dasar yang memakai _thread pool_ buat merespons secara asinkron. Kita bisa 
+ngelakuin _graceful shutdown_ ke server, yang ngebersihin semua _threads_ di 
+dalam _pool_.
 
-Nih ditaruh rupa segenap rincian barisan kode final seutuhnya (full code) secara utuh komplit di sini sebagai referensi pedoman (_reference_) ya:
+Ini kode lengkapnya buat referensi:
 
 <Listing file-name="src/main.rs">
 
@@ -267,22 +249,20 @@ Nih ditaruh rupa segenap rincian barisan kode final seutuhnya (full code) secara
 
 </Listing>
 
-Kita emang nyatanya masih sangat bisa sih buat ngerjain (_could do more_) lebih jauh dan memodifikasi lebih heboh hal-hal lainnya lagi di tempat ini lho! 
-Kalau seumpamanya emang hasrat di hati emang kita kepengen (want to) buat sudi terus merutinkan niat maju ngelanjut (continue) nambahin memoles (_enhancing_) gubahan kerangka arsitektur project ini jadi makin keren lagi mantep ke depannya, ini di bawah disediain list segelintir barisan rupa corak deretan bayangan pencerahan curhatan ide (some ideas) racikan kreasi mantap:
+Kita masih bisa ngembangin ini lebih jauh lagi! Kalau kita mau terus ningkatin 
+project ini, berikut beberapa ide yang bisa dicoba:
 
-- Lengkapin dan imbuhin rentetan sekelumit tambalan isi dari dokumentasi tambahan _(more documentation)_ buat struct `ThreadPool` beserta metode-metode rentetan _method_ `public` miliknya juga ya.
-- Coba isengin rakit bikinin sisipin sederet rentetan program tes asinkron (tests) buat nguji kemantapan jalan kelakuan isi _fungsionalitas_ (functionality) jeroan library-nya ini.
-- Ganti rombak dan obrak-abrik rentetan pemanggilan wujud rupa `unwrap` yang kelewat asal nabrak paksa njerit ini supaya berubah format menjadi bentukan rentetan taktik kelakuan pengurusan error (_error handling_) yang karakternya terasa sifat jauh lumayan lebih kokoh perkasa pantang rontok (_robust_).
-- Manfaatin fitur keberadaan balok struktur `ThreadPool` ini untuk sengaja nyobain ngelaksanain rentetan panggilan _tasks_ rutinitas yang bentukannya ini murni lain di luar formatnya sekadar menugas melayani (serving) serapan _requests_ dari kancah rupa lalu-lalang aliran arus penjelajahan halaman dunia maya (web requests).
-- Sisihkan cari lirik bongkar-bongkar iseng nyari (_Find_) bentukan tipe produk paket rak buku kreasi buatan anak lain dari komunitas (thread pool crate) bertebaran liar pating mencelat lepas terpajang bebas melenggang kangkung rilis tebar nongol tersedia gratis pampang mejeng tayang di galeri pustaka etalase repositori perpustakaan lapak kerdus bebas gratis wadah pasar kumpulan [crates.io](https://crates.io/) sono terus pasang dan terapkan ngrakit lalu *implement* rupa susunan formasi wujud web server yang gaya alur kelakuan pola lagaknya miripin sebelas-dua-belas percis plek kayak (_similar_) gubahan hasil rancangan ini dengan murni nekat sekadar sepenuhnya murni berpatokan menunggang makek library produk kreasi bikinan orang laen _the crate instead_ tersebut doang. Barulah (Then) setelah tuntasnya praktek pembuktian tsb. kelar disituasi tersebut silahkan monggo silakan (compare) coba banding-banding rupa rentetan kerangka rute API miliknya library itu sama wujud tingkat derajat kekuatan ketahanan banting kokoh (_robustness_) ketangguhan tahan uji banting tangguhnya punya dia dengan diukur diselidik secara adil membedakan dan aduin lurus dibandingin langsung dipajang sejajar teliti diseret ke hadapan dan disejajarkan ngebentur ke _thread pool_ rakikan tangan pribadi asli mandiri punya yang baru kemaren udah sempet kita *implement* bikin bangun praktekin dari kemaren itu.
+- Tambahin lebih banyak dokumentasi ke `ThreadPool` dan method-method publiknya.
+- Tambahin unit _tests_ buat menguji fungsionalitas library-nya.
+- Ubah pemanggilan `unwrap` menjadi penanganan error (_error handling_) yang lebih tangguh.
+- Pakai `ThreadPool` buat ngerjain tugas lain selain ngelayanin web _requests_.
+- Cari crate _thread pool_ di [crates.io](https://crates.io/) dan implementasiin web server yang serupa memakai crate tersebut. Lalu, bandingin API dan ketangguhannya sama _thread pool_ yang kita buat sendiri.
 
-## Ringkasan (Summary)
+## Ringkasan
 
-Mantap (Well done)! Kita udah berhasil nyampe tuntas tembus tamat nyentuh ujung akhir pucuk paling buntut sampul ujung (end) dari seri halaman buku ini! Kita semua dari 
-diri kami di sini ini secara pribadi kepengen bener sekali pingin ngelempar sepatah kata berterima kasih sedalam-dalamnya buat ngaturin wujud hormat salam 
-terima kasih tulus buat panjenengan-panjenengan semua yang udah ikhlas (thank you for) ngabisin waktu ngikut jalan jejer iring bersamai (joining) kita-kita nyusurin merambat rute panjang pelesiran perjalanan (tour) petualangan liburan berburu pesona Rust ini sedari titik garis pinggir batas mula dulu. Kini emang pastinya seutuhnya (now) kita ini udah sepenuhnya dirasa matang dan bener-bener dirasa dipastikan udah sangat siap sanggup sedia (_ready to_) langsung nge-gass terjang 
-nerapin ngimplementasiin sendiri kreasi murni orisinil pribadi gagasan wujud gubahan deretan gagasan tatanan project rintisan (_projects_) program rill asli bikinan sendiri punya kita yang berbasis ngusung 
-bendera teknologi sistem Rust lalu sekalian sudi dan rela rela buat ngeringanin naruh bantu campur turut menaruh campur tenaga ulur ngasih derma tangan ngebantu nambahin andil campur gotong berderma (_help with_) berkontribusi di gubahan wujud program garapan rintisan _projects_ sumbangsih kreasi racikan buatan anak punggawa temen sejawat *people's projects* (orang-orang) pahlawan tetangga sanak rupa saudara kita di sekitar sana. Harus dimasukin paksa (_Keep in mind_) diranap di simpen lekat ingatan tanam patri ke dalem nalar benak kepala ingat-ingat simpan resapin ya 
-di ingatan (mind) dalem bawah sadar otak memori paten benak kepalamu ini andaikata (that) ini tuh sesungguhnya nyata terang 
-bersinar nyata terang benderang niscaya terbentang terbentang mekar membentang subur emang masih menyisa (there is a) terhuni rupa sepetak jajaran luas 
-gerombolan wadah kerumunan kelompok perhimpunan _welcoming community_ (komunitas yang sangat terbuka nyambut ramah dan sedia hangat menjamu rupa tangan senyum terbuka gembira lebar dada tulus nyambut seneng asri hangat peluk) persaudaraan ikatan erat rupa serumpun bangsa perkumpulan perserikatan komplotan jejaring _other Rustaceans_ (kalangan para pengabdi programmer pemuja aliran seiman setia pejuang pendekar kode penyuka aliran kepercayaan kasta Rust ksatria lain-lainnya sesama punggawa yang sealiran) lainnya di pelosok buana pelosok sana luar sekitar pojokan pelosok dunia sana ini yang tak ada bosannya tak kan bakal pernah nyerah sudi ikhlas niscaya aslinya emang _would love to_ (pada seneng rela hati bakal cinta mati gemar nyenengin cinta ngebet pengen gemar dan hobi pake cinta bahagia hepi benar-benar girang tulus girang rela asyik seru sumringah demen kepingin riang berhati tulus bakal doyan bakal suka bakal sayang dan sangat girang sekali teramat rindu sangat ingin mau rela) ikhlas turun nolong bantu menyambut nyuapin nyuapin kasih (_help you with_) membina mandu memayungi mendampingin mandorin nyodor tangan mbopong mbimbing nolong kita-kita pada ikhlas terjun dan andil nimbrung bantuin mberesin dan nyikat beresin mengurus sedia ngadepin dan ngeberesin (_any challenges_) seberapa parah gawatnya semua aneka segudang rupa kendala aral ragam himpitan halang aneka lika rupa jurang duri kesulitan ujian badai cobaan halangan ragam perkara problema jerat tikungan batu cadas tantangan rintang terjalan problem himpitan perkara ganjalan segenap segala seberat sedempet serepot rupa kendala seisi sebentang onak seisi segala segenap (any) ragam masalah kendala benturan apa jua sekalipun belaka apa pun bentuknya rupa aja yang di jalan nanti kebetulan emang rupa nyata riil fakta nyatanya _you encounter_ (kita tabrak kepentok dapati tabrak papasi bersua sandung hantam ketatap kebentur derita alami jumpa dapet tebas terjang lalui pergokin tempuh alami libas gilas temui tabrak lewati hantam rasakan langgar cicipin terjang tatap derita lintasi rasai cicip rasain hadapi cicip deritain hadapi hadapi) ke-tubruk kepentok bersua melintang terlintas nyandung hadap temui hadapi sandung kita di belantara sepanjang masa-masa pelayaran peruntungan jalan pendakian jalur petualang perjalanan lintas jalur rute jelajah ngeluyur (journey) pengembaraan karir kiprah rekam pelesiran perjalanan _Rust_ (kancah rute perjalanan karir Rust) asuhan panjenengan kita seiring maju langkah laju menapaki jejak berjejak kita maju panjang menjejak merentas jauh berjalan ini di waktu ke detik harinya nanti menjejak (your Rust journey).
+Mantap! Kita udah nyampe di akhir buku ini! Kami berterima kasih karena kita 
+udah ikut menelusuri perjalanan mengenal Rust ini bareng-bareng. Sekarang kita 
+udah siap buat mengimplementasiin project Rust kita sendiri dan ikut ngebantu 
+di project-project orang lain. Inget aja kalau ada komunitas sesama _Rustaceans_ 
+yang ramah dan bakal senang hati ngebantu kita ngadepin tantangan apa pun yang 
+kita temuin di sepanjang perjalanan Rust kita.

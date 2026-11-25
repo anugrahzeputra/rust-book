@@ -90,7 +90,7 @@ membutuhkannya, jadi kita akan menggunakan bagian dependensi ini nanti.
 
 Sekarang buka _src/main.rs_ dan perhatikan isinya:
 
-<span class="filename">Nama berkas: src/main.rs</span>
+<span class="filename">Nama file: src/main.rs</span>
 
 ```rust
 fn main() {

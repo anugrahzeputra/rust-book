@@ -31,4 +31,5 @@ tahu kami tentang adanya proyek terjemahan baru!
 - [O'zbek](https://github.com/rust-lang-uz/book)
 - [Tiếng Việt](https://github.com/tuanemdev/rust-book-vn)
 - [Italiano](https://nixxo.github.io/rust-lang-book-it/)
+- [Bahasa Indonesia](https://anugrahzeputra.github.io/rust-book) ([Source](https://github.com/anugrahzeputra/rust-book))
 - [বাংলা](https://github.com/IsmailHosenIsmailJames/rust-book-bn)

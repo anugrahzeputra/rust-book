@@ -94,7 +94,7 @@ menambahkan awalan `r#` pada sebuah keyword.
 Misalnya, `match` itu adalah sebuah keyword. Kalau kita mencoba men-compile 
 fungsi berikut yang memakai `match` sebagai namanya:
 
-<span class="filename">Nama File: src/main.rs</span>
+<span class="filename">Nama file: src/main.rs</span>
 
 ```rust,ignore,does_not_compile
 fn match(needle: &str, haystack: &str) -> bool {
@@ -116,7 +116,7 @@ Error tersebut menunjukkan kalau kita tidak bisa memakai keyword `match` sebagai
 identifikasi fungsi. Supaya bisa memakai `match` sebagai nama fungsi, kita perlu 
 memakai sintaks _raw identifier_, kayak gini:
 
-<span class="filename">Nama File: src/main.rs</span>
+<span class="filename">Nama file: src/main.rs</span>
 
 ```rust
 fn r#match(needle: &str, haystack: &str) -> bool {
